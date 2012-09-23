@@ -10,3 +10,15 @@
 *.lai
 *.la
 *.a
+
+# Generated files
+*.pdb
+*.res
+*.exe
+*.obj
+*.ilk
+/ldmicro/dummy
+/ldmicro/obj/
+/ldmicro/reg/results/
+/ldmicro/helptext.cpp
+/ldmicro/lang-tables.h
