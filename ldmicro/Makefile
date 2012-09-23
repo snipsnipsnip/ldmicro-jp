@@ -38,39 +38,50 @@ HELPOBJ  = $(OBJDIR)\helptext.obj
 
 LIBS = user32.lib gdi32.lib comctl32.lib advapi32.lib
 
+# CP = cp
+# MV = mv
+# RMRF = rm -rf
+# TOUCH = touch
+CP = copy
+MV = move
+RMRF = rmdir /s /q
+TOUCH = echo. 2>
+
 all: $(OBJDIR)/ldmicro.exe $(OBJDIR)/ldinterpret.exe
-    @cp $(OBJDIR)/ldmicro.exe .
-    @cp $(OBJDIR)/ldinterpret.exe .
-    @cd reg
-    @go.bat
-    @cd ..
+	@$(CP) $(OBJDIR)/ldmicro.exe .
+	@$(CP) $(OBJDIR)/ldinterpret.exe .
+	@cd reg
+	@go.bat
+	@cd ..
 
 clean:
-	rm -f obj/*
+	$(RMRF) obj
+	mkdir obj
+	$(TOUCH) obj/dummy
 
 lang.cpp: $(OBJDIR)/lang-tables.h
 
 $(OBJDIR)/lang-tables.h: lang*.txt
-    perl lang-tables.pl > $(OBJDIR)/lang-tables.h
+	perl lang-tables.pl > $(OBJDIR)/lang-tables.h
 
 $(OBJDIR)/ldinterpret.exe: ldinterpret.c
-    @$(CC) -Fe$(OBJDIR)/ldinterpret.exe $(LIBS) ldinterpret.c
+	@$(CC) -Fe$(OBJDIR)/ldinterpret.exe $(LIBS) ldinterpret.c
 
 $(OBJDIR)/ldmicro.exe: $(LDOBJS) $(FREEZE) $(HELPOBJ) $(OBJDIR)/ldmicro.res
-    @$(CC) $(DEFINES) $(CFLAGS) -Fe$(OBJDIR)/ldmicro.exe $(LDOBJS) $(FREEZE) $(HELPOBJ) $(OBJDIR)/ldmicro.res $(LIBS)
+	@$(CC) $(DEFINES) $(CFLAGS) -Fe$(OBJDIR)/ldmicro.exe $(LDOBJS) $(FREEZE) $(HELPOBJ) $(OBJDIR)/ldmicro.res $(LIBS)
 
 $(OBJDIR)/ldmicro.res: ldmicro.rc ldmicro.ico
 	@rc ldmicro.rc
-	@mv ldmicro.res $(OBJDIR)
+	@$(MV) ldmicro.res $(OBJDIR)
 
 $(LDOBJS): $(@B).cpp $(HEADERS)
-    @$(CC) $(CFLAGS) $(DEFINES) -c -Fo$(OBJDIR)/$(@B).obj $(@B).cpp
+	@$(CC) $(CFLAGS) $(DEFINES) -c -Fo$(OBJDIR)/$(@B).obj $(@B).cpp
 
 $(FREEZE): ..\common\win32\$(@B).cpp $(HEADERS)
-    @$(CC) $(CFLAGS) $(DEFINES) -c -Fo$(OBJDIR)/$(@B).obj ..\common\win32\$(@B).cpp
+	@$(CC) $(CFLAGS) $(DEFINES) -c -Fo$(OBJDIR)/$(@B).obj ..\common\win32\$(@B).cpp
 
 $(HELPOBJ): $(OBJDIR)/helptext.cpp
-    @$(CC) $(CFLAGS) $(DEFINES) -c -Fo$(OBJDIR)/helptext.obj $(OBJDIR)/helptext.cpp
+	@$(CC) $(CFLAGS) $(DEFINES) -c -Fo$(OBJDIR)/helptext.obj $(OBJDIR)/helptext.cpp
 
 $(OBJDIR)/helptext.cpp: manual.txt manual-*.txt
-    perl txt2c.pl > $(OBJDIR)/helptext.cpp
+	perl txt2c.pl > $(OBJDIR)/helptext.cpp
