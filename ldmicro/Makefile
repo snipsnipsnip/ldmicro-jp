@@ -40,10 +40,12 @@ LIBS = user32.lib gdi32.lib comctl32.lib advapi32.lib
 
 # CP = cp
 # MV = mv
+# RM = rm
 # RMRF = rm -rf
 # TOUCH = touch
 CP = copy
 MV = move
+RM = del
 RMRF = rmdir /s /q
 TOUCH = echo. 2>
 
@@ -58,6 +60,11 @@ clean:
 	$(RMRF) obj
 	mkdir obj
 	$(TOUCH) obj/dummy
+
+distclean: clean
+	$(RM) *.pdb *.obj *.exe *.ilk *.res lang-tables.h helptext.cpp
+	cd reg
+	$(RMRF) results
 
 lang.cpp: $(OBJDIR)/lang-tables.h
 
