@@ -1,16 +1,11 @@
 
-INTRODUCTION
+概要
 ============
 
-LDmicro generates native code for certain Microchip PIC16 and Atmel AVR
-microcontrollers. Usually software for these microcontrollers is written
-in a programming language like assembler, C, or BASIC. A program in one
-of these languages comprises a list of statements. These languages are
-powerful and well-suited to the architecture of the processor, which
-internally executes a list of instructions.
+LDmicroはラダー図からPIC16やAtmel AVRのネイティブコードを生成するツールです。
+マイコンの制御ソフトウェアは通常アセンブラやC、BASICなどのプログラミング言語で書かれます。これは命令文を並べることで動作を定義します。これは機械語命令を順番に実行するというマイクロプロセッサ内部の仕組みをそのまま反映したものといえます。
 
-PLCs, on the other hand, are often programmed in `ladder logic.' A simple
-program might look like this:
+一方、PLC(プログラマブルロジックコントローラ)はラダー・ロジックというものを使ってプログラムされます。例えば、単純なプログラムは次のようなものです。
 
    ||                                                                    ||
    ||    Xbutton1           Tdon           Rchatter           Yred       ||
@@ -30,30 +25,30 @@ program might look like this:
    ||                                                                    ||
    ||                                                                    ||
 
-(TON is a turn-on delay; TOF is a turn-off delay. The --] [-- statements
-are inputs, which behave sort of like the contacts on a relay. The
---( )-- statements are outputs, which behave sort of like the coil of a
-relay. Many good references for ladder logic are available on the Internet
+TON は Turn-ON delay (遅延立ち上げ)、TOF は Turn-OFf delayを意味します。
+--] [-- は入力を表し、回路のスイッチ(接点)のように働きます。
+--( )-- は出力を表し、回路のコイルのように働きます。
+ラダーロジックの詳しい説明は他のWeb上のページなどにゆずります。
+
 and elsewhere; details specific to this implementation are given below.)
 
-A number of differences are apparent:
+見た目に明らかな違いは次のようなものです。
 
-    * The program is presented in graphical format, not as a textual list
-      of statements. Many people will initially find this easier to
-      understand.
+    * プログラムはテキストではなく箱を線でつないだような図として表します。
+      多くの人はこちらの方が理解しやすいと感じます。
 
-    * At the most basic level, programs look like circuit diagrams, with
-      relay contacts (inputs) and coils (outputs). This is intuitive to
-      programmers with knowledge of electric circuit theory.
+    * プログラムがスイッチ(入力)とコイル(出力)だけの単純なものなら
+      そのまま回路図のように読めます。
+      デジタル回路の知識がある方は直感的に感じるでしょう。
 
-    * The ladder logic compiler takes care of what gets calculated
-      where. You do not have to write code to determine when the outputs
-      have to get recalculated based on a change in the inputs or a
-      timer event, and you do not have to specify the order in which
-      these calculations must take place; the PLC tools do that for you.
+    * いつ、どこを計算するかはラダー図のコンパイラが判断します。
+      変数を再計算するタイミングに頭を悩ませる必要はありませんし、
+      計算の順番で悩むこともありません。PLCを処理するツールが
+      考えてくれます。
 
-LDmicro compiles ladder logic to PIC16 or AVR code. The following
-processors are supported:
+LDmicroはPIC16やAtmel AVRのプログラムを生成することができます。
+現在以下のプロセッサに対応しています。
+
     * PIC16F877
     * PIC16F628
     * PIC16F876 (untested)
@@ -68,126 +63,60 @@ processors are supported:
     * ATmega16 (untested)
     * ATmega8 (untested)
 
-It would be easy to support more AVR or PIC16 chips, but I do not have
-any way to test them. If you need one in particular then contact me and
-I will see what I can do.
+対応プロセッサを増やすのは簡単ですが、私にはテストする環境がありません。
+特に対応してほしいものがあればご相談ください。
 
-Using LDmicro, you can draw a ladder diagram for your program. You can
-simulate the logic in real time on your PC. Then when you are convinced
-that it is correct you can assign pins on the microcontroller to the
-program inputs and outputs. Once you have assigned the pins, you can
-compile PIC or AVR code for your program. The compiler output is a .hex
-file that you can program into your microcontroller using any PIC/AVR
-programmer.
+LDmicroではラダー図でプログラムを書くことができます。また、ロジックをPC上でシミュレートして試すことができます。それでうまく動くことが確認できたら、入出力ピンを割り当ててマイコン用にコンパイルします。出力のHEXファイルはそのままマイコンに書き込むことができます。
 
-LDmicro is designed to be somewhat similar to most commercial PLC
-programming systems. There are some exceptions, and a lot of things
-aren't standard in industry anyways. Carefully read the description
-of each instruction, even if it looks familiar. This document assumes
-basic knowledge of ladder logic and of the structure of PLC software
-(the execution cycle: read inputs, compute, write outputs).
+LDmicroは一般的なPLCプログラミング環境になるべく似せてあります。いくつか例外はありますが、商用のものでもどのみちまったく規格が共通なわけではありません。よく知っていると思う場合でも、各命令の説明を熟読してください。この文書は読者にラダー・ロジックやPLCの基本的な知識があることを前提としています (入力-計算-出力のサイクルなど)。
 
-
-ADDITIONAL TARGETS
+追加のターゲット
 ==================
 
-It is also possible to generate ANSI C code. You could use this with any
-processor for which you have a C compiler, but you are responsible for
-supplying the runtime. That means that LDmicro just generates source
-for a function PlcCycle(). You are responsible for calling PlcCycle
-every cycle time, and you are responsible for implementing all the I/O
-(read/write digital input, etc.) functions that the PlcCycle() calls. See
-the comments in the generated source for more details.
+コンパイラはANSI Cのコードを出力することもできます。Cコンパイラに対応したプロセッサであればこれを使ってプログラムできますが、ランタイムをユーザが用意する必要があります。具体的には、LDmicroは PlcCycle() という関数のコードを生成します。これを外部から毎サイクル呼ぶ必要があります。また、PlcCycle() の使う入出力の部分も実装する必要があります。詳しくは生成コードのコメントをご覧ください。
 
-Finally, LDmicro can generate processor-independent bytecode for a
-virtual machine designed to run ladder logic code. I have provided a
-sample implementation of the interpreter/VM, written in fairly portable
-C. This target will work for just about any platform, as long as you
-can supply your own VM. This might be useful for applications where you
-wish to use ladder logic as a `scripting language' to customize a larger
-program. See the comments in the sample interpreter for details.
+また、LDmicroはプロセッサ非依存のバイトコードを生成することができます。
+これはラダー・ロジックを実行するための仮想マシン(VM)を対象とするもので、実行用のインタプリタのサンプルを同梱しています。これはポータブルなC言語で書かれています。VMをユーザが実装する限り、これはどのようなマシンでも動くはずです。用途としては、ラダー・ロジックを一種のスクリプト言語として大きなプログラム中に組み込んで使うことが考えられます。詳しくはサンプルのインタプリタのコメントをご覧ください。
 
-
-COMMAND LINE OPTIONS
+コマンドラインオプション
 ====================
 
-ldmicro.exe is typically run with no command line options. That means
-that you can just make a shortcut to the program, or save it to your
-desktop and double-click the icon when you want to run it, and then you
-can do everything from within the GUI.
+ldmicro.exe は通常オプションなしで起動されます。つまり、通常は単にショートカットなどからダブルクリックで起動して、GUIで操作します。
 
-If LDmicro is passed a single filename on the command line
-(e.g. `ldmicro.exe asd.ld'), then LDmicro will try to open `asd.ld',
-if it exists. An error is produced if `asd.ld' does not exist. This
-means that you can associate ldmicro.exe with .ld files, so that it runs
-automatically when you double-click a .ld file.
+ファイル名を指定して起動した場合 ("ldmicro.exe asd.ld" など) は、LDmicroはそのファイルを読み込んで立ち上がります。ファイルが読み込めない場合はエラーを表示します。.ld拡張子をLDmicroに関連付けするとラダー図のファイルをダブルクリックするだけで開けるので便利です。
 
-If LDmicro is passed command line arguments in the form
-`ldmicro.exe /c src.ld dest.hex', then it tries to compile `src.ld',
-and save the output as `dest.hex'. LDmicro exits after compiling,
-whether the compile was successful or not. Any messages are printed
-to the console. This mode is useful only when running LDmicro from the
-command line.
+"ldmicro.exe /c src.ld dest.hex" のように引数を与えて起動すると、src.ld をコンパイルして dest.hex に結果を書き出します。成功したかどうかにかかわらず、LDmicroはコンパイル後そのまま終了します。メッセージはコンソールに出力されます。このモードはコマンドラインから実行することを想定しています。
 
-
-BASICS
+基本
 ======
 
-If you run LDmicro with no arguments then it starts with an empty
-program. If you run LDmicro with the name of a ladder program (xxx.ld)
-on the command line then it will try to load that program at startup.
-LDmicro uses its own internal format for the program; it cannot import
-logic from any other tool.
+LDmicroをダブルクリックで起動すると、空のプログラムが表示されます。
+ファイルを与えて起動するとそのファイルを読み込んで起動します。
+LDmicroのプログラムの保存形式(.LD)は独自のもので、他の形式からインポートする機能はありません。
 
-If you did not load an existing program then you will be given a program
-with one empty rung. You could add an instruction to it; for example
-you could add a set of contacts (Instruction -> Insert Contacts) named
-`Xnew'. `X' means that the contacts will be tied to an input pin on the
-microcontroller. You could assign a pin to it later, after choosing a
-microcontroller and renaming the contacts. The first letter of a name
-indicates what kind of object it is.  For example:
+初期状態は、空のラングがひとつあるだけのプログラムです。ここに命令を追加することができます。例えば、メニューの[命令]->[挿入: 接点]を選ぶと Xnew という名前の接点が追加されます。命令の挿入する位置はカーソルで指定します。左右に挿入すると直列に、上下に挿入すると並列になります。
+XnewのXというのは、その接点がマイコンの入力ピンに割り当てられるという意味です。入出力接点は実際のピンに割り当てる前にマイコンの種類を選んで名前をつける必要があります。ピンを割り当てるには、画面下部の変数一覧表からダブルクリックします。
+Xの他にも色々な頭文字があり種類を表しています。例えば：
 
-    * Xname -- tied to an input pin on the microcontroller
-    * Yname -- tied to an output pin on the microcontroller
-    * Rname -- `internal relay': a bit in memory
-    * Tname -- a timer; turn-on delay, turn-off delay, or retentive
-    * Cname -- a counter, either count-up or count-down
-    * Aname -- an integer read from an A/D converter
-    * name  -- a general-purpose (integer) variable
+    * Xname -- マイコンの入力ピン
+    * Yname -- マイコンの出力ピン
+    * Rname -- 内部リレー。1ビットの内部メモリ
+    * Tname -- タイマー。遅延立ち上がり、遅延立ち下がり、保持遅延の3種
+    * Cname -- カウンター。上昇、下降、循環の3種
+    * Aname -- AD変換器から読みだした数値
+    * name  -- 汎用のメモリ上の数値変数
 
-Choose the rest of the name so that it describes what the object does,
-and so that it is unique within the program. The same name always refers
-to the same object within the program. For example, it would be an error
-to have a turn-on delay (TON) called `Tdelay' and a turn-off delay (TOF)
-called `Tdelay' in the same program, since each counter needs its own
-memory. On the other hand, it would be correct to have a retentive timer
-(RTO) called `Tdelay' and a reset instruction (RES) associated with
-`Tdelay', since it that case you want both instructions to work with
-the same timer.
+追加した時には "name" の部分は "new" になっています。何のための変数なのかわかりやすいように名前をつけてください。リレーの命令をダブルクリックするか、カーソルを合わせてリターンを押すと編集できます。
+プログラム中で同じ名前の変数は常に同じものを指します。例えば、TON (遅延立ち上がりタイマ) に Tdelay という名前をつけたら、TOF (遅延立ち下がりタイマ) に Tdelay という名前をつけることはできません。
+他方、RTO (保持遅延タイマ)に Tdelay と名前をつけてから RES (タイマリセット) 命令で Tdelay を指定しても問題ありません。この場合は対象のタイマは同じものだからです。
 
-Variable names can consist of letters, numbers, and underscores
-(_). A variable name must not start with a number. Variable names are
-case-sensitive.
+変数名はアルファベット、数字、下線 (_) を使うことができます。頭文字に番号を使うことはできません。また、大文字と小文字は区別されます。XDogとXdOgは別の変数です。
 
-The general variable instructions (MOV, ADD, EQU, etc.) can work on
-variables with any name. This means that they can access timer and
-counter accumulators. This may sometimes be useful; for example, you
-could check if the count of a timer is in a particular range.
+変数一般の命令 (MOV, ADD, EQU など) はどの種類の変数に対しても働きます。つまり、タイマーやカウンタを計算に使うことができるということです。これは例えば、カウンタの値がある範囲内にあるかどうかを調べるために使えます。
 
-Variables are always 16 bit integers. This means that they can go
-from -32768 to 32767. Variables are always treated as signed. You can
-specify literals as normal decimal numbers (0, 1234, -56). You can also
-specify ASCII character values ('A', 'z') by putting the character in
-single-quotes. You can use an ASCII character code in most places that
-you could use a decimal number.
+全ての変数は16ビット符号付き整数です。値の範囲は -32768 から 32767 です。値は10進数 (0, 1234, -56) で指定できるほか、ASCIIコード ('A', 'z') を指定することもできます。
 
-At the bottom of the screen you will see a list of all the objects in
-the program. This list is automatically generated from the program;
-there is no need to keep it up to date by hand. Most objects do not
-need any configuration. `Xname', `Yname', and `Aname' objects must be
-assigned to a pin on the microcontroller, however. First choose which
-microcontroller you are using (Settings -> Microcontroller). Then assign
-your I/O pins by double-clicking them on the list.
+画面下部にはプログラム中の変数の一覧表が表示されます。この表はプログラムから自動的に作られるので、手で調整する必要はありません。ほとんどの変数は設定することはありませんが、頭文字が X (入力ピン), Y (出力ピン), A (AD変換値) のものはダブルクリックしてマイコンのピン番号を割り当てる必要があります。
 
 You can modify the program by inserting or deleting instructions. The
 cursor in the program display blinks to indicate the currently selected
