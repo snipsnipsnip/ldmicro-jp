@@ -5,19 +5,23 @@ print <<EOT;
 #include <stdlib.h>
 EOT
 
-for $manual (<manual*txt>) {
+my %manuals = map { /manual-?([^.]*)/ or die; (lc($1) || 'en') => $_ } glob('manual*txt');
 
-    if($manual eq 'manual.txt') {
-        $name = "HelpText";
+for my $lang (sort keys %manuals) {
+    my $name, $ifdef, $manual = $manuals{$lang};
+
+    if ($lang eq 'en') {
         # Some languages don't have translated manuals yet, so use English
-        $ifdef = "#if defined(LDLANG_EN) || defined(LDLANG_ES) || defined(LDLANG_IT) || " .
-                     "defined(LDLANG_PT)";
-    } elsif($manual =~ /manual-(.)(.)\.txt/) {
-        $p = uc($1) . lc($2);
-        $ifdef = "#ifdef LDLANG_" . uc($1 . $2);
-        $name = "HelpText$p";
+        my @langs = grep { !exists $manuals{$_} } map { /-([^.]*)/ or die; lc $1 } glob('lang-*.txt');
+        push @langs, 'en';
+        
+        my $cond = join ' || ', map { "defined(LDLANG_" . uc($_) . ")" } sort @langs;
+        
+        $name = "HelpText";
+        $ifdef = "#if $cond";
     } else {
-        die;
+        $name = "HelpText" . ucfirst $lang;
+        $ifdef = "#ifdef LDLANG_" . uc $lang;
     }
 
     print <<EOT;
