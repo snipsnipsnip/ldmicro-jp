@@ -52,6 +52,8 @@ TOUCH = echo. 2>
 all: $(OBJDIR)/ldmicro.exe $(OBJDIR)/ldinterpret.exe
 	@$(CP) $(OBJDIR)/ldmicro.exe .
 	@$(CP) $(OBJDIR)/ldinterpret.exe .
+
+test: all
 	@cd reg
 	@go.bat
 	@cd ..
