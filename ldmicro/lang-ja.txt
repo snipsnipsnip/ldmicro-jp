@@ -236,13 +236,13 @@
 "このマイコンはPWMに対応していません。"
 
 "The program has changed since it was last saved.\r\n\r\nDo you want to save the changes?"
-"プログラムへの変更を保存しますか？"
+"変更を保存しますか？"
 
 "--add comment here--"
 "--comment--"
 
 "Start new program?"
-"新規作成しますか？"
+"プログラムを新規作成しますか？"
 
 "Couldn't open '%s'."
 "'%s' を開けませんでした。"
@@ -263,7 +263,7 @@
 "長さ:"
 
 "Edit table of ASCII values like a string"
-"ASCII文字列として編集"
+"ASCII文字配列として編集"
 
 "Look-Up Table"
 "ルックアップテーブル"

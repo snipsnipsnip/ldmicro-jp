@@ -106,10 +106,10 @@ Xの他にも色々な頭文字があり種類を表しています。例えば：
     * name  -- 汎用のメモリ上の数値変数
 
 追加した時には "name" の部分は "new" になっています。何のための変数なのかわかりやすいように名前をつけてください。リレーの命令をダブルクリックするか、カーソルを合わせてリターンを押すと編集できます。
-プログラム中で同じ名前の変数は常に同じものを指します。例えば、TON (遅延立ち上がりタイマ) に Tdelay という名前をつけたら、TOF (遅延立ち下がりタイマ) に Tdelay という名前をつけることはできません。
-他方、RTO (保持遅延タイマ)に Tdelay と名前をつけてから RES (タイマリセット) 命令で Tdelay を指定しても問題ありません。この場合は対象のタイマは同じものだからです。
+プログラム中で同じ名前の変数は常に同じものを指します。例えば、TON (遅延立ち上がりタイマ) に Tdelay という名前をつけたら、他の所にある TOF (遅延立ち下がりタイマ) に Tdelay という名前をつけることはできません。
+一方、RTO (保持遅延タイマ)に Tdelay と名前をつけてから RES (タイマリセット) 命令で Tdelay を指定しても問題ありません。この場合は対象のタイマは同じものだからです。
 
-変数名はアルファベット、数字、下線 (_) を使うことができます。頭文字に番号を使うことはできません。また、大文字と小文字は区別されます。XDogとXdOgは別の変数です。
+変数名はアルファベット、数字、下線 (_) を使うことができます。頭文字に数字を使うことはできません。また、大文字と小文字は区別されます。XDogとXdOgは別の変数です。
 
 変数一般の命令 (MOV, ADD, EQU など) はどの種類の変数に対しても働きます。つまり、タイマーやカウンタを計算に使うことができるということです。これは例えば、カウンタの値がある範囲内にあるかどうかを調べるために使えます。
 
@@ -139,12 +139,9 @@ Xの他にも色々な頭文字があり種類を表しています。例えば：
 ネイティブコードへのコンパイル
 ========================
 
-Ultimately the point is to generate a .hex file that you can program
-into your microcontroller. First you must select the part number of the
-microcontroller, under the Settings -> Microcontroller menu. Then you
-must assign an I/O pin to each `Xname' or `Yname' object. Do this by
-double-clicking the object name in the list at the bottom of the screen.
-A dialog will pop up where you can choose an unallocated pin from a list.
+どのようなプログラムでも、結局は.hexファイルにしてマイコンに書き込むためにあります。コンパイルするには、まず対象のマイコンを選びます。これはメニューの[設定]→[ターゲットマイコン]から行います。その後、全ての接点 (頭文字Xの変数)、コイル (頭文字Yの変数)、アナログ変換 (頭文字Aの変数)にマイコンの入出力ポートを割り当てる必要があります。これは画面下部の変数一覧からダブルクリックして行います。変数を選ぶとピンの一覧が表示されるので、その中から選択します。
+
+他の設定では、サイクル時間(周期)を
 
 Then you must choose the cycle time that you will run with, and you must
 tell the compiler what clock speed the micro will be running at. These
