@@ -114,9 +114,9 @@ Xの他にも色々な頭文字があり種類を表しています。例えば：
 
 変数一般の命令 (MOV, ADD, EQU など) はどの種類の変数に対しても働きます。つまり、タイマーやカウンタを計算に使うことができるということです。これは例えば、カウンタの値がある範囲内にあるかどうかを調べるために使えます。
 
-全ての変数は16ビット符号付き整数です。値の範囲は -32768 から 32767 です。値は10進数 (0, 1234, -56) で指定できるほか、ASCIIコード ('A', 'z') を指定することもできます。
+全ての変数は16ビット符号付き整数です。値の範囲は -32768 から 32767 です。値は10進数 (0, 1234, -56) で指定できるほか、ASCIIコード ('A', 'z') を指定することもできます。その場合はシングルクォート (') で文字を括って下さい。
 
-画面下部にはプログラム中の変数の一覧表が表示されます。この表はプログラムから自動的に作られるので、手で調整する必要はありません。ほとんどの変数は設定することはありませんが、頭文字が X (入力ピン), Y (出力ピン), A (AD変換値) のものはダブルクリックしてマイコンのピン番号を割り当てる必要があります。
+画面下部にはプログラム中の変数の一覧表が表示されます。この表はプログラムから自動的に作られます。ほとんどの変数は設定することはありませんが、頭文字が X (入力ピン), Y (出力ピン), A (AD変換値) のものはマイコンのピン番号を割り当てる必要があります。ダブルクリックするとピンの設定が開きます。
 
 You can modify the program by inserting or deleting instructions. The
 cursor in the program display blinks to indicate the currently selected
@@ -328,7 +328,7 @@ INSTRUCTIONS REFERENCE
 
 
 > ONE-SHOT FALLING               _
-                           --[OSF \_]--
+                           --[OSF \\_]--
 
     This instruction normally outputs false. If the instruction's input
     is false during this scan and it was true during the previous scan
@@ -635,7 +635,7 @@ INSTRUCTIONS REFERENCE
 
 
 > FORMATTED STRING OVER UART                var
-                                   -{"Pressure: \3\r\n"}-
+                                   -{"Pressure: \\3\\r\\n"}-
 
     LDmicro can generate code to use the UARTs built in to certain
     microcontrollers. On AVRS with multiple UARTs only UART1 (not
@@ -645,16 +645,16 @@ INSTRUCTIONS REFERENCE
 
     When the rung-in condition for this instruction goes from false to
     true, it starts to send an entire string over the serial port. If
-    the string contains the special sequence `\3', then that sequence
+    the string contains the special sequence `\\3', then that sequence
     will be replaced with the value of `var', which is automatically
     converted into a string. The variable will be formatted to take
     exactly 3 characters; for example, if `var' is equal to 35, then
-    the exact string printed will be `Pressure:  35\r\n' (note the extra
+    the exact string printed will be `Pressure:  35\\r\\n' (note the extra
     space). If instead `var' were equal to 1432, then the behaviour would
     be undefined, because 1432 has more than three digits. In that case
-    it would be necessary to use `\4' instead.
+    it would be necessary to use `\\4' instead.
 
-    If the variable might be negative, then use `\-3d' (or `\-4d'
+    If the variable might be negative, then use `\\-3d' (or `\\-4d'
     etc.) instead. That will cause LDmicro to print a leading space for
     positive numbers, and a leading minus sign for negative numbers.
 
@@ -668,14 +668,14 @@ INSTRUCTIONS REFERENCE
     is sent over serial. In that case simply do not include the special
     escape sequence.
 
-    Use `\\' for a literal backslash. In addition to the escape sequence
+    Use `\\\\' for a literal backslash. In addition to the escape sequence
     for interpolating an integer variable, the following control
     characters are available:
-        * \r   -- carriage return
-        * \n   -- newline
-        * \f   -- formfeed
-        * \b   -- backspace
-        * \xAB -- character with ASCII value 0xAB (hex)
+        * \\r   -- carriage return
+        * \\n   -- newline
+        * \\f   -- formfeed
+        * \\b   -- backspace
+        * \\xAB -- character with ASCII value 0xAB (hex)
 
     The rung-out condition of this instruction is true while it is
     transmitting data, else false. This instruction consumes a very
