@@ -29,7 +29,7 @@
 "(R) リセットのみ"
 
 "Pin on MCU"
-"出力ピン"
+"ピンに出力"
 
 "Coil"
 "コイル"
@@ -200,7 +200,7 @@
 "このマイコンはAD変換に対応していません。"
 
 "Rename I/O from default name ('%s') before assigning MCU pin."
-"ピンを割り当てるには、変数に名前をつける必要があります。\r\nデフォルトの '%s' から変更してください。"
+"ピンを割り当てる前に、変数に名前をつける必要があります。\r\nデフォルトの '%s' から変更してください。"
 
 "I/O Pin"
 "I/Oピン"
@@ -425,7 +425,7 @@
 "挿入: Piecewise Linear (線形連想配列)"
 
 "Insert Formatted String Over UART"
-"挿入: Formatted String Over UART (UART書式出力)"
+"挿入: Formatted String Over UART (UART書式送信)"
 
 "Insert &UART Send"
 "挿入: &UART Send (UART送信)"
