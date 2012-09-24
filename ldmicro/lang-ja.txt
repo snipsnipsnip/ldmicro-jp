@@ -338,121 +338,121 @@
 "ラングを削除(&E)\tShift+Del"
 
 "Insert Co&mment\t;"
-"挿入: コメント(&M)\t;"
+"; -- コメント --(&M)\t;"
 
 "Insert &Contacts\tC"
-"挿入: 接点 (&C)\tC"
+"--] [-- 接点\t&C"
 
 "Insert OSR (One Shot Rising)\t&/"
-"挿入: OSR (One Shot Rising: 立ち上がり微分)\t&/"
+"--[OSR ＿|￣]-- 立ち上がり微分\t&/"
 
 "Insert OSF (One Shot Falling)\t&\\"
-"挿入: OSR (One Shot Falling: 立ち下がり微分)\t&/"
+"--[OSF ￣|＿]-- 立ち下がり微分\t&\\"
 
 "Insert T&ON (Delayed Turn On)\tO"
-"挿入: T&ON (Delayed Turn On: オンタイマ)\tO"
+"--[T&ON 100.0ms]-- オンタイマ\tO"
 
 "Insert TO&F (Delayed Turn Off)\tF"
-"挿入: TO&F (Delayed Turn Off: オフタイマ)\tF"
+"--[TO&F 100.0ms]-- オフタイマ\tF"
 
 "Insert R&TO (Retentive Delayed Turn On)\tT"
-"挿入: R&TO (Retentive Delayed Turn On: 積算タイマ)\tT"
+"--[R&TO 100.0ms]-- 積算タイマ\tT"
 
 "Insert CT&U (Count Up)\tU"
-"挿入: CT&U (Count Up: アップカウンタ)\tU"
+"--[CT&U >=0]-- アップカウンタ\tU"
 
 "Insert CT&D (Count Down)\tI"
-"挿入: CT&D (Count Down: ダウンカウンタ)\tI"
+"--[CT&D >=0]-- ダウンカウンタ\tI"
 
 "Insert CT&C (Count Circular)\tJ"
-"挿入: CT&C (Count Circular: 循環カウンタ)\tJ"
+"--{CT&C 0:0}-- 循環カウンタ\tJ"
 
 "Insert EQU (Compare for Equals)\t="
-"挿入: EQU (Compare for Equals: 等値)\t="
+"--[ == ]-- EQU 等値比較\t="
 
 "Insert NEQ (Compare for Not Equals)"
-"挿入: NEQ (Compare for Not Equals: 非等値)"
+"--[ /= ]-- NEQ 非等値比較"
 
 "Insert GRT (Compare for Greater Than)\t>"
-"挿入: GRT (Compare for Greater Than: 超過)\t>"
+"--[  > ]-- GRT 超過比較\t>"
 
 "Insert GEQ (Compare for Greater Than or Equal)\t."
-"挿入: GEQ (Compare for Greater Than or Equal: 以上)\t."
+"--[ => ]-- GEQ 以上比較\t."
 
 "Insert LES (Compare for Less Than)\t<"
-"挿入: LES (Compare for Less Than: 未満)\t<"
+"--[ <  ]-- LES 未満比較\t<"
 
 "Insert LEQ (Compare for Less Than or Equal)\t,"
-"挿入: LEQ (Compare for Less Than or Equal: 以下)\t,"
+"--[ <= ]-- LEQ 以下比較\t,"
 
 "Insert Open-Circuit"
-"挿入: Open-Circuit (開回路)"
+"--+     +-- 開回路"
 
 "Insert Short-Circuit"
-"挿入: Short-Circuit (閉回路)"
+"--+---+-- 閉回路"
 
 "Insert Master Control Relay"
-"挿入: Master Control Relay (マスタコントロールリレー)"
+"--{MASTER RLY}-- マスタコントロールリレー"
 
 "Insert Coi&l\tL"
-"挿入: コイル(&L)\tL"
+"--(  )-- コイル\t&L"
 
 "Insert R&ES (Counter/RTO Reset)\tE"
-"挿入: R&ES (Counter/RTO Reset: カウンタ/タイマーリセット)\tE"
+"--{R&ES}-- カウンタ/タイマーリセット\tE"
 
 "Insert MOV (Move)\tM"
-"挿入: MOV (Move: 代入)\tM"
+"--{ := }-- MOV 代入\tM"
 
 "Insert ADD (16-bit Integer Add)\t+"
-"挿入: ADD (16-bit Integer Add: 16ビット加算)\t+"
+"--{ + }-- ADD 加算\t+"
 
 "Insert SUB (16-bit Integer Subtract)\t-"
-"挿入: SUB (16-bit Integer Subtract: 16ビット減算)\t-"
+"--{ - }-- SUB 減算\t"
 
 "Insert MUL (16-bit Integer Multiply)\t*"
-"挿入: MUL (16-bit Integer Multiply: 16ビット乗算)\t*"
+"--{ * }-- MUL 乗算\t*"
 
 "Insert DIV (16-bit Integer Divide)\tD"
-"挿入: DIV (16-bit Integer Divide: 16ビット除算)\tD"
+"--{ / }-- DIV 除算\tD"
 
 "Insert Shift Register"
-"挿入: Shift Register (シフトレジスタ)"
+"--{REG}-- シフトレジスタ"
 
 "Insert Look-Up Table"
-"挿入: Look-Up Table (ルックアップテーブル)"
+"--{LUT}-- ルックアップテーブル"
 
 "Insert Piecewise Linear"
-"挿入: Piecewise Linear (線形連想配列)"
+"--{PWL}-- 線形連想配列"
 
 "Insert Formatted String Over UART"
-"挿入: Formatted String Over UART (UART書式送信)"
+"--{\"value: \\3\\r\\n\"}-- UART書式送信"
 
 "Insert &UART Send"
-"挿入: &UART Send (UART送信)"
+"--{UART SEND}-- &UART送信"
 
 "Insert &UART Receive"
-"挿入: &UART Receive (UART受信)"
+"--{UART RECV}-- &UART受信"
 
 "Insert Set PWM Output"
-"挿入: Set PWM Output (PWM出力設定)"
+"--{PWM 1.00 kHz}-- PWMデューティ比設定"
 
 "Insert A/D Converter Read\tP"
-"挿入: A/D Converter Read (AD変換読み込み)\tP"
+"--{READ ADC}-- アナログ入力読み取り\tP"
 
 "Insert Make Persistent"
-"挿入: Make Persistent (永続変数)"
+"--{PERSIST}-- 永続変数"
 
 "Make Norm&al\tA"
-"コイルを通常に変更(&A)\tA"
+"--( )-- 通常コイルに変更(&A)\tA"
 
 "Make &Negated\tN"
-"コイルを反転に変更(&N)\tN"
+"--(/)-- 反転コイルに変更(&N)\tN"
 
 "Make &Set-Only\tS"
-"コイルをセットのみに変更(&S)\tS"
+"--(S)-- セットコイルに変更(&S)\tS"
 
 "Make &Reset-Only\tR"
-"コイルをリセットのみに変更(&R)\tR"
+"--(R)-- リセットコイルに変更(&R)\tR"
 
 "&MCU Parameters..."
 "マイコン設定(&M)..."
