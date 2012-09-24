@@ -641,7 +641,7 @@ INSTRUCTIONS REFERENCE
     The ladder logic runtime consumes one timer to measure the cycle
     time. That means that PWM is only available on microcontrollers
     with at least two suitable timers. PWM uses pin CCP2 (not CCP1)
-    on PIC16 chips and OC2 (not OC1A) on AVRs.
+    on PIC16 chips and OC2A (not OC1A) on AVRs.
 
 
 > MAKE PERSISTENT            saved_var
