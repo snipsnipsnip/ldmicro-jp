@@ -284,16 +284,16 @@
 "ポート"
 
 "LDmicro - Simulation (Running)"
-"LDmicro - シミュレータ実行中"
+"LDmicro - シミュレータ (実行中)"
 
 "LDmicro - Simulation (Stopped)"
-"LDmicro - シミュレータ停止中"
+"LDmicro - シミュレータ (停止中)"
 
 "LDmicro - Program Editor"
-"LDmicro - プログラムエディタ"
+"LDmicro - エディタ"
 
 " - (not yet saved)"
-" - (未保存)"
+" - (* 未保存)"
 
 "&New\tCtrl+N"
 "新規作成(&N)\tCtrl+N"
@@ -344,10 +344,10 @@
 "--] [-- 接点\t&C"
 
 "Insert OSR (One Shot Rising)\t&/"
-"--[OSR ＿|￣]-- 立ち上がり微分\t&/"
+"--[OSR ＿|￣]-- 立ち上がり微分, 上昇時パルス\t&/"
 
 "Insert OSF (One Shot Falling)\t&\\"
-"--[OSF ￣|＿]-- 立ち下がり微分\t&\\"
+"--[OSF ￣|＿]-- 立ち下がり微分, 下降時パルス\t&\\"
 
 "Insert T&ON (Delayed Turn On)\tO"
 "--[T&ON 100.0ms]-- オンタイマ\tO"
@@ -368,28 +368,28 @@
 "--{CT&C 0:0}-- 循環カウンタ\tJ"
 
 "Insert EQU (Compare for Equals)\t="
-"--[ == ]-- EQU 等値比較\t="
+"--[ == ]-- EQU 等値比較＝\t="
 
 "Insert NEQ (Compare for Not Equals)"
-"--[ /= ]-- NEQ 非等値比較"
+"--[ /= ]-- NEQ 非等値比較！＝"
 
 "Insert GRT (Compare for Greater Than)\t>"
-"--[  > ]-- GRT 超過比較\t>"
+"--[  > ]-- GRT 超過比較＞\t>"
 
 "Insert GEQ (Compare for Greater Than or Equal)\t."
-"--[ => ]-- GEQ 以上比較\t."
+"--[ => ]-- GEQ 以上比較≧\t."
 
 "Insert LES (Compare for Less Than)\t<"
-"--[ <  ]-- LES 未満比較\t<"
+"--[ <  ]-- LES 未満比較＜\t<"
 
 "Insert LEQ (Compare for Less Than or Equal)\t,"
-"--[ <= ]-- LEQ 以下比較\t,"
+"--[ <= ]-- LEQ 以下比較≦\t,"
 
 "Insert Open-Circuit"
-"--+     +-- 開回路"
+"--+     +-- 開放, 開回路"
 
 "Insert Short-Circuit"
-"--+---+-- 閉回路"
+"--+---+-- 短絡, 閉回路"
 
 "Insert Master Control Relay"
 "--{MASTER RLY}-- マスタコントロールリレー"
@@ -401,7 +401,7 @@
 "--{R&ES}-- カウンタ/タイマーリセット\tE"
 
 "Insert MOV (Move)\tM"
-"--{ := }-- MOV 代入\tM"
+"--{ := }-- MOV 代入, 転送\tM"
 
 "Insert ADD (16-bit Integer Add)\t+"
 "--{ + }-- ADD 加算\t+"
@@ -740,13 +740,13 @@
 "永続変数"
 
 "TOF: variable cannot be used elsewhere"
-"TOF (遅延立下がり): 他の所で変数を使うことはできません"
+"TOF (オフタイマ): 他の所で変数を使うことはできません"
 
 "TON: variable cannot be used elsewhere"
-"TON (遅延立上がり): 他の所で変数を使うことはできません"
+"TON (オンタイマ): 他の所で変数を使うことはできません"
 
 "RTO: variable can only be used for RES elsewhere"
-"RTO (保持遅延立ち上がり): RESET 以外の他の場所で使うことはできません"
+"RTO (積算タイマ): RESET 以外の他の場所で使うことはできません"
 
 "Variable '%s' not assigned to, e.g. with a MOV statement, an ADD statement, etc.\r\n\r\nThis is probably a programming error; now it will always be zero."
 "変数 '%s' にMOVやADDなどの代入がありません。\r\n\r\nおそらくこれはプログラムミスです。ゼロで固定します。"
