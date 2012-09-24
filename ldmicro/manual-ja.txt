@@ -97,13 +97,13 @@ LDmicroのプログラムの保存形式(.LD)は独自のもので、他の形式からインポートする機能
 XnewのXというのは、その接点がマイコンの入力ピンに割り当てられるという意味です。入出力接点は実際のピンに割り当てる前にマイコンの種類を選んで名前をつける必要があります。ピンを割り当てるには、画面下部の変数一覧表からダブルクリックします。
 Xの他にも色々な頭文字があり種類を表しています。例えば：
 
-    * Xname -- マイコンの入力ピン
-    * Yname -- マイコンの出力ピン
-    * Rname -- 内部リレー。1ビットの内部メモリ
-    * Tname -- タイマー。遅延立ち上がり、遅延立ち下がり、保持遅延の3種
-    * Cname -- カウンター。上昇、下降、循環の3種
-    * Aname -- AD変換器から読みだした数値
-    * name  -- 汎用のメモリ上の数値変数
+    * X -- マイコンの入力ピン
+    * Y -- マイコンの出力ピン
+    * R -- 内部リレー。1ビットの内部メモリ
+    * T -- タイマー。遅延立ち上がり、遅延立ち下がり、保持遅延の3種
+    * C -- カウンター。上昇、下降、循環の3種
+    * A -- AD変換器から読みだした数値
+    * 頭文字なし -- 汎用のメモリ上の数値変数
 
 追加した時には "name" の部分は "new" になっています。何のための変数なのかわかりやすいように名前をつけてください。リレーの命令をダブルクリックするか、カーソルを合わせてリターンを押すと編集できます。
 プログラム中で同じ名前の変数は常に同じものを指します。例えば、TON (遅延立ち上がりタイマ) に Tdelay という名前をつけたら、他の所にある TOF (遅延立ち下がりタイマ) に Tdelay という名前をつけることはできません。
@@ -141,213 +141,238 @@ Xの他にも色々な頭文字があり種類を表しています。例えば：
 
 どのようなプログラムでも、結局は.hexファイルにしてマイコンに書き込むためにあります。コンパイルするには、まず対象のマイコンを選びます。これはメニューの[設定]→[ターゲットマイコン]から行います。その後、全ての接点 (頭文字Xの変数)、コイル (頭文字Yの変数)、アナログ変換 (頭文字Aの変数)にマイコンの入出力ポートを割り当てる必要があります。これは画面下部の変数一覧からダブルクリックして行います。変数を選ぶとピンの一覧が表示されるので、その中から選択します。
 
-他の設定では、サイクル時間(周期)を
+他の設定としては、サイクル時間(周期)とマイコンの動作周波数があります。これらはメニューの[設定]→[マイコン設定]で調整します。ほとんどの場合サイクル時間を10msから変更する必要はありません。動作周波数の欄にはマイコンとともに使う発振子(水晶やセラミック)の周波数を記入して下さい。
 
-Then you must choose the cycle time that you will run with, and you must
-tell the compiler what clock speed the micro will be running at. These
-are set under the Settings -> MCU Parameters... menu. In general you
-should not need to change the cycle time; 10 ms is a good value for most
-applications. Type in the frequency of the crystal that you will use
-with the microcontroller (or the ceramic resonator, etc.) and click okay.
+これらの設定が終わればコンパイルできます。メニューで[コンパイル]→[コンパイル]を選びます。[名前をつけてコンパイル]を選ぶとコンパイル結果の出力先を変更できます。コンパイルエラーがなければIntel IHEX形式で機械語を書き出します。できあがったHEXファイルをお使いのライターでチップに書き込んで下さい。
 
-Now you can generate code from your program. Choose Compile -> Compile,
-or Compile -> Compile As... if you have previously compiled this program
-and you want to specify a different output file name. If there are no
-errors then LDmicro will generate an Intel IHEX file ready for
-programming into your chip.
+動作させる際は、チップの動作設定(ヒューズとも呼ばれます)に注意して下さい。
+PIC16では設定ワードとしてHEXファイルに含めてあるので、ライターが認識して設定します。
+AVRではHEXファイルには含まず、ツールを使って設定します。
 
-Use whatever programming software and hardware you have to load the hex
-file into the microcontroller. Remember to set the configuration bits
-(fuses)! For PIC16 processors, the configuration bits are included in the
-hex file, and most programming software will look there automatically.
-For AVR processors you must set the configuration bits by hand.
-
-
-INSTRUCTIONS REFERENCE
+命令リファレンス
 ======================
 
 > CONTACT, NORMALLY OPEN        Xname           Rname          Yname
                              ----] [----     ----] [----    ----] [----
+  接点 (通常), 常開接点, a接点, メイク接点
 
-    If the signal going into the instruction is false, then the output
-    signal is false. If the signal going into the instruction is true,
-    then the output signal is true if and only if the given input pin,
-    output pin, or internal relay is true, else it is false. This
-    instruction can examine the state of an input pin, an output pin,
-    or an internal relay.
+    この命令に0を入力すると、0を出力します。
+    この命令に1を入力すると、
+    関連付けられた入出力ピンや内部リレーが1のとき、1を出力します。
+    この命令に1を入力すると、
+    関連付けられた入出力ピンや内部リレーが0のとき、0を出力します。
+    
+    つまり、関連付けられた入出力ピンや内部リレーと同じ信号を出力します。
+    この命令を使って入出力ピンや内部リレーの値を調べることができます。
+    通常閉じていて、押すと回路が閉じるスイッチに例えられます。
 
 
 > CONTACT, NORMALLY CLOSED      Xname           Rname          Yname
                              ----]/[----     ----]/[----    ----]/[----
+  接点 (反転), 常閉接点, b接点, ブレイク接点
 
-    If the signal going into the instruction is false, then the output
-    signal is false. If the signal going into the instruction is true,
-    then the output signal is true if and only if the given input pin,
-    output pin, or internal relay is false, else it is false. This
-    instruction can examine the state of an input pin, an output pin,
-    or an internal relay. This is the opposite of a normally open contact.
+    この命令に0を入力すると、1を出力します。
+    この命令に1を入力すると、
+    関連付けられた入出力ピンや内部リレーが1のとき、0を出力します。
+    この命令に1を入力すると、
+    関連付けられた入出力ピンや内部リレーが0のとき、1を出力します。
+    
+    つまり、関連付けられた入出力ピンや内部リレーと逆の信号を出力します。
+    これは開接点と逆の動作です。
+    この命令を使って入出力ピンや内部リレーの値を調べることができます。
+    通常閉じていて、押すと回路が開くスイッチに例えられます。
 
 
 > COIL, NORMAL                  Rname           Yname
                              ----( )----     ----( )----
+  コイル (通常), 通常コイル
 
-    If the signal going into the instruction is false, then the given
-    internal relay or output pin is cleared false. If the signal going
-    into this instruction is true, then the given internal relay or output
-    pin is set true. It is not meaningful to assign an input variable to a
-    coil. This instruction must be the rightmost instruction in its rung.
+    この命令に0を入力すると、
+    関連付けられた出力ピンや内部リレーを0にセットします。
+    この命令に1を入力すると、
+    関連付けられた出力ピンや内部リレーを1にリセットします。
+    
+    つまり、関連付けられた出力ピンや内部リレーに信号と同じ値を設定します。
+
+    この命令はラングの右端にしか配置できません。
 
 
 > COIL, NEGATED                 Rname           Yname
                              ----(/)----     ----(/)----
+  コイル (反転), 反転コイル
 
-    If the signal going into the instruction is true, then the given
-    internal relay or output pin is cleared false. If the signal going
-    into this instruction is false, then the given internal relay or
-    output pin is set true. It is not meaningful to assign an input
-    variable to a coil.  This is the opposite of a normal coil. This
-    instruction must be the rightmost instruction in its rung.
+    この命令に0を入力すると、
+    関連付けられた出力ピンや内部リレーを1にセットします。
+    この命令に1を入力すると、
+    関連付けられた出力ピンや内部リレーを0にリセットします。
+    
+    つまり、関連付けられた出力ピンや内部リレーに信号と逆の値を設定します。
+
+    この命令はラングの右端にしか配置できません。
 
 
 > COIL, SET-ONLY                Rname           Yname
                              ----(S)----     ----(S)----
+  コイル (セットのみ), セットコイル
 
-    If the signal going into the instruction is true, then the given
-    internal relay or output pin is set true. Otherwise the internal
-    relay or output pin state is not changed. This instruction can only
-    change the state of a coil from false to true, so it is typically
-    used in combination with a reset-only coil. This instruction must
-    be the rightmost instruction in its rung.
+    この命令に0を入力すると、なにもしません。
+    この命令に1を入力すると、
+    関連付けられた出力ピンや内部リレーを1にセットします。
+    
+    このコイルによって状態が0にリセットされることはありません。
+    多くの場合、リセットコイルと組み合わせて使われます。
+
+    この命令はラングの右端にしか配置できません。
 
 
 > COIL, RESET-ONLY              Rname           Yname
                              ----(R)----     ----(R)----
+  コイル (セットのみ), リセットコイル
 
-    If the signal going into the instruction is true, then the given
-    internal relay or output pin is cleared false. Otherwise the
-    internal relay or output pin state is not changed. This instruction
-    instruction can only change the state of a coil from true to false,
-    so it is typically used in combination with a set-only coil. This
-    instruction must be the rightmost instruction in its rung.
+    この命令に0を入力すると、なにもしません。
+    この命令に1を入力すると、
+    関連付けられた出力ピンや内部リレーを0にリセットします。
+    
+    このコイルによって状態が1にセットされることはありません。
+    多くの場合、セットコイルと組み合わせて使われます。
+
+    この命令はラングの右端にしか配置できません。
 
 
-> TURN-ON DELAY                 Tdon 
+> TURN-ON DELAY                 Tdon
                            -[TON 1.000 s]-
+  オンタイマー, オンディレイタイマー, 限時動作即時復帰メイク接点
 
-    When the signal going into the instruction goes from false to true,
-    the output signal stays false for 1.000 s before going true. When the
-    signal going into the instruction goes from true to false, the output
-    signal goes false immediately. The timer is reset every time the input
-    goes false; the input must stay true for 1000 consecutive milliseconds
-    before the output will go true. The delay is configurable.
-
-    The `Tname' variable counts up from zero in units of scan times. The
-    TON instruction outputs true when the counter variable is greater
-    than or equal to the given delay. It is possible to manipulate the
-    counter variable elsewhere, for example with a MOV instruction.
+    この命令は状態を持ち、出力を保持します。
+    この命令に1を1秒間入力し続けると、1を出力しはじめます。
+    この命令に0を入力すると、すぐに0を出力しはじめます。
+    
+    秒数はダイアログで調節できます。
+    
+    この命令は頭文字が T の変数に関連付けられます。
+    値はタイマーのカウント値です。
+    1が入力された秒数をサイクル時間を単位として数えます。
+    この命令はカウント値が設定された秒数以上になると1を出力します。
+    カウント値は0が入力される限り0にリセットされ続けます。
+    
+    変数の値はMOV命令などで他のところから変更することができます。
 
 
 > TURN-OFF DELAY                Tdoff 
                            -[TOF 1.000 s]-
+  オフタイマー, オフディレイタイマー, 限時動作即時復帰ブレイク接点
 
-    When the signal going into the instruction goes from true to false,
-    the output signal stays true for 1.000 s before going false. When
-    the signal going into the instruction goes from false to true,
-    the output signal goes true immediately. The timer is reset every
-    time the input goes false; the input must stay false for 1000
-    consecutive milliseconds before the output will go false. The delay
-    is configurable.
-
-    The `Tname' variable counts up from zero in units of scan times. The
-    TON instruction outputs true when the counter variable is greater
-    than or equal to the given delay. It is possible to manipulate the
-    counter variable elsewhere, for example with a MOV instruction.
+    この命令は状態を持ち、出力を保持します。
+    この命令に0を1秒間入力し続けると、0を出力しはじめます。
+    この命令に1を入力すると、すぐに1を出力しはじめます。
+    
+    秒数はダイアログで調節できます。
+    
+    この命令は頭文字が T の変数に関連付けられます。
+    値はタイマーのカウント値です。
+    0が入力された秒数をサイクル時間を単位として数えます。
+    この命令はカウント値が設定された秒数以上になると0を出力します。
+    カウント値は1が入力される限り0にリセットされ続けます。
+    
+    変数の値はMOV命令などで他のところから変更することができます。
 
 
 > RETENTIVE TIMER               Trto  
                            -[RTO 1.000 s]-
+  積算タイマー, 積算オンタイマー
 
-    This instruction keeps track of how long its input has been true. If
-    its input has been true for at least 1.000 s, then the output is
-    true. Otherwise the output is false. The input need not have been
-    true for 1000 consecutive milliseconds; if the input goes true
-    for 0.6 s, then false for 2.0 s, and then true for 0.4 s, then the
-    output will go true. After the output goes true it will stay true
-    even after the input goes false, as long as the input has been true
-    for longer than 1.000 s. This timer must therefore be reset manually,
-    using the reset instruction.
-
-    The `Tname' variable counts up from zero in units of scan times. The
-    TON instruction outputs true when the counter variable is greater
-    than or equal to the given delay. It is possible to manipulate the
-    counter variable elsewhere, for example with a MOV instruction.
+    この命令は1を入力された秒数を数えます。
+    それまでに通算で1秒間以上1が入力されていれば1を出力します。
+    
+    入力する1秒間は連続している必要はありません。
+    例えば、0.6秒1を入力して、2.0秒0を入力して、0.4秒1を入力すると
+    この命令は1を出力しはじめます。
+    
+    一度1を出力し始めると、この命令は入力が0になっても1を出力し続けます。
+    カウントをリセットするには、RESET命令を使います。
+    
+    この命令は頭文字が T の変数に関連付けられます。
+    値はタイマーのカウント値です。
+    1が入力された積算の秒数をサイクル時間を単位として数えます。
+    この命令はカウント値が設定された秒数以上になると1を出力します。
+    
+    変数の値はMOV命令やRESET命令などで他のところから変更することができます。
 
 
 > RESET                        Trto             Citems
                            ----{RES}----     ----{RES}----
+  リセット, カウンタリセット, タイマーリセット
 
-    This instruction resets a timer or a counter. TON and TOF timers are
-    automatically reset when their input goes false or true, so RES is
-    not required for these timers. RTO timers and CTU/CTD counters are
-    not reset automatically, so they must be reset by hand using a RES
-    instruction. When the input is true, the counter or timer is reset;
-    when the input is false, no action is taken. This instruction must
-    be the rightmost instruction in its rung.
+    この命令に0を入力すると、なにもしません。
+    この命令に1を入力すると、
+    関連付けられたタイマやカウンタのカウント値を0にリセットします。
+    
+    TONとTOFは入力によってリセットするため、この命令は必要ありません。
+    RTOやCTU/CTDは単独ではリセットされないので、この命令と
+    組み合わせる必要があります。
+
+    この命令はラングの右端にしか配置できません。
 
 
 > ONE-SHOT RISING                  _
                            --[OSR_/ ]--
+  立ち上がり微分, ワンショット立ち上がり
 
-    This instruction normally outputs false. If the instruction's input
-    is true during this scan and it was false during the previous scan
-    then the output is true. It therefore generates a pulse one scan
-    wide on each rising edge of its input signal. This instruction is
-    useful if you want to trigger events off the rising edge of a signal.
+    直前のサイクルでの入力が0で、
+    現在のサイクルでの入力が1のときに限り、1を出力します。
+    それ以外の場合は0を出力します。
+    
+    入力の立ち上がりを検知してパルス信号を出力します。
+    イベントの通知や処理を行うきっかけなどに有用です。
 
 
 > ONE-SHOT FALLING               _
                            --[OSF \\_]--
+  立ち下がり微分, ワンショット立ち下がり
 
-    This instruction normally outputs false. If the instruction's input
-    is false during this scan and it was true during the previous scan
-    then the output is true. It therefore generates a pulse one scan
-    wide on each falling edge of its input signal. This instruction is
-    useful if you want to trigger events off the falling edge of a signal.
+    直前のサイクルでの入力が1で、
+    現在のサイクルでの入力が0のときに限り、1を出力します。
+    それ以外の場合は0を出力します。
+    
+    入力の立ち下がりを検知してパルス信号を出力します。
+    イベントの通知や処理を行うきっかけなどに有用です。
 
 
 > SHORT CIRCUIT, OPEN CIRCUIT
                            ----+----+----      ----+     +----
+  閉回路/開回路, 短絡/開放, ショート/オープン
 
-    The output condition of a short-circuit is always equal to its
-    input condition. The output condition of an open-circuit is always
-    false. These are mostly useful for debugging.
+    閉回路の出力は常に入力と同じになります。
+    開回路の出力は入力に関わらず常に0です。
+    デバッグの際に有用です。
 
 
 > MASTER CONTROL RELAY
                            -{MASTER RLY}-
+  マスターコントロールリレー, マスター制御リレー
 
-    By default, the rung-in condition of every rung is true. If a master
-    control relay instruction is executed with a rung-in condition of
-    false, then the rung-in condition for all following rungs becomes
-    false. This will continue until the next master control relay
-    instruction is reached (regardless of the rung-in condition of that
-    instruction). These instructions must therefore be used in pairs:
-    one to (maybe conditionally) start the possibly-disabled section,
-    and one to end it.
+    全ラングへの入力信号を表します。
+    プログラムの動作中は通常、全てのラングの入力は常に1です。
+    この命令に0が入力されると、全てのラングの入力が0になります。
+    その状態は再度この命令に1が入力されるまで続きます。
+    
+    多くの場合、この命令はペアで使われます。
+    (おそらく条件付きで)全体をオフにするものと、
+    それから復帰するためのものです。
 
 
 > MOVE                      {destvar :=  }      {Tret :=     }
                            -{ 123     MOV}-    -{ srcvar  MOV}-
+  代入, ムーブ
 
-    When the input to this instruction is true, it sets the given
-    destination variable equal to the given source variable or
-    constant. When the input to this instruction is false nothing
-    happens. You can assign to any variable with the move instruction;
-    this includes timer and counter state variables, which can be
-    distinguished by the leading `T' or `C'. For example, an instruction
-    moving 0 into `Tretentive' is equivalent to a reset (RES) instruction
-    for that timer. This instruction must be the rightmost instruction
-    in its rung.
+    この命令に0を入力すると、なにもしません。
+    この命令に1を入力すると、代入先の変数に代入元の変数の値を設定します。
+    
+    代入先にはすべての種類の変数が指定できます。
+    これにはタイマー変数 (頭文字T)とカウンター変数 (頭文字C)も含みます。
+    例えば0を代入するようにすれば、RESET命令と同様の動作になります。
+    
+    この命令はラングの右端にしか配置できません。
 
 
 > ARITHMETIC OPERATION       {ADD  kay  :=}       {SUB  Ccnt :=}
@@ -355,18 +380,29 @@ INSTRUCTIONS REFERENCE
 
 >                            {MUL  dest :=}       {DIV  dv :=  }
                             -{ var * -990 }-     -{ dv / -10000}-
+  四則演算 (加減乗除)
 
-    When the input to this instruction is true, it sets the given
-    destination variable equal to the given expression. The operands
-    can be either variables (including timer and counter variables)
-    or constants. These instructions use 16 bit signed math. Remember
-    that the result is evaluated every cycle when the input condition
-    true. If you are incrementing or decrementing a variable (i.e. if
-    the destination variable is also one of the operands) then you
-    probably don't want that; typically you would use a one-shot so that
-    it is evaluated only on the rising or falling edge of the input
-    condition. Divide truncates; 8 / 3 = 2. This instruction must be
-    the rightmost instruction in its rung.
+    この命令に0を入力すると、なにもしません。
+    この命令に1を入力すると、代入先の変数に計算結果を代入します。
+    1を入力し続ける限り、計算と代入を毎サイクル繰り返し行います。
+    
+    右辺の項には変数か数値を指定します。
+    数値は10進数 (0, 1234, -56) で指定できるほか、
+    ASCIIコード ('A', 'z') を指定することもできます。
+    その場合はシングルクォート (') で文字を括って下さい。    
+
+    計算は16ビット符号付き整数で行われます。
+    値の範囲は -32768 から 32767 です。
+    
+    繰り返しに注意して下さい。例えば、a = a + 100という命令を
+    ラングに置いたとすると、変数aの値は毎サイクル100ずつ
+    上がっていきます。
+    計算のステップとして1を単に足したいだけの場合は、OSR/OSFなどと
+    条件を組み合わせて、計算と代入が1度しか実行されないようにしてください。
+    
+    割り算は端数を切り落とします。8 / 3 = 2になります。
+    
+    この命令はラングの右端にしか配置できません。
 
 
 > COMPARE               [var ==]        [var >]        [1 >=]
@@ -374,45 +410,64 @@ INSTRUCTIONS REFERENCE
 
 >                       [var /=]       [-4 <   ]       [1 <=]
                        -[ var2 ]-     -[ vartwo]-     -[ Cup]-
+  比較 (等値, 非等値, 超過, 未満, 以上, 以下)
 
-    If the input to this instruction is false then the output is false. If
-    the input is true then the output is true if and only if the given
-    condition is true. This instruction can be used to compare (equals,
-    is greater than, is greater than or equal to, does not equal,
-    is less than, is less than or equal to) a variable to a variable,
-    or to compare a variable to a 16-bit signed constant.
+    この命令に0を入力すると、なにもしません。
+    この命令に1を入力すると、
+    設定された不等式が真である時1を、偽であるとき0を出力します。
+    
+    この命令は数値や変数の比較に使えます。
 
+    計算は16ビット符号付き整数で行われます。
+    値の範囲は -32768 から 32767 です。
+
+    数値は10進数 (0, 1234, -56) で指定できるほか、
+    ASCIIコード ('A', 'z') を指定することもできます。
+    その場合はシングルクォート (') で文字を括って下さい。    
 
 > COUNTER                      Cname          Cname
                            --[CTU >=5]--  --[CTD >=5]--
+  カウンター (アップカウンター, ダウンカウンター)
 
-    A counter increments (CTU, count up) or decrements (CTD, count
-    down) the associated count on every rising edge of the rung input
-    condition (i.e. what the rung input condition goes from false to
-    true). The output condition from the counter is true if the counter
-    variable is greater than or equal to 5, and false otherwise. The
-    rung output condition may be true even if the input condition is
-    false; it only depends on the counter variable. You can have CTU
-    and CTD instructions with the same name, in order to increment and
-    decrement the same counter. The RES instruction can reset a counter,
-    or you can perform general variable operations on the count variable.
-
+    これらの命令に0を入力すると、なにもしません。
+    これらの命令に1を入力すると、
+    直前のサイクルでの入力が0のときに限り、カウントを変化させます。
+    アップカウンタはカウント値をインクリメント(1足す)します。
+    ダウンカウンタはカウント値をデクリメント(1引く)します。
+    カウント値が5以上なら1、そうでなければ0を出力します。
+    比較する数値はダイアログで調整できます。
+    
+    信号の立ち上がりを検知して数値を1ずつ上げ下げする命令です。
+    
+    これらの命令は頭文字が C の変数に関連付けられます。
+    値はカウント値です。
+    変数の値はRESET命令やMOV命令などで他のところから変更することができます。
+    また、同じ変数に対してCTUとCTDの両方を配置することができます。
+    これによって、変数を上げ下げすることができます。
 
 > CIRCULAR COUNTER             Cname
                            --{CTC 0:7}--
+  循環カウンタ
 
-    A circular counter works like a normal CTU counter, except that
-    after reaching its upper limit, it resets its counter variable
-    back to 0. For example, the counter shown above would count 0, 1,
-    2, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 2,.... This is useful in
-    combination with conditional statements on the variable `Cname';
-    you can use this like a sequencer. CTC counters clock on the rising
-    edge of the rung input condition condition. This instruction must
-    be the rightmost instruction in its rung.
+    これらの命令に0を入力すると、なにもしません。
+    これらの命令に1を入力すると、
+    直前のサイクルでの入力が0のときに限り、
+    カウント値をインクリメント(1足す)します。
+    ただしカウンタ値が7の場合は、インクリメントする代わりに0にリセットします。
+    最大値はダイアログで調整できます。
+    
+    たとえば最大値が7の場合、パルスを送るたびカウンタの値は
+      0, 1, 2, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 2,....
+    のようになります。
+    
+    順繰りに数値が繰り返すので、シーケンサのように使うことができます。
+    
+    この命令はラングの右端にしか配置できません。
 
 
 > SHIFT REGISTER            {SHIFT REG   }
                            -{ reg0..3    }-
+  シフトレジスタ
 
     A shift register is associated with a set of variables. For example,
     this shift register is associated with the variables `reg0', `reg1',
