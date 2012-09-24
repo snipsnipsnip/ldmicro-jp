@@ -465,6 +465,10 @@ AVRではHEXファイルには含まず、ツールを使って設定します。
     最大値はダイアログで調整できます。
     順繰りに数値が繰り返すので、シーケンサのように使うことができます。
     
+    この命令は頭文字が C の変数に関連付けられます。
+    値はカウント値です。
+    変数の値はRESET命令やMOV命令などで他のところから変更することができます。
+
     この命令はラングの右端にしか配置できません。
 
 
@@ -488,6 +492,7 @@ AVRではHEXファイルには含まず、ツールを使って設定します。
     
     巨大なシフトレジスタはメモリを圧迫することがあるので注意して下さい。
     
+    この命令は通し番号のついた複数の汎用変数に関連付けられます。
     この命令はラングの右端にしか配置できません。
 
 
@@ -505,6 +510,7 @@ AVRではHEXファイルには含まず、ツールを使って設定します。
     添字の範囲は0から要素数-1です。
     添字が範囲外の場合の動作は未定義です。
     
+    この命令は汎用変数に関連付けられます。
     この命令はラングの右端にしか配置できません。
 
 
@@ -558,6 +564,7 @@ AVRではHEXファイルには含まず、ツールを使って設定します。
     
     xvarの値がエントリの範囲外の場合の動作は未定義です。
         
+    この命令は汎用変数に関連付けられます。
     この命令はラングの右端にしか配置できません。
 
 
@@ -565,165 +572,170 @@ AVRではHEXファイルには含まず、ツールを使って設定します。
                            --{READ ADC}--
   AD変換読み込み
 
-    LDmicro can generate code to use the A/D converters built in to
-    certain microcontrollers. If the input condition to this instruction
-    is true, then a single sample from the A/D converter is acquired and
-    stored in the variable `Aname'. This variable can subsequently be
-    manipulated with general variable operations (less than, greater than,
-    arithmetic, and so on). Assign a pin to the `Axxx' variable in the
-    same way that you would assign a pin to a digital input or output,
-    by double-clicking it in the list at the bottom of the screen. If
-    the input condition to this rung is false then the variable `Aname'
-    is left unchanged.
-
-    For all currently-supported devices, 0 volts input corresponds to
-    an ADC reading of 0, and an input equal to Vdd (the supply voltage)
-    corresponds to an ADC reading of 1023. If you are using an AVR, then
-    connect AREF to Vdd. You can use arithmetic operations to scale the
-    reading to more convenient units afterwards, but remember that you
-    are using integer math. In general not all pins will be available
-    for use with the A/D converter. The software will not allow you to
-    assign non-A/D pins to an analog input. This instruction must be
-    the rightmost instruction in its rung.
+    LDmicroはマイコンのAD変換機能を利用することができます。
+    
+    この命令に0を入力すると、なにもしません。
+    この命令に1を入力すると、ピンの入力電圧にAD変換を行い対応する変数 (頭文字A) に代入します。
+    この変数は他の計算(比較、四則演算)に使うことができます。
+    
+    入力ピンの設定は画面下部の変数一覧からダブルクリックすることで行います。
+    多くのマイコンでは、アナログ入力に対応するピンには制限があります。
+    マイコンにAVRをお使いの場合は、AREFピンをVddと接続して下さい。
+    
+    この命令は頭文字 A の変数に関連付けられます。
+    値はアナログ入力の電圧値です。
+    0Vは0という値に、参照電極と同じ電圧の入力は1023という値に対応します。
+    計算命令を使うことで値の範囲は望むように加工できますが、
+    演算が全て整数であることに留意してください。
+    
+    この命令はラングの右端にしか配置できません。
 
 
 > SET PWM DUTY CYCLE          duty_cycle
                            -{PWM 32.8 kHz}-
+  PWMデューティ比設定
 
-    LDmicro can generate code to use the PWM peripheral built in to
-    certain microcontrollers. If the input condition to this instruction
-    is true, then the duty cycle of the PWM peripheral is set to the
-    value of the variable duty_cycle. The duty cycle must be a number
-    between 0 and 100; 0 corresponds to always low, and 100 corresponds to
-    always high. (If you are familiar with how the PWM peripheral works,
-    then notice that that means that LDmicro automatically scales the
-    duty cycle variable from percent to PWM clock periods.)
+    LDmicroはマイコンのPWM機能を利用することができます。
+    
+    この命令に0を入力すると、なにもしません。
+    この命令に1を入力すると、PWMのデューティ比を変数duty_cycleの値に設定します。
 
-    You can specify the target PWM frequency, in Hz. The frequency that
-    you specify might not be exactly achievable, depending on how it
-    divides into the microcontroller's clock frequency. LDmicro will
-    choose the closest achievable frequency; if the error is large then
-    it will warn you. Faster speeds may sacrifice resolution.
+    デューティ比の値の範囲は0から100です。
+    0を設定すると常にロー、100を設定すると常にハイになります。
+    (クロック数などの変換の計算はLDmicroが行います)
 
-    This instruction must be the rightmost instruction in its rung.
-    The ladder logic runtime consumes one timer to measure the cycle
-    time. That means that PWM is only available on microcontrollers
-    with at least two suitable timers. PWM uses pin CCP2 (not CCP1)
-    on PIC16 chips and OC2 (not OC1A) on AVRs.
+    ダイアログでPWM周波数をHzで設定できます。
+    動作周波数や分周との兼ね合いで実際に望みの周波数になるとは限りませんが、
+    LDmicroはもっとも近い値になるよう設定を調整します。
+    誤差があまりに大きい場合はコンパイル時に警告が出ます。
+    速度を余りに早くすると解像度が落ちる恐れがあります。
+
+    マイコンのPWM機能はタイマー機能に関連付けられています。
+    LDmicroはサイクルの管理のためタイマーをもう一つ専有します。
+    そのため、マイコンには最低2つのタイマーが必要になります。
+    
+    出力ピンはPIC16ではCCP1ではなくCCP2、AVRではOC1AではなくOC2Aを使います。
+
+    この命令は汎用変数に関連付けられます。
+    この命令はラングの右端にしか配置できません。
 
 
 > MAKE PERSISTENT            saved_var
                            --{PERSIST}--
+  永続変数, 永続化, EEPROM保存
 
-    When the rung-in condition of this instruction is true, it causes the
-    specified integer variable to be automatically saved to EEPROM. That
-    means that its value will persist, even when the micro loses
-    power. There is no need to explicitly save the variable to EEPROM;
-    that will happen automatically, whenever the variable changes. The
-    variable is automatically loaded from EEPROM after power-on reset. If
-    a variable that changes frequently is made persistent, then the
-    EEPROM in your micro may wear out very quickly, because it is only
-    good for a limited (~100 000) number of writes. When the rung-in
-    condition is false, nothing happens. This instruction must be the
-    rightmost instruction in its rung.
+    この命令に0を入力すると、なにもしません。
+    この命令に1を入力すると、指定した変数の値をEEPROMに保存します。
+    これによって、マイコンの電源が切れた後でも値が保存されます。
+    
+    値の保存や復元は自動的に行われます。
+    変数の値が変化した時に書き込み、電源オンの割り込み時に読み出されます。
+    
+    多くのEEPROMは書き込み保証回数が少ない(100000回程度)ので、
+    頻繁に変化する変数を指定するのは避けたほうがよいでしょう。
 
+    この命令は汎用変数に関連付けられます。
+
+    この命令はラングの右端にしか配置できません。
 
 > UART (SERIAL) RECEIVE          var
                            --{UART RECV}--
+  UART受信
 
-    LDmicro can generate code to use the UART built in to certain
-    microcontrollers. On AVRs with multiple UARTs only UART1 (not
-    UART0) is supported. Configure the baud rate using Settings -> MCU
-    Parameters. Certain baud rates may not be achievable with certain
-    crystal frequencies; LDmicro will warn you if this is the case.
+    LDmicroはマイコンのUART機能を利用することができます。
+    
+    この命令に0を入力すると、なにもしません。
+    この命令に1を入力すると、UARTで1文字を受信しようとします。
+    文字を受信したサイクルだけ1を出力します。
+    受信した文字は関連付けられた変数に保存されます。
+    それ以外の場合は0を出力します。
+    
+    AVRの複数のUARTが使える機種では、UART0ではなくUART1側のみに対応しています。
+    通信のボーレートはメニューの[設定]→[マイコン設定]から設定できます。
+    動作周波数によってはボーレートが実現できない場合もあります。
+    その場合はLDmicroは警告を表示します。
+        
+    複数のUART命令が一度に起動された場合の動作は未定義です。
 
-    If the input condition to this instruction is false, then nothing
-    happens. If the input condition is true then this instruction tries
-    to receive a single character from the UART. If no character is read
-    then the output condition is false. If a character is read then its
-    ASCII value is stored in `var', and the output condition is true
-    for a single PLC cycle.
+    この命令は汎用変数に関連付けられます。
+    値は受信した文字です。
 
 
 > UART (SERIAL) SEND             var
                            --{UART SEND}--
+  UART送信
 
-    LDmicro can generate code to use the UARTs built in to certain
-    microcontrollers. On AVRS with multiple UARTs only UART1 (not
-    UART0) is supported. Configure the baud rate using Settings -> MCU
-    Parameters. Certain baud rates may not be achievable with certain
-    crystal frequencies; LDmicro will warn you if this is the case.
+    LDmicroはマイコンのUART機能を利用することができます。
+    
+    この命令に0を入力すると、なにもしません。
+    この命令に1を入力すると、UARTで1文字を送信しようとします。
+    文字を送信中のとき1を出力します。
+    それ以外の場合は0を出力します。
+    
+    AVRの複数のUARTが使える機種では、UART0ではなくUART1側のみに対応しています。
+    通信のボーレートはメニューの[設定]→[マイコン設定]から設定できます。
+    動作周波数によってはボーレートが実現できない場合もあります。
+    その場合はLDmicroは警告を表示します。
+        
+    複数のUART命令が一度に起動された場合の動作は未定義です。
 
-    If the input condition to this instruction is false, then nothing
-    happens. If the input condition is true then this instruction writes
-    a single character to the UART. The ASCII value of the character to
-    send must previously have been stored in `var'. The output condition
-    of the rung is true if the UART is busy (currently transmitting a
-    character), and false otherwise.
-
-    Remember that characters take some time to transmit. Check the output
-    condition of this instruction to ensure that the first character has
-    been transmitted before trying to send a second character, or use
-    a timer to insert a delay between characters. You must only bring
-    the input condition true (try to send a character) when the output
-    condition is false (UART is not busy).
-
-    Investigate the formatted string instruction (next) before using this
-    instruction. The formatted string instruction is much easier to use,
-    and it is almost certainly capable of doing what you want.
+    この命令は汎用変数に関連付けられます。
+    値は送信するための文字です。
+    他のMOV命令やLUT命令などから設定することができます。
+    
+    転送には複数サイクルにわたって時間がかかることに注意して下さい。
+    複数の文字を送るには、出力の立ち下がりを監視するか、
+    タイマーを使って間隔をあけます。
+    1を入力していい(送信)のはこの命令から0が出力されている(通信中でない)ときだけです。
+    
+    多くの場合は次のFORMAT命令を使うほうが容易です。
 
 
 > FORMATTED STRING OVER UART                var
                                    -{"Pressure: \\3\\r\\n"}-
+  UART書式送信
 
-    LDmicro can generate code to use the UARTs built in to certain
-    microcontrollers. On AVRS with multiple UARTs only UART1 (not
-    UART0) is supported. Configure the baud rate using Settings -> MCU
-    Parameters. Certain baud rates may not be achievable with certain
-    crystal frequencies; LDmicro will warn you if this is the case.
+    LDmicroはマイコンのUART機能を利用することができます。
+    
+    この命令に0を入力すると、なにもしません。
+    この命令に1を入力すると、直前サイクルの入力が0の時に限り、
+    UARTで文字列の送信を開始します。
+    文字を送信中のとき1を出力します。
+    それ以外の場合は0を出力します。
+    
+    AVRの複数のUARTが使える機種では、UART0ではなくUART1側のみに対応しています。
+    通信のボーレートはメニューの[設定]→[マイコン設定]から設定できます。
+    動作周波数によってはボーレートが実現できない場合もあります。
+    その場合はLDmicroは警告を表示します。
+        
+    複数のUART命令が一度に起動された場合の動作は未定義です。
 
-    When the rung-in condition for this instruction goes from false to
-    true, it starts to send an entire string over the serial port. If
-    the string contains the special sequence `\\3', then that sequence
-    will be replaced with the value of `var', which is automatically
-    converted into a string. The variable will be formatted to take
-    exactly 3 characters; for example, if `var' is equal to 35, then
-    the exact string printed will be `Pressure:  35\\r\\n' (note the extra
-    space). If instead `var' were equal to 1432, then the behaviour would
-    be undefined, because 1432 has more than three digits. In that case
-    it would be necessary to use `\\4' instead.
+    設定した書式文字列が '\\3' というエスケープシーケンスを含む場合、
+    その部分に変数varの値が文字列として置き換えられます。
+    この場合必ず3文字分に置き換えられます。
+    例えばvarの値が35の場合、"Pressure: \\3\\r\\n" という書式は
+    "Pressure:  35\\r\\n" のようになります。
+    varに1432といった4桁の値がある場合、動作は未定義です。
+    その可能性がある場合は '\\3' の代わりに '\\4' を使うほうがよいでしょう。
+    
+    また、値が負の可能性がある場合、`\\-3d' (あるいは `\\-4d') のように
+    指定して下さい。符号をつけるための空白を確保します。
+    
+    変数を埋め込まず、単に固定文字列を送信することもできます。
+    その場合はエスケープシーケンスを使う必要はありません。
+    
+    '\\数字' の他に、次のようなコントロールキャラクタを使うことができます。
 
-    If the variable might be negative, then use `\\-3d' (or `\\-4d'
-    etc.) instead. That will cause LDmicro to print a leading space for
-    positive numbers, and a leading minus sign for negative numbers.
+        * \\\\  -- バックスラッシュ
+        * \\r   -- キャリッジリターン
+        * \\n   -- ラインフィード
+        * \\f   -- フォームフィード
+        * \\b   -- バックスペース
+        * \\xAB -- 16進数の 0xAB
 
-    If multiple formatted string instructions are energized at once
-    (or if one is energized before another completes), or if these
-    instructions are intermixed with the UART TX instructions, then the
-    behaviour is undefined.
+    メモリの点でこの命令はあまり効率的ではありません。最適化にはLDmicro全体にわたる改造が必要そうです。
 
-    It is also possible to use this instruction to output a fixed string,
-    without interpolating an integer variable's value into the text that
-    is sent over serial. In that case simply do not include the special
-    escape sequence.
-
-    Use `\\\\' for a literal backslash. In addition to the escape sequence
-    for interpolating an integer variable, the following control
-    characters are available:
-        * \\r   -- carriage return
-        * \\n   -- newline
-        * \\f   -- formfeed
-        * \\b   -- backspace
-        * \\xAB -- character with ASCII value 0xAB (hex)
-
-    The rung-out condition of this instruction is true while it is
-    transmitting data, else false. This instruction consumes a very
-    large amount of program memory, so it should be used sparingly. The
-    present implementation is not efficient, but a better one will
-    require modifications to all the back-ends.
-
-
-A NOTE ON USING MATH
+算術命令の詳細
 ====================
 
 Remember that LDmicro performs only 16-bit integer math. That means
