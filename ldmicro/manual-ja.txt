@@ -25,12 +25,11 @@ LDmicroはラダー図からPIC16やAtmel AVRのネイティブコードを生成するツールです。
    ||                                                                    ||
    ||                                                                    ||
 
-TON は Turn-ON delay (遅延立ち上げ)、TOF は Turn-OFf delayを意味します。
---] [-- は入力を表し、回路のスイッチ(接点)のように働きます。
+TON は Turn-ON delay (遅延立ち上がり)、TOF は Turn-OFf delay (遅延立ち下がり)を意味します。
+--] [-- は入力を表し、回路の接点(スイッチ)のように働きます。
 --( )-- は出力を表し、回路のコイルのように働きます。
 ラダーロジックの詳しい説明は他のWeb上のページなどにゆずります。
-
-and elsewhere; details specific to this implementation are given below.)
+命令の詳細はこのマニュアルで後述します。
 
 見た目に明らかな違いは次のようなものです。
 
@@ -118,44 +117,26 @@ Xの他にも色々な頭文字があり種類を表しています。例えば：
 
 画面下部にはプログラム中の変数の一覧表が表示されます。この表はプログラムから自動的に作られます。ほとんどの変数は設定することはありませんが、頭文字が X (入力ピン), Y (出力ピン), A (AD変換値) のものはマイコンのピン番号を割り当てる必要があります。ダブルクリックするとピンの設定が開きます。
 
-You can modify the program by inserting or deleting instructions. The
-cursor in the program display blinks to indicate the currently selected
-instruction and the current insertion point. If it is not blinking then
-press <Tab> or click on an instruction. Now you can delete the current
-instruction, or you can insert a new instruction to the right or left
-(in series with) or above or below (in parallel with) the selected
-instruction. Some operations are not allowed. For example, no instructions
-are allowed to the right of a coil.
+プログラムの編集は、ラダー図に命令を挿入したり削除することで行います。プログラム画面で点滅しているカーソルは、今選択している命令と、命令の挿入される位置を示しています。カーソルが望む場所にない場合は、<Tab>を押して切り替えるか、マウスで命令を選んで下さい。そこで<Delete>を押すと命令を削除できます。ダブルクリックや<Enter>を押すと命令の設定ができます。
 
-The program starts with just one rung. You can add more rungs by selecting
-Insert Rung Before/After in the Logic menu. You could get the same effect
-by placing many complicated subcircuits in parallel within one rung,
-but it is more clear to use multiple rungs.
+命令を挿入するときは、カーソルの棒の出方で挿入される位置が変わります。命令の左右に挿入すると直列に、命令の上下に挿入すると並列になります。この上下左右の指定は矢印キーで切り替えます。命令の挿入位置にはいくつかルールがあります。例えば、コイルの右に命令を置くことはできません。
 
-Once you have written a program, you can test it in simulation, and then
-you can compile it to a HEX file for the target microcontroller.
+プログラムを新規作成した時には、空のラングがひとつだけあります。メニューの[編集]→[ラングを挿入]で新しいラングを上下に挿入できます。理論的には、命令を全て並列に配置することで巨大なラングが一つあるだけのプログラムを作ることができます。しかし、論理的な単位ごとにラングを分けて作るほうが後々作業しやすいでしょう。
 
+プログラムが完成したら、シミュレータでテストすることができます。また、マイコンに書き込むためのHEXファイルにコンパイルすることができます。
 
-SIMULATION
+シミュレータ
 ==========
 
-To enter simulation mode, choose Simulate -> Simulation Mode or press
-<Ctrl+M>. The program is shown differently in simulation mode. There is
-no longer a cursor. The instructions that are energized show up bright
-red; the instructions that are not appear greyed. Press the space bar to
-run the PLC one cycle. To cycle continuously in real time, choose
-Simulate -> Start Real-Time Simulation, or press <Ctrl+R>. The display of
-the program will be updated in real time as the program state changes.
+シミュレーションモードに入るには、メニューの[シミュレータ]→[シミュレーションモード]を選ぶか、<Ctrl+M>を押します。再度押すとシミュレーションモードを抜けます。
 
-You can set the state of the inputs to the program by double-clicking
-them in the list at the bottom of the screen, or by double-clicking an
-`Xname' contacts instruction in the program. If you change the state of
-an input pin then that change will not be reflected in how the program
-is displayed until the PLC cycles; this will happen automatically if
-you are running a real time simulation, or when you press the space bar.
+シミュレーションモードではプログラムの表示の仕方が変わります。カーソルが消え、通電している命令は赤くハイライトされます。そうでない命令はグレーになります。<Space>を押すとシミュレーションを1サイクル進めます。
 
+リアルタイムシミュレーションを行うには、メニューの[シミュレータ]→[リアルタイムシミュレーション開始]を選ぶか、<Ctrl+R>を押します。このモードではSpaceキーを押し続けるようにサイクルが自動で進んでゆきます。プログラムの状態が変わると即座に反映されます。
 
-COMPILING TO NATIVE CODE
+画面下部の変数一覧表から、プログラムの入力状態を確認できます。項目をダブルクリックすると、入力を切り替えることができます。これはラダー図中の命令をダブルクリックすることでも行えます。リアルタイムの場合は入力の変化は即座に反映されます。そうでない場合は<Space>を押してサイクルを進めると反映します。
+
+ネイティブコードへのコンパイル
 ========================
 
 Ultimately the point is to generate a .hex file that you can program

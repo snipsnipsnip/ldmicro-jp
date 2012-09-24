@@ -164,7 +164,7 @@
 "書式文字列に変数がないのに変数が指定されています。'\\-3' のように埋め込むか、変数名を空にする必要があります。"
 
 "Empty row; delete it or add instructions before compiling."
-"空の列があります。コンパイルのためには削除するか命令を追加する必要があります。"
+"空のラングがあります。コンパイルのためにはラングを削除するか、命令を追加する必要があります。"
 
 "Couldn't write to '%s'"
 "'%s' に書き込めませんでした"
@@ -311,7 +311,7 @@
 "テキストで出力(&E)...\tCtrl+E"
 
 "E&xit"
-"終了(&x)"
+"終了(&X)"
 
 "&Undo\tCtrl+Z"
 "元に戻す(&U)\tCtrl+Z"
@@ -464,13 +464,13 @@
 "ターゲットマイコン(&M)"
 
 "Si&mulation Mode\tCtrl+M"
-"シミュレーションモードへ(&M)\tCtrl+M"
+"シミュレーションモード(&M)\tCtrl+M"
 
 "Start &Real-Time Simulation\tCtrl+R"
 "リアルタイムシミュレーション開始(&R)\tCtrl+R"
 
 "&Halt Simulation\tCtrl+H"
-"シミュレーション停止(&H)\tCtrl+H"
+"リアルタイムシミュレーション停止(&H)\tCtrl+H"
 
 "Single &Cycle\tSpace"
 "1サイクル進める(&C)\tSpace"
@@ -500,7 +500,7 @@
 "命令(&I)"
 
 "Si&mulate"
-"シミュレータ(&m)"
+"シミュレータ(&M)"
 
 "&Compile"
 "コンパイル(&C)"
@@ -512,7 +512,7 @@
 "マイコン未設定"
 
 "cycle time %.2f ms"
-"サイクル時間 %.2f ms"
+"周期 %.2f ms"
 
 "processor clock %.4f MHz"
 "クロック %.4f MHz"
