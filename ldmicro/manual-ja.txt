@@ -429,9 +429,10 @@ AVRではHEXファイルには含まず、ツールを使って設定します。
                            --[CTU >=5]--  --[CTD >=5]--
   カウンター (アップカウンター, ダウンカウンター)
 
-    これらの命令に0を入力すると、なにもしません。
-    これらの命令に1を入力すると、
-    直前のサイクルでの入力が0のときに限り、カウントを変化させます。
+    直前のサイクルでの入力が0で、
+    現在のサイクルでの入力が1のときに限り、カウントを変化させます。
+    それ以外の場合、なにもしません。
+
     アップカウンタはカウント値をインクリメント(1足す)します。
     ダウンカウンタはカウント値をデクリメント(1引く)します。
     カウント値が5以上なら1、そうでなければ0を出力します。
@@ -449,17 +450,19 @@ AVRではHEXファイルには含まず、ツールを使って設定します。
                            --{CTC 0:7}--
   循環カウンタ
 
-    これらの命令に0を入力すると、なにもしません。
-    これらの命令に1を入力すると、
-    直前のサイクルでの入力が0のときに限り、
-    カウント値をインクリメント(1足す)します。
+    直前のサイクルでの入力が0で、
+    現在のサイクルでの入力が1のときに限り、カウントを変化させます。
+    それ以外の場合、なにもしません。
+
+    通常はカウント値をインクリメントします。
     ただしカウンタ値が7の場合は、インクリメントする代わりに0にリセットします。
-    最大値はダイアログで調整できます。
+    それ以外の場合、なにもしません。
     
     たとえば最大値が7の場合、パルスを送るたびカウンタの値は
       0, 1, 2, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 2,....
     のようになります。
     
+    最大値はダイアログで調整できます。
     順繰りに数値が繰り返すので、シーケンサのように使うことができます。
     
     この命令はラングの右端にしか配置できません。
@@ -469,95 +472,98 @@ AVRではHEXファイルには含まず、ツールを使って設定します。
                            -{ reg0..3    }-
   シフトレジスタ
 
-    A shift register is associated with a set of variables. For example,
-    this shift register is associated with the variables `reg0', `reg1',
-    `reg2', and `reg3'. The input to the shift register is `reg0'. On
-    every rising edge of the rung-in condition, the shift register will
-    shift right. That means that it assigns `reg3 := reg2', `reg2 :=
-    reg1'. and `reg1 := reg0'. `reg0' is left unchanged. A large shift
-    register can easily consume a lot of memory. This instruction must
-    be the rightmost instruction in its rung.
+    この命令は通し番号をつけた変数を一度に用意するものです。
+    図の例では、reg0, reg1, reg2, reg3の4つの変数があります。
+    変数をステージと呼ぶことがあります。
+    
+    直前のサイクルでの入力が0で、
+    現在のサイクルでの入力が1のときに限り、各変数の値をシフトします。
+    それ以外の場合、なにもしません。
+    
+    変数のシフトとは、以下のように変数の値を1つずつずらす動作です。
+      reg3 := reg2
+      reg2 := reg1
+      reg1 := reg0
+    reg0の値はそのまま残ります。
+    
+    巨大なシフトレジスタはメモリを圧迫することがあるので注意して下さい。
+    
+    この命令はラングの右端にしか配置できません。
 
 
 > LOOK-UP TABLE             {dest :=     }
                            -{ LUT[i]     }-
+  ルックアップテーブル
 
-    A look-up table is an ordered set of n values. When the rung-in
-    condition is true, the integer variable `dest' is set equal to the
-    entry in the lookup table corresponding to the integer variable
-    `i'. The index starts from zero, so `i' must be between 0 and
-    (n-1). The behaviour of this instruction is not defined if the
-    index is outside this range. This instruction must be the rightmost
-    instruction in its rung.
+    この命令は数値列を記憶しておき、通し番号で参照するものです。
+    記憶するデータはダイアログで設定できます。
+    
+    この命令に0を入力すると、なにもしません。
+    この命令に1を入力すると、i番目のデータを参照して変数destに代入します。
+    変数iのことを添字と呼びます。
+    
+    添字の範囲は0から要素数-1です。
+    添字が範囲外の場合の動作は未定義です。
+    
+    この命令はラングの右端にしか配置できません。
 
 
 > PIECEWISE LINEAR TABLE    {yvar :=     }
                            -{ PWL[xvar]  }-
+  線形連想配列
 
-    This is a good way to approximate a complicated function or
-    curve. It might, for example, be useful if you are trying to apply
-    a calibration curve to convert a raw output voltage from a sensor
-    into more convenient units.
-
-    Assume that you are trying to approximate a function that converts
-    an integer input variable, x, to an integer output variable, y. You
-    know the function at several points; for example, you might know that
+    この命令は数字と数字の対応 (XY値)を記憶しておき、参照するものです。
+    記憶するデータはダイアログで設定できます。
+    
+    この命令に0を入力すると、なにもしません。
+    この命令に1を入力すると、xvarに対応するデータを計算して変数yvarに代入します。
+    変数はダイアログで設定できます。
+    
+    この命令は計算が複雑な関数を予め計算しておくのに有用です。
+    例えば、センサーの出力電圧をより扱いやすい単位にキャリブレーションするために使えます。
+    
+    数値に対応するデータがない場合、出力は前後の数値から線形補間されます。
+    例えば、関数 f が次のような値をとるとします。
 
         f(0)   = 2
         f(5)   = 10
         f(10)  = 50
         f(100) = 100
-
-    This means that the points
-
+    
+    これは、グラフで点を打つと次のような4つの点があるということです。
+    
         (x0, y0)   = (  0,   2)
         (x1, y1)   = (  5,  10)
         (x2, y2)   = ( 10,  50)
         (x3, y3)   = (100, 100)
-
-    lie on that curve. You can enter those 4 points into a table
-    associated with the piecewise linear instruction. The piecewise linear
-    instruction will look at the value of xvar, and set the value of
-    yvar. It will set yvar in such a way that the piecewise linear curve
-    will pass through all of the points that you give it; for example,
-    if you set xvar = 10, then the instruction will set yvar = 50.
-
-    If you give the instruction a value of xvar that lies between two
-    of the values of x for which you have given it points, then the
-    instruction will set yvar so that (xvar, yvar) lies on the straight
-    line connecting those two points in the table.  For example, xvar =
-    55 gives an output of yvar = 75. (The two points in the table are
-    (10, 50) and (100, 100). 55 is half-way between 10 and 100, and 75
-    is half-way between 50 and 100, so (55, 75) lies on the line that
-    connects those two points.)
-
-    The points must be specified in ascending order by x coordinate. It
-    may not be possible to perform mathematical operations required for
-    certain look-up tables using 16-bit integer math; if this is the
-    case, then LDmicro will warn you. For example, this look up table
-    will produce an error:
+    
+    これをPLTに記憶しておいて、例えば55を参照するとします。
+    X=55の点は(10, 50)と(100, 100)の中点(55, 75)なので、75という数値が得られます。
+    
+    X側の数値は単調増加になるよう入力する必要があります。
+    
+    補完の計算は符号付き16ビット整数で行うため、補完の計算で誤差が生じることがあります。
+    例えば、次のようなエントリはコンパイル時にエラーになります。
 
         (x0, y0)    = (  0,   0)
         (x1, y1)    = (300, 300)
-
-    You can fix these errors by making the distance between points in
-    the table smaller. For example, this table is equivalent to the one
-    given above, and it does not produce an error:
+    
+    この場合、点と点の距離を縮めるようにすれば解消できます。
 
         (x0, y0)    = (  0,   0)
         (x1, y1)    = (150, 150)
         (x2, y2)    = (300, 300)
 
-    It should hardly ever be necessary to use more than five or six
-    points. Adding more points makes your code larger and slower to
-    execute. The behaviour if you pass a value of `xvar' greater than
-    the greatest x coordinate in the table or less than the smallest x
-    coordinate in the table is undefined. This instruction must be the
-    rightmost instruction in its rung.
+    5、6の点があれば通常の用途には充分です。それ以上のエントリ数は計算の負荷になります。
+    
+    xvarの値がエントリの範囲外の場合の動作は未定義です。
+        
+    この命令はラングの右端にしか配置できません。
 
 
 > A/D CONVERTER READ           Aname
                            --{READ ADC}--
+  AD変換読み込み
 
     LDmicro can generate code to use the A/D converters built in to
     certain microcontrollers. If the input condition to this instruction

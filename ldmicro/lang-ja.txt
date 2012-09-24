@@ -1,5 +1,5 @@
 "ANSI C target does not support peripherals (UART, PWM, ADC, EEPROM). Skipping that instruction."
-"ANSI C target does not support peripherals (UART, PWM, ADC, EEPROM). Skipping that instruction."
+"ANSI Cでは使えない命令があります (ADC, PWM, UART, EEPROM)。これらの命令は無視してコンパイルします。"
 
 "Compile successful; wrote C source code to '%s'.\r\n\r\nThis is not a complete C program. You have to provide the runtime and all the I/O routines. See the comments in the source code for information about how to do this."
 "コンパイル成功。Cソースコードを '%s' に出力しました。\r\n\r\n出力は完全なCプログラムではありません。ランタイムやIOルーチンとともにコンパイルする必要があります。詳しくはソース中のコメントを参照して下さい。"
@@ -146,7 +146,7 @@
 "線形連想配列のx値は単調増加である必要があります。"
 
 "Numerical problem with piecewise linear lookup table. Either make the table entries smaller, or space the points together more closely.\r\n\r\nSee the help file for details."
-"線形連想配列の数値で問題があります。表のサイズを小さくするか、添字の間隔を狭くする必要があります。\r\n\r\n詳しくはヘルプをご覧ください。"
+"線形連想配列の数値で問題があります。表のサイズを小さくするか、点と点の間隔を狭くする必要があります。\r\n\r\n詳しくはヘルプをご覧ください。"
 
 "書式文字列にエスケープ (\\0-9) を複数おくことはできません。"
 "Multiple escapes (\\0-9) present in format string, not allowed."
@@ -170,7 +170,7 @@
 "'%s' に書き込めませんでした"
 
 "Unsupported op (anything ADC, PWM, UART, EEPROM) for interpretable target."
-"インタプリタターゲットの対応しない命令 (ADC, PWM, UART, EEPROM)。"
+"インタプリタの対応しない命令があります (ADC, PWM, UART, EEPROM)。"
 
 "Compile successful; wrote interpretable code to '%s'.\r\n\r\nYou probably have to adapt the interpreter to your application. See the documentation."
 "コンパイル成功。インタプリタ用コードを '%s' に出力しました。\r\n\r\nインタプリタの設定を合わせて確認して下さい。詳しくはヘルプをご覧ください。"
