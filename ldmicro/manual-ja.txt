@@ -82,7 +82,7 @@ LDmicroは一般的なPLCプログラミング環境になるべく似せてあります。いくつか例外はあ
 
 ldmicro.exe は通常オプションなしで起動されます。つまり、通常は単にショートカットなどからダブルクリックで起動して、GUIで操作します。
 
-ファイル名を指定して起動した場合 ("ldmicro.exe asd.ld" など) は、LDmicroはそのファイルを読み込んで立ち上がります。ファイルが読み込めない場合はエラーを表示します。.ld拡張子をLDmicroに関連付けするとラダー図のファイルをダブルクリックするだけで開けるので便利です。
+"ldmicro.exe asd.ld" のようにファイル名を指定して起動した場合は、LDmicroはそのファイルを読み込んで立ち上がります。ファイルが読み込めない場合はエラーを表示します。.ld拡張子をLDmicroに関連付けするとラダー図のファイルをダブルクリックするだけで開けるので便利です。
 
 "ldmicro.exe /c src.ld dest.hex" のように引数を与えて起動すると、src.ld をコンパイルして dest.hex に結果を書き出します。成功したかどうかにかかわらず、LDmicroはコンパイル後そのまま終了します。メッセージはコンソールに出力されます。このモードはコマンドラインから実行することを想定しています。
 
@@ -738,16 +738,10 @@ AVRではHEXファイルには含まず、ツールを使って設定します。
 算術命令の詳細
 ====================
 
-Remember that LDmicro performs only 16-bit integer math. That means
-that the final result of any calculation that you perform must be an
-integer between -32768 and 32767. It also mean that the intermediate
-results of your calculation must all be within that range.
-
-For example, let us say that you wanted to calculate y = (1/x)*1200,
-where x is between 1 and 20. Then y goes between 1200 and 60, which
-fits into a 16-bit integer, so it is at least in theory possible to
-perform the calculation. There are two ways that you might code this:
-you can perform the reciprocal, and then multiply:
+LDmicroの計算は16ビット符号付き整数で行われます。値の範囲は -32768 から 32767 です。
+これは、正しい計算結果を得るためには、計算途中の値もこの範囲に収める必要があることを意味します。
+例えば、y = (1/x)*1200 という式を計算するとします。xの範囲を[1, 20]とすると、yは[60, 1200]という範囲になります。
+この計算には二通りの実装がありえます。一つはxの逆数を取ってから1200をかける方法です。
 
    ||         {DIV  temp  :=}          ||
    ||---------{ 1 / x       }----------||
@@ -756,27 +750,19 @@ you can perform the reciprocal, and then multiply:
    ||----------{ temp * 1200}----------||
    ||                                  ||
 
-Or you could just do the division directly, in a single step:
+もしくは、xを直接1200で割ります。
 
    ||           {DIV  y  :=}           ||
    ||-----------{ 1200 / x }-----------||
 
-Mathematically, these two are equivalent; but if you try them, then you
-will find that the first one gives an incorrect result of y = 0. That
-is because the variable `temp' underflows. For example, when x = 3,
-(1 / x) = 0.333, but that is not an integer; the division operation
-approximates this as temp = 0. Then y = temp * 1200 = 0. In the second
-case there is no intermediate result to underflow, so everything works.
+数学的にはこの二つは同じ意味です。しかしこの二つを試すと、前者の結果はy=0になってしまいます。なぜなら、計算途中のtempでアンダーフローが起こるからです。例えばx = 3の逆数は0.333で、整数ではなくなります。除算は切り捨てなので、結果は0になります。それに1200を掛けても0のままです。後者の場合はアンダーフローは起こりません。
 
-If you are seeing problems with your math, then check intermediate
-results for underflow (or overflow, which `wraps around'; for example,
-32767 + 1 = -32768). When possible, choose units that put values in
-a range of -100 to 100.
+他にオーバーフローの問題があります。符号付き整数の仕組み上、32767 + 1 = -32768のように循環します。
 
-When you need to scale a variable by some factor, do it using a multiply
-and a divide. For example, to scale y = 1.8*x, calculate y = (9/5)*x
-(which is the same, since 1.8 = 9/5), and code this as y = (9*x)/5,
-performing the multiplication first:
+これらの問題を防ぐには、例えば変数の範囲を-100から100の間にとどめるなどのルールを決めておくとよいでしょう。
+
+数の単位を変換する場合、掛け算の次に割り算を行うとよいでしょう。
+y = 1.8*x のような変換は、y = (9/5)*xのように書き換えて、y = (9*x)/5として実装します。
 
    ||         {MUL  temp  :=}          ||
    ||---------{ x * 9       }----------||
@@ -784,15 +770,13 @@ performing the multiplication first:
    ||           {DIV  y  :=}           ||
    ||-----------{ temp / 5 }-----------||
 
-This works for all x < (32767 / 9), or x < 3640. For larger values of x,
-the variable `temp' would overflow. There is a similar lower limit on x.
+この実装は |x| < (32767 / 9) = 3640 の範囲で働きますが、範囲外の場合はtempがオーバーフローします。
 
 
-CODING STYLE
+コーディングスタイル
 ============
 
-I allow multiple coils in parallel in a single rung. This means that
-you can do things like this:
+このように、一つのラングに複数コイルを使うことができます。
 
    ||       Xa               Ya        ||
  1 ||-------] [--------------( )-------||
@@ -804,7 +788,7 @@ you can do things like this:
    ||                +-------( )-------||
    ||                                  ||
 
-Instead of this:
+並列のコイルを使わずに書くと、次のようになります。
 
    ||       Xa               Ya        ||
  1 ||-------] [--------------( )-------||
@@ -822,21 +806,15 @@ Instead of this:
  3 ||-------] [--------------( )-------||
    ||                                  ||
 
-This means that in theory you could write any program as one giant rung,
-and there is no need to use multiple rungs at all. In practice that
-would be a bad idea, because as rungs become more complex they become
-more difficult to edit without deleting and redrawing a lot of logic.
+命令を全て並列に配置することで、巨大なラングが一つあるだけのプログラムを作ることができます。理論的には複数のラング使う必要は全くありません。とはいえ、プログラムが長大になるにつれて読み解くのが難しくなってゆくでしょう。
 
-Still, it is often a good idea to group related logic together as a single
-rung. This generates nearly identical code to if you made separate rungs,
-but it shows that they are related when you look at them on the ladder
-diagram.
+逆に、並列を全く使わずに設計するのもまた現実的ではありません。コイルや接点重複が多くなり、こちらもまた作業を困難にします。
+
+なるべく関係の深いものをまとめ、論理的な単位ごとにラングを分けて設計しましょう。視覚的にロジックのまとまりがつかめるよう整理すると、開発がスムーズになります。
 
                   *                 *                  *
 
-In general, it is considered poor form to write code in such a way that
-its output depends on the order of the rungs. For example, this code
-isn't very good if both Xa and Xb might ever be true:
+ラングの優先順序に依存するロジックは、多くの場合混乱を引き起こします。例えば、次のような設計はXaとXbが共に閉じた場合にはYcは1になりますが、直感的ではありません。
 
    ||       Xa         {v  :=       }  ||
  1 ||-------] [--------{ 12      MOV}--||
@@ -851,9 +829,8 @@ isn't very good if both Xa and Xb might ever be true:
  2 ||------[ 15]-------------( )-------||
    ||                                  ||
 
-I will break this rule if in doing so I can make a piece of code
-significantly more compact, though. For example, here is how I would
-convert a 4-bit binary quantity on Xb3:0 into an integer:
+しかし、ラングの優先順序をうまく使うとロジックを短く記述できる場合があります。
+Xb3～Xb0という4つのビットを2進数に変換する処理を私が書くとしたら、このようにします。
 
    ||                                   {v  :=       }  ||
  3 ||-----------------------------------{ 0       MOV}--||
@@ -871,33 +848,22 @@ convert a 4-bit binary quantity on Xb3:0 into an integer:
    ||-------] [------------------{ v + 8    }-----------||
    ||                                                   ||
 
-If the MOV statement were moved to the bottom of the rung instead of the
-top, then the value of v when it is read elsewhere in the program would
-be 0. The output of this code therefore depends on the order in which
-the instructions are evaluated. Considering how cumbersome it would be
-to code this any other way, I accept that.
+この実装でMOV命令を最初以外に配置すると、結果は大きく変わります。
+順序をきちんと制御した場合に必要な命令の数を考えると、私はこの方法も悪くないと思います。
 
 
-BUGS
+バグ
 ====
 
-LDmicro does not generate very efficient code; it is slow to execute, and
-wasteful of flash and RAM. In spite of this, a mid-sized PIC or AVR can
-do everything that a small PLC can, so this does not bother me very much.
+LDmicroはコードをそれほど最適化しません。実行は遅く、容量を食います。中型のPICやAVRは充分な性能があるので、小型のPLC程度の用を足すにはこれでよいと私は考えています。
 
-The maximum length of variable names is highly limited. This is so that
-they fit nicely onto the ladder diagram, so I don't see a good solution
-to that.
+変数名の長さにはきつい制限があります。これはラダー図中の表示に収めるためですが。よい解決方法は今のところ見つかりません。
 
-If your program is too big for the time, program memory, or data memory
-constraints of the device that you have chosen then you probably won't
-get an error. It will just screw up somewhere.
+パフォーマンスやプログラムメモリ、データメモリなどの点で問題があっても、コンパイル時に全て検出することはできません。どこかで実際動かした時にわかります。
 
-Careless programming in the file load/save routines probably makes it
-possible to crash or execute arbitrary code given a corrupt or malicious
-.ld file.
+ファイルの入出力の実装が適当なので、クラッシュしたりファイルが壊れたりすることがあります。
 
-Please report additional bugs or feature requests to the author.
+バグや機能の要望があれば作者にご連絡ください。
 
 Thanks to:
     * Marcelo Solano, for reporting a UI bug under Win98
