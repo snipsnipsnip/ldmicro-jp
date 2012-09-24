@@ -335,10 +335,10 @@
 "要素を削除(&D)\tDel"
 
 "D&elete Rung\tShift+Del"
-"ラングを削除(&e)\tShift+Del"
+"ラングを削除(&E)\tShift+Del"
 
 "Insert Co&mment\t;"
-"挿入: コメント(&m)\t;"
+"挿入: コメント(&M)\t;"
 
 "Insert &Contacts\tC"
 "挿入: 接点 (&C)\tC"
@@ -395,7 +395,7 @@
 "挿入: Master Control Relay (マスタコントロールリレー)"
 
 "Insert Coi&l\tL"
-"挿入: コイル/変数(&l)\tL"
+"挿入: コイル(&L)\tL"
 
 "Insert R&ES (Counter/RTO Reset)\tE"
 "挿入: R&ES (Counter/RTO Reset: カウンタ/RTOリセット)\tE"
@@ -443,7 +443,7 @@
 "挿入: Make Persistent (永続変数)"
 
 "Make Norm&al\tA"
-"コイルを通常に変更(&a)\tA"
+"コイルを通常に変更(&A)\tA"
 
 "Make &Negated\tN"
 "コイルを反転に変更(&N)\tN"
@@ -689,7 +689,7 @@
 "PWMデューティ比設定"
 
 "Source:"
-"代入元:"
+"元:"
 
 "Receive from UART"
 "UART受信"
@@ -710,7 +710,7 @@
 "除算"
 
 "Destination:"
-"代入先:"
+"先:"
 
 "is set := :"
 "変数:"
