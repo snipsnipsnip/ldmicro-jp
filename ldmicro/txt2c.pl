@@ -28,7 +28,8 @@ EOT
     open(IN, $manual) or die;
     while(<IN>) {
         chomp;
-        s/\\/\\\\/g;
+        # avoid problem with Japanese encoding (cp932) which has 0x5c in a multibyte character
+        s/\\/\\\\/g if $p ne 'Ja';
         s/"/\\"/g;
 
         print qq{    "$_",\n};
