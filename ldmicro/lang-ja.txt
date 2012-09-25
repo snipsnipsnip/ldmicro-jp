@@ -278,10 +278,10 @@
 "状態"
 
 "Pin on Processor"
-"ピン"
+"ピン番号"
 
 "MCU Port"
-"ポート"
+"ポート名"
 
 "LDmicro - Simulation (Running)"
 "LDmicro - シミュレータ (実行中)"
@@ -293,7 +293,7 @@
 "LDmicro - エディタ"
 
 " - (not yet saved)"
-" - (* 未保存)"
+" *未保存*"
 
 "&New\tCtrl+N"
 "新規作成(&N)\tCtrl+N"
@@ -509,7 +509,7 @@
 "ヘルプ(&H)"
 
 "no MCU selected"
-"マイコン未設定"
+"ターゲットマイコン未設定"
 
 "cycle time %.2f ms"
 "周期 %.2f ms"
