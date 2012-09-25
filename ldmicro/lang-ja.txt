@@ -1,212 +1,212 @@
 "ANSI C target does not support peripherals (UART, PWM, ADC, EEPROM). Skipping that instruction."
-"ANSI C target does not support peripherals (UART, PWM, ADC, EEPROM). Skipping that instruction."
+"ANSI Cでは使えない命令があります (ADC, PWM, UART, EEPROM)。これらの命令は無視してコンパイルします。"
 
 "Compile successful; wrote C source code to '%s'.\r\n\r\nThis is not a complete C program. You have to provide the runtime and all the I/O routines. See the comments in the source code for information about how to do this."
-"Compile successful; wrote C source code to '%s'.\r\n\r\nThis is not a complete C program. You have to provide the runtime and all the I/O routines. See the comments in the source code for information about how to do this."
+"コンパイル成功。Cソースコードを '%s' に出力しました。\r\n\r\n出力は完全なCプログラムではありません。ランタイムやIOルーチンとともにコンパイルする必要があります。詳しくはソース中のコメントを参照して下さい。"
 
 "Target frequency %d Hz, closest achievable is %d Hz (warning, >5%% error)."
-"Target frequency %d Hz, closest achievable is %d Hz (warning, >5%% error)."
+"設定周波数の %d Hz に最も近い %d Hz に設定します (注意: >5%% の誤差)"
 
 "Compile successful; wrote IHEX for AVR to '%s'.\r\n\r\nRemember to set the processor configuration (fuses) correctly. This does not happen automatically."
-"Compile successful; wrote IHEX for AVR to '%s'.\r\n\r\nRemember to set the processor configuration (fuses) correctly. This does not happen automatically."
+"コンパイル成功。AVR用のIHEXファイルを '%s' に出力しました。\r\n\r\nプロセッサの設定(ヒューズ)を忘れずに調整して下さい。"
 
 "Cannot delete rung; program must have at least one rung."
-"Cannot delete rung; program must have at least one rung."
+"プログラム中に最低1つはラングが必要です。ラングを削除できません。"
 
 "Too many rungs!"
-"Too many rungs!"
+"ラングが多すぎます!"
 
 "( ) Normal"
-"( ) Normal"
+"( ) 通常"
 
 "(/) Negated"
-"(/) Negated"
+"(/) 反転"
 
 "(S) Set-Only"
-"(S) Set-Only"
+"(S) セットのみ"
 
 "(R) Reset-Only"
-"(R) Reset-Only"
+"(R) リセットのみ"
 
 "Pin on MCU"
-"Pin on MCU"
+"ピンに出力"
 
 "Coil"
-"Coil"
+"コイル"
 
 "Comment"
-"Comment"
+"コメント"
 
 "Out of memory; simplify program or choose microcontroller with more memory."
-"Out of memory; simplify program or choose microcontroller with more memory."
+"メモリ容量が一杯です。より大容量のマイコンを使うか、プログラムを単純にする必要があります。"
 
 "Must assign pins for all ADC inputs (name '%s')."
-"Must assign pins for all ADC inputs (name '%s')."
+"ADC入力のピンを全て設定する必要があります (名前: '%s')."
 
 "Internal limit exceeded (number of vars)"
-"Internal limit exceeded (number of vars)"
+"変数内部容量オーバー"
 
 "Internal relay '%s' never assigned; add its coil somewhere."
-"Internal relay '%s' never assigned; add its coil somewhere."
+"内部リレー '%s' に対応するコイルがありません。どこかに配置する必要があります。"
 
 "Must assign pins for all I/O.\r\n\r\n'%s' is not assigned."
-"Must assign pins for all I/O.\r\n\r\n'%s' is not assigned."
+"IOピンを全て設定する必要があります。\r\n\r\n'%s' に割り当てがありません。"
 
 "UART in use; pins %d and %d reserved for that."
-"UART in use; pins %d and %d reserved for that."
+"%d 番ピンと %d 番ピンはUARTに使われています。"
 
 "PWM in use; pin %d reserved for that."
-"PWM in use; pin %d reserved for that."
+"%d 番ピンはPWMに使われています。"
 
 "UART baud rate generator: divisor=%d actual=%.4f for %.2f%% error.\r\n\r\nThis is too large; try a different baud rate (slower probably), or a crystal frequency chosen to be divisible by many common baud rates (e.g. 3.6864 MHz, 14.7456 MHz).\r\n\r\nCode will be generated anyways but serial may be unreliable or completely broken."
-"UART baud rate generator: divisor=%d actual=%.4f for %.2f%% error.\r\n\r\nThis is too large; try a different baud rate (slower probably), or a crystal frequency chosen to be divisible by many common baud rates (e.g. 3.6864 MHz, 14.7456 MHz).\r\n\r\nCode will be generated anyways but serial may be unreliable or completely broken."
+"UARTボーレート計算器: 分母=%d 結果=%.4f 誤差=%.2f%%\r\n\r\n誤差が大きすぎます。ボーレートを下げるか、割りやすい周波数の水晶を使って下さい(3.6864 MHz, 14.7456 MHz など)。\r\n\r\nコードの生成は可能ですが、シリアル通信が不安定になる恐れがあります。"
 
 "UART baud rate generator: too slow, divisor overflows. Use a slower crystal or a faster baud rate.\r\n\r\nCode will be generated anyways but serial will likely be completely broken."
-"UART baud rate generator: too slow, divisor overflows. Use a slower crystal or a faster baud rate.\r\n\r\nCode will be generated anyways but serial will likely be completely broken."
+"UARTボーレート計算器: 速度が足りません。分母がオーバーフローしました。より遅い水晶を使うかボーレートを上げて下さい。\r\n\r\nコードの生成は可能ですが、シリアル通信が不安定になる恐れがあります。"
 
 "Cycle Time (ms):"
-"Cycle Time (ms):"
+"サイクル時間 (ms):"
 
 "Crystal Frequency (MHz):"
-"Crystal Frequency (MHz):"
+"動作周波数 (MHz):"
 
 "UART Baud Rate (bps):"
-"UART Baud Rate (bps):"
+"UARTボーレート (bps):"
 
 "Serial (UART) will use pins %d and %d.\r\n\r\n"
-"Serial (UART) will use pins %d and %d.\r\n\r\n"
+"シリアルポート (UART) 用に %d 番ピンと %d 番ピンを使います。\r\n\r\n"
 
 "Please select a micro with a UART.\r\n\r\n"
-"Please select a micro with a UART.\r\n\r\n"
+"UART対応のマイコンを選んで下さい。\r\n\r\n"
 
 "No serial instructions (UART Send/UART Receive) are in use; add one to program before setting baud rate.\r\n\r\n"
-"No serial instructions (UART Send/UART Receive) are in use; add one to program before setting baud rate.\r\n\r\n"
+"シリアル (UART送信/UART受信) を使うとボーレートを設定できるようになります。\r\n"
 
 "The cycle time for the 'PLC' runtime generated by LDmicro is user-configurable. Very short cycle times may not be achievable due to processor speed constraints, and very long cycle times may not be achievable due to hardware overflows. Cycle times between 10 ms and 100 ms will usually be practical.\r\n\r\nThe compiler must know what speed crystal you are using with the micro to convert between timing in clock cycles and timing in seconds. A 4 MHz to 20 MHz crystal is typical; check the speed grade of the part you are using to determine the maximum allowable clock speed before choosing a crystal."
-"The cycle time for the 'PLC' runtime generated by LDmicro is user-configurable. Very short cycle times may not be achievable due to processor speed constraints, and very long cycle times may not be achievable due to hardware overflows. Cycle times between 10 ms and 100 ms will usually be practical.\r\n\r\nThe compiler must know what speed crystal you are using with the micro to convert between timing in clock cycles and timing in seconds. A 4 MHz to 20 MHz crystal is typical; check the speed grade of the part you are using to determine the maximum allowable clock speed before choosing a crystal."
+"LDmicroの生成するPLCランタイムのサイクル時間はユーザが調整することができます。短すぎるとプロセッサの速度が足りなくなったり、長すぎるとオーバーフローを起こす恐れがあります。実用的な範囲は 10ms ～ 100ms でしょう。\r\nクロック周期と実時間を変換するために動作周波数の設定が必要です。これは通常は 4MHz ～ 20MHz 程度です。データシートで最大クロック速度を確認しておくことをおすすめします。."
 
 "PLC Configuration"
-"PLC Configuration"
+"マイコン設定"
 
 "Zero cycle time not valid; resetting to 10 ms."
-"Zero cycle time not valid; resetting to 10 ms."
+"サイクル時間をゼロにすることはできません。10 msにリセットします。"
 
 "Source"
-"Source"
+"ソース"
 
 "Internal Relay"
-"Internal Relay"
+"内部リレー"
 
 "Input pin"
-"Input pin"
+"入力ピン"
 
 "Output pin"
-"Output pin"
+"出力ピン"
 
 "|/| Negated"
-"|/| Negated"
+"|/| 反転"
 
 "Contacts"
-"Contacts"
+"接点"
 
 "!!!too long!!!"
-"!!!too long!!!"
+"!!!長すぎます!!!"
 
 "Too many elements in subcircuit!"
-"Too many elements in subcircuit!"
+"支回路の要素が多すぎます!"
 
 "Couldn't open '%s'\n"
-"Couldn't open '%s'\n"
+"'%s' を開けませんでした\n"
 
 "\n\nI/O ASSIGNMENT:\n\n"
-"\n\nI/O ASSIGNMENT:\n\n"
+"\n\nIO割り当て:\n\n"
 
 "  Name                       | Type               | Pin\n"
-"  Name                       | Type               | Pin\n"
+"  名前                       | 種類               | ピン\n"
 
 "Timer period too short (needs faster cycle time)."
-"Timer period too short (needs faster cycle time)."
+"タイマー周期が短すぎます。サイクル時間を早くする必要があります。"
 
 "Timer period too long (max 32767 times cycle time); use a slower cycle time."
-"Timer period too long (max 32767 times cycle time); use a slower cycle time."
+"タイマー周期が長すぎます。(最大 32767 × サイクル時間)。サイクル時間を遅くする必要があります。"
 
 "Constant %d out of range: -32768 to 32767 inclusive."
-"Constant %d out of range: -32768 to 32767 inclusive."
+"定数 %d が範囲外です: 値の範囲は -32768 ～ 32767 (閉区間)です。"
 
 "Move instruction: '%s' not a valid destination."
-"Move instruction: '%s' not a valid destination."
+"移動(Move)命令: デスティネーション '%s' が不明です。"
 
 "Math instruction: '%s' not a valid destination."
-"Math instruction: '%s' not a valid destination."
+"計算(Math)命令: デスティネーション '%s' が不明です。"
 
 "Piecewise linear lookup table with zero elements!"
-"Piecewise linear lookup table with zero elements!"
+"線形連想配列が空です!"
 
 "x values in piecewise linear table must be strictly increasing."
-"x values in piecewise linear table must be strictly increasing."
+"線形連想配列のx値は単調増加である必要があります。"
 
 "Numerical problem with piecewise linear lookup table. Either make the table entries smaller, or space the points together more closely.\r\n\r\nSee the help file for details."
-"Numerical problem with piecewise linear lookup table. Either make the table entries smaller, or space the points together more closely.\r\n\r\nSee the help file for details."
+"線形連想配列の数値で問題があります。表のサイズを小さくするか、点と点の間隔を狭くする必要があります。\r\n\r\n詳しくはヘルプをご覧ください。"
 
-"Multiple escapes (\\0-9) present in format string, not allowed."
+"書式文字列にエスケープ (\\0-9) を複数おくことはできません。"
 "Multiple escapes (\\0-9) present in format string, not allowed."
 
 "Bad escape: correct form is \\xAB."
-"Bad escape: correct form is \\xAB."
+"エスケープの書式が正しくありません。例: \\xAB"
 
 "Bad escape '\\%c'"
-"Bad escape '\\%c'"
+"エスケープの書式が正しくありません： '\\%c'"
 
 "Variable is interpolated into formatted string, but none is specified."
-"Variable is interpolated into formatted string, but none is specified."
+"変数は書式文字列に埋め込む変数が指定されていません。"
 
 "No variable is interpolated into formatted string, but a variable name is specified. Include a string like '\\-3', or leave variable name blank."
-"No variable is interpolated into formatted string, but a variable name is specified. Include a string like '\\-3', or leave variable name blank."
+"書式文字列に変数がないのに変数が指定されています。'\\-3' のように埋め込むか、変数名を空にする必要があります。"
 
 "Empty row; delete it or add instructions before compiling."
-"Empty row; delete it or add instructions before compiling."
+"空のラングがあります。コンパイルのためにはラングを削除するか、命令を追加する必要があります。"
 
 "Couldn't write to '%s'"
-"Couldn't write to '%s'"
+"'%s' に書き込めませんでした"
 
 "Unsupported op (anything ADC, PWM, UART, EEPROM) for interpretable target."
-"Unsupported op (anything ADC, PWM, UART, EEPROM) for interpretable target."
+"インタプリタの対応しない命令があります (ADC, PWM, UART, EEPROM)。"
 
 "Compile successful; wrote interpretable code to '%s'.\r\n\r\nYou probably have to adapt the interpreter to your application. See the documentation."
-"Compile successful; wrote interpretable code to '%s'.\r\n\r\nYou probably have to adapt the interpreter to your application. See the documentation."
+"コンパイル成功。インタプリタ用コードを '%s' に出力しました。\r\n\r\nインタプリタの設定を合わせて確認して下さい。詳しくはヘルプをご覧ください。"
 
 "No ADC or ADC not supported for selected micro."
-"No ADC or ADC not supported for selected micro."
+"そのマイコンはAD変換に対応していません。"
 
 "Assign:"
-"Assign:"
+"代入:"
 
 "No microcontroller has been selected. You must select a microcontroller before you can assign I/O pins.\r\n\r\nSelect a microcontroller under the Settings menu and try again."
-"No microcontroller has been selected. You must select a microcontroller before you can assign I/O pins.\r\n\r\nSelect a microcontroller under the Settings menu and try again."
+"IOピンを使うには[設定]メニューからマイコンの種類を設定して下さい。"
 
 "I/O Pin Assignment"
-"I/O Pin Assignment"
+"IOピン割り当て"
 
 "Can't specify I/O assignment for ANSI C target; compile and see comments in generated source code."
-"Can't specify I/O assignment for ANSI C target; compile and see comments in generated source code."
+"ANSI Cがターゲットの場合IOピン割り当てはできません。ソース中のコメントを確認してください。"
 
 "Can't specify I/O assignment for interpretable target; see comments in reference implementation of interpreter."
-"Can't specify I/O assignment for interpretable target; see comments in reference implementation of interpreter."
+"インタプリタがターゲットの場合IOピン割り当てはできません。インタプリタの実装例にあるコメントをご覧ください。"
 
 "Can only assign pin number to input/output pins (Xname or Yname or Aname)."
-"Can only assign pin number to input/output pins (Xname or Yname or Aname)."
+"ピン番号を設定できるのはIOピンのみです(名前がX, Y, Aで始まる物)。"
 
 "No ADC or ADC not supported for this micro."
-"No ADC or ADC not supported for this micro."
+"このマイコンはAD変換に対応していません。"
 
 "Rename I/O from default name ('%s') before assigning MCU pin."
-"Rename I/O from default name ('%s') before assigning MCU pin."
+"ピンを割り当てる前に、変数に名前をつける必要があります。\r\nデフォルトの '%s' から変更してください。"
 
 "I/O Pin"
-"I/O Pin"
+"I/Oピン"
 
 "(no pin)"
-"(no pin)"
+"(ピンなし)"
 
 "<UART needs!>"
 "<UART needs!>"
@@ -215,319 +215,322 @@
 "<PWM needs!>"
 
 "<not an I/O!>"
-"<not an I/O!>"
+"<IOではありません!>"
 
 "Export As Text"
-"Export As Text"
+"テキストで出力"
 
 "Couldn't write to '%s'."
-"Couldn't write to '%s'."
+"'%s' に書き込めませんでした"
 
 "Compile To"
-"Compile To"
+"コンパイル先: "
 
 "Must choose a target microcontroller before compiling."
-"Must choose a target microcontroller before compiling."
+"コンパイルにはターゲットのマイコンを設定する必要があります。"
 
 "UART function used but not supported for this micro."
-"UART function used but not supported for this micro."
+"このマイコンはUARTに対応していません。"
 
 "PWM function used but not supported for this micro."
-"PWM function used but not supported for this micro."
+"このマイコンはPWMに対応していません。"
 
 "The program has changed since it was last saved.\r\n\r\nDo you want to save the changes?"
-"The program has changed since it was last saved.\r\n\r\nDo you want to save the changes?"
+"変更を保存しますか？"
 
 "--add comment here--"
-"--add comment here--"
+"--comment--"
 
 "Start new program?"
-"Start new program?"
+"プログラムを新規作成しますか？"
 
 "Couldn't open '%s'."
-"Couldn't open '%s'."
+"'%s' を開けませんでした。"
 
 "Microcontroller '%s' not supported.\r\n\r\nDefaulting to no selected MCU."
-"Microcontroller '%s' not supported.\r\n\r\nDefaulting to no selected MCU."
+"マイコン '%s' には対応していません。\r\n\r\n未選択の状態にリセットします。"
 
 "File format error; perhaps this program is for a newer version of LDmicro?"
-"File format error; perhaps this program is for a newer version of LDmicro?"
+"ファイル形式エラー。新しいLDmicroのファイルかもしれません。"
 
 "Index:"
-"Index:"
+"添字:"
 
 "Points:"
-"Points:"
+"エントリ数:"
 
 "Count:"
-"Count:"
+"長さ:"
 
 "Edit table of ASCII values like a string"
-"Edit table of ASCII values like a string"
+"ASCII文字配列として編集"
 
 "Look-Up Table"
-"Look-Up Table"
+"ルックアップテーブル"
 
 "Piecewise Linear Table"
-"Piecewise Linear Table"
+"線形連想配列"
 
 "Name"
-"Name"
+"変数名"
 
 "State"
-"State"
+"状態"
 
 "Pin on Processor"
-"Pin on Processor"
+"ピン番号"
 
 "MCU Port"
-"MCU Port"
+"ポート名"
 
 "LDmicro - Simulation (Running)"
-"LDmicro - Simulation (Running)"
+"LDmicro - シミュレータ (実行中)"
 
 "LDmicro - Simulation (Stopped)"
-"LDmicro - Simulation (Stopped)"
+"LDmicro - シミュレータ (停止中)"
 
 "LDmicro - Program Editor"
-"LDmicro - Program Editor"
+"LDmicro - エディタ"
 
 " - (not yet saved)"
-" - (not yet saved)"
+" *未保存*"
 
 "&New\tCtrl+N"
-"&New\tCtrl+N"
+"新規作成(&N)\tCtrl+N"
 
 "&Open...\tCtrl+O"
-"&Open...\tCtrl+O"
+"開く(&O)...\tCtrl+O"
 
 "&Save\tCtrl+S"
-"&Save\tCtrl+S"
+"保存(&S)\tCtrl+S"
 
 "Save &As..."
-"Save &As..."
+"名前を付けて保存(&A)..."
 
 "&Export As Text...\tCtrl+E"
-"&Export As Text...\tCtrl+E"
+"テキストで出力(&E)...\tCtrl+E"
 
 "E&xit"
-"E&xit"
+"終了(&X)"
 
 "&Undo\tCtrl+Z"
-"&Undo\tCtrl+Z"
+"元に戻す(&U)\tCtrl+Z"
 
 "&Redo\tCtrl+Y"
-"&Redo\tCtrl+Y"
+"やり直し(&R)\tCtrl+Y"
 
 "Insert Rung &Before\tShift+6"
-"Insert Rung &Before\tShift+6"
+"前にラングを挿入(&B)\tShift+6"
 
 "Insert Rung &After\tShift+V"
-"Insert Rung &After\tShift+V"
+"後にラングを挿入(&A)\tShift+V"
 
 "Move Selected Rung &Up\tShift+Up"
-"Move Selected Rung &Up\tShift+Up"
+"上にラングを移動(&U)\tShift+Up"
 
 "Move Selected Rung &Down\tShift+Down"
-"Move Selected Rung &Down\tShift+Down"
+"下にラングを移動(&D)\tShift+Down"
 
 "&Delete Selected Element\tDel"
-"&Delete Selected Element\tDel"
+"要素を削除(&D)\tDel"
 
 "D&elete Rung\tShift+Del"
-"D&elete Rung\tShift+Del"
+"ラングを削除(&E)\tShift+Del"
 
 "Insert Co&mment\t;"
-"Insert Co&mment\t;"
+"; -- コメント --(&M)\t;"
 
 "Insert &Contacts\tC"
-"Insert &Contacts\tC"
+"--] [-- 接点\t&C"
 
 "Insert OSR (One Shot Rising)\t&/"
-"Insert OSR (One Shot Rising)\t&/"
+"--[OSR ＿|￣]-- 立ち上がり微分, 上昇時パルス\t&/"
+
+"Insert OSF (One Shot Falling)\t&\\"
+"--[OSF ￣|＿]-- 立ち下がり微分, 下降時パルス\t&\\"
 
 "Insert T&ON (Delayed Turn On)\tO"
-"Insert T&ON (Delayed Turn On)\tO"
+"--[T&ON 100.0ms]-- オンタイマ\tO"
 
 "Insert TO&F (Delayed Turn Off)\tF"
-"Insert TO&F (Delayed Turn Off)\tF"
+"--[TO&F 100.0ms]-- オフタイマ\tF"
 
 "Insert R&TO (Retentive Delayed Turn On)\tT"
-"Insert R&TO (Retentive Delayed Turn On)\tT"
+"--[R&TO 100.0ms]-- 積算タイマ\tT"
 
 "Insert CT&U (Count Up)\tU"
-"Insert CT&U (Count Up)\tU"
+"--[CT&U >=0]-- アップカウンタ\tU"
 
 "Insert CT&D (Count Down)\tI"
-"Insert CT&D (Count Down)\tI"
+"--[CT&D >=0]-- ダウンカウンタ\tI"
 
 "Insert CT&C (Count Circular)\tJ"
-"Insert CT&C (Count Circular)\tJ"
+"--{CT&C 0:0}-- 循環カウンタ\tJ"
 
 "Insert EQU (Compare for Equals)\t="
-"Insert EQU (Compare for Equals)\t="
+"--[ == ]-- EQU 等値比較＝\t="
 
 "Insert NEQ (Compare for Not Equals)"
-"Insert NEQ (Compare for Not Equals)"
+"--[ /= ]-- NEQ 非等値比較！＝"
 
 "Insert GRT (Compare for Greater Than)\t>"
-"Insert GRT (Compare for Greater Than)\t>"
+"--[  > ]-- GRT 超過比較＞\t>"
 
 "Insert GEQ (Compare for Greater Than or Equal)\t."
-"Insert GEQ (Compare for Greater Than or Equal)\t."
+"--[ => ]-- GEQ 以上比較≧\t."
 
 "Insert LES (Compare for Less Than)\t<"
-"Insert LES (Compare for Less Than)\t<"
+"--[ <  ]-- LES 未満比較＜\t<"
 
 "Insert LEQ (Compare for Less Than or Equal)\t,"
-"Insert LEQ (Compare for Less Than or Equal)\t,"
+"--[ <= ]-- LEQ 以下比較≦\t,"
 
 "Insert Open-Circuit"
-"Insert Open-Circuit"
+"--+     +-- 開放, 開回路"
 
 "Insert Short-Circuit"
-"Insert Short-Circuit"
+"--+---+-- 短絡, 閉回路"
 
 "Insert Master Control Relay"
-"Insert Master Control Relay"
+"--{MASTER RLY}-- マスタコントロールリレー"
 
 "Insert Coi&l\tL"
-"Insert Coi&l\tL"
+"--(  )-- コイル\t&L"
 
 "Insert R&ES (Counter/RTO Reset)\tE"
-"Insert R&ES (Counter/RTO Reset)\tE"
+"--{R&ES}-- カウンタ/タイマーリセット\tE"
 
 "Insert MOV (Move)\tM"
-"Insert MOV (Move)\tM"
+"--{ := }-- MOV 代入, 転送\tM"
 
 "Insert ADD (16-bit Integer Add)\t+"
-"Insert ADD (16-bit Integer Add)\t+"
+"--{ + }-- ADD 加算\t+"
 
 "Insert SUB (16-bit Integer Subtract)\t-"
-"Insert SUB (16-bit Integer Subtract)\t-"
+"--{ - }-- SUB 減算\t"
 
 "Insert MUL (16-bit Integer Multiply)\t*"
-"Insert MUL (16-bit Integer Multiply)\t*"
+"--{ * }-- MUL 乗算\t*"
 
 "Insert DIV (16-bit Integer Divide)\tD"
-"Insert DIV (16-bit Integer Divide)\tD"
+"--{ / }-- DIV 除算\tD"
 
 "Insert Shift Register"
-"Insert Shift Register"
+"--{REG}-- シフトレジスタ"
 
 "Insert Look-Up Table"
-"Insert Look-Up Table"
+"--{LUT}-- ルックアップテーブル"
 
 "Insert Piecewise Linear"
-"Insert Piecewise Linear"
+"--{PWL}-- 線形連想配列"
 
 "Insert Formatted String Over UART"
-"Insert Formatted String Over UART"
+"--{\"value: \\3\\r\\n\"}-- UART書式送信"
 
 "Insert &UART Send"
-"Insert &UART Send"
+"--{UART SEND}-- &UART送信"
 
 "Insert &UART Receive"
-"Insert &UART Receive"
+"--{UART RECV}-- &UART受信"
 
 "Insert Set PWM Output"
-"Insert Set PWM Output"
+"--{PWM 1.00 kHz}-- PWMデューティ比設定"
 
 "Insert A/D Converter Read\tP"
-"Insert A/D Converter Read\tP"
+"--{READ ADC}-- アナログ入力読み取り\tP"
 
 "Insert Make Persistent"
-"Insert Make Persistent"
+"--{PERSIST}-- 永続変数"
 
 "Make Norm&al\tA"
-"Make Norm&al\tA"
+"--( )-- 通常コイルに変更(&A)\tA"
 
 "Make &Negated\tN"
-"Make &Negated\tN"
+"--(/)-- 反転コイルに変更(&N)\tN"
 
 "Make &Set-Only\tS"
-"Make &Set-Only\tS"
+"--(S)-- セットコイルに変更(&S)\tS"
 
 "Make &Reset-Only\tR"
-"Make &Reset-Only\tR"
+"--(R)-- リセットコイルに変更(&R)\tR"
 
 "&MCU Parameters..."
-"&MCU Parameters..."
+"マイコン設定(&M)..."
 
 "(no microcontroller)"
-"(no microcontroller)"
+"(マイコンなし)"
 
 "&Microcontroller"
-"&Microcontroller"
+"ターゲットマイコン(&M)"
 
 "Si&mulation Mode\tCtrl+M"
-"Si&mulation Mode\tCtrl+M"
+"シミュレーションモード(&M)\tCtrl+M"
 
 "Start &Real-Time Simulation\tCtrl+R"
-"Start &Real-Time Simulation\tCtrl+R"
+"リアルタイムシミュレーション開始(&R)\tCtrl+R"
 
 "&Halt Simulation\tCtrl+H"
-"&Halt Simulation\tCtrl+H"
+"リアルタイムシミュレーション停止(&H)\tCtrl+H"
 
 "Single &Cycle\tSpace"
-"Single &Cycle\tSpace"
+"1サイクル進める(&C)\tSpace"
 
 "&Compile\tF5"
-"&Compile\tF5"
+"コンパイル(&C)\tF5"
 
 "Compile &As..."
-"Compile &As..."
+"名前をつけてコンパイル(&A)..."
 
 "&Manual...\tF1"
-"&Manual...\tF1"
+"マニュアル(&M)...\tF1"
 
 "&About..."
-"&About..."
+"バージョン情報(&A)..."
 
 "&File"
-"&File"
+"ファイル(&F)"
 
 "&Edit"
-"&Edit"
+"編集(&E)"
 
 "&Settings"
-"&Settings"
+"設定(&S)"
 
 "&Instruction"
-"&Instruction"
+"命令(&I)"
 
 "Si&mulate"
-"Si&mulate"
+"シミュレータ(&M)"
 
 "&Compile"
-"&Compile"
+"コンパイル(&C)"
 
 "&Help"
-"&Help"
+"ヘルプ(&H)"
 
 "no MCU selected"
-"no MCU selected"
+"ターゲットマイコン未設定"
 
 "cycle time %.2f ms"
-"cycle time %.2f ms"
+"周期 %.2f ms"
 
 "processor clock %.4f MHz"
-"processor clock %.4f MHz"
+"クロック %.4f MHz"
 
 "LDmicro Error"
-"LDmicro Error"
+"LDmicroエラー"
 
 "Compile Successful"
-"Compile Successful"
+"コンパイル成功"
 
 "digital in"
-"digital in"
+"入力"
 
 "digital out"
-"digital out"
+"出力"
 
 "int. relay"
-"int. relay"
+"内部リレー"
 
 "UART tx"
 "UART tx"
@@ -535,86 +538,86 @@
 "UART rx"
 "UART rx"
 
-"PWM out"
-"PWM out"
+"PWM出力"
+"PWM出力"
 
 "turn-on delay"
-"turn-on delay"
+"オンタイマ"
 
 "turn-off delay"
-"turn-off delay"
+"オフタイマ"
 
 "retentive timer"
-"retentive timer"
+"積算タイマ"
 
 "counter"
-"counter"
+"カウンタ"
 
 "general var"
-"general var"
+"汎用変数"
 
 "adc input"
-"adc input"
+"AD変換値"
 
 "<corrupt!>"
-"<corrupt!>"
+"<不正!>"
 
 "(not assigned)"
-"(not assigned)"
+"(未割り当て)"
 
 "<no UART!>"
-"<no UART!>"
+"<UARTなし!>"
 
 "<no PWM!>"
-"<no PWM!>"
+"<PWMなし!>"
 
 "PWM frequency too fast."
-"PWM frequency too fast."
+"PWM周波数が早すぎます"
 
 "PWM frequency too slow."
-"PWM frequency too slow."
+"PWM周波数が遅すぎます"
 
 "Internal error relating to PIC paging; make program smaller or reshuffle it."
-"Internal error relating to PIC paging; make program smaller or reshuffle it."
+"PICページングで内部エラーが発生しました。プログラムを小さくするかシャッフルして下さい。"
 
 "Cycle time too fast; increase cycle time, or use faster crystal."
-"Cycle time too fast; increase cycle time, or use faster crystal."
+"サイクル時間が早すぎます。サイクル時間を増やすか、より早い水晶を使って下さい。"
 
 "Cycle time too slow; decrease cycle time, or use slower crystal."
-"Cycle time too slow; decrease cycle time, or use slower crystal."
+"サイクル時間が遅すぎます。サイクル時間を減らすか、より遅い水晶を使って下さい。"
 
 "Couldn't open file '%s'"
-"Couldn't open file '%s'"
+"ファイル '%s' を開けませんでした"
 
 "Zero baud rate not possible."
-"Zero baud rate not possible."
+"ボーレートをゼロにはできません。"
 
 "Compile successful; wrote IHEX for PIC16 to '%s'.\r\n\r\nConfiguration word (fuses) has been set for crystal oscillator, BOD enabled, LVP disabled, PWRT enabled, all code protection off.\r\n\r\nUsed %d/%d words of program flash (chip %d%% full)."
-"Compile successful; wrote IHEX for PIC16 to '%s'.\r\n\r\nConfiguration word (fuses) has been set for crystal oscillator, BOD enabled, LVP disabled, PWRT enabled, all code protection off.\r\n\r\nUsed %d/%d words of program flash (chip %d%% full)."
+"コンパイル成功。PIC16用のIHEXファイルを '%s' に出力しました。\r\n\r\n設定ワード(ヒューズ)は水晶発振子、BOD有効、LVP無効、PWRT有効、コード保護無効としています。\r\n\r\nフラッシュのうち %d/%d ワード (%d%%) を使いました。"
 
 "Type"
-"Type"
+"種類"
 
 "Timer"
-"Timer"
+"タイマ"
 
 "Counter"
-"Counter"
+"カウンタ"
 
 "Reset"
-"Reset"
+"リセット"
 
 "OK"
 "OK"
 
 "Cancel"
-"Cancel"
+"キャンセル"
 
 "Empty textbox; not permitted."
-"Empty textbox; not permitted."
+"テキストボックスが空です。"
 
 "Bad use of quotes: <%s>"
-"Bad use of quotes: <%s>"
+"引用符が不正: <%s>"
 
 "Turn-On Delay"
 "Turn-On Delay"
@@ -626,130 +629,130 @@
 "Retentive Turn-On Delay"
 
 "Delay (ms):"
-"Delay (ms):"
+"遅延 (ms):"
 
 "Delay too long; maximum is 2**31 us."
-"Delay too long; maximum is 2**31 us."
+"遅延が長過ぎます。最大 2**31 usです"
 
 "Delay cannot be zero or negative."
-"Delay cannot be zero or negative."
+"遅延は正の値である必要があります。"
 
 "Count Up"
-"Count Up"
+"アップカウンタ"
 
 "Count Down"
-"Count Down"
+"ダウンカウンタ"
 
 "Circular Counter"
-"Circular Counter"
+"循環カウンタ"
 
 "Max value:"
 "Max value:"
 
-"True if >= :"
-"True if >= :"
+"True if >=:"
+"True if >=:"
 
 "If Equals"
-"If Equals"
+"値＝"
 
 "If Not Equals"
-"If Not Equals"
+"値！＝"
 
 "If Greater Than"
-"If Greater Than"
+"値＞"
 
 "If Greater Than or Equal To"
-"If Greater Than or Equal To"
+"値≧"
 
 "If Less Than"
-"If Less Than"
+"値＜"
 
 "If Less Than or Equal To"
-"If Less Than or Equal To"
+"値≦"
 
 "'Closed' if:"
-"'Closed' if:"
+"もし"
 
 "Move"
-"Move"
+"代入"
 
 "Read A/D Converter"
-"Read A/D Converter"
+"AD変換読み込み"
 
 "Duty cycle var:"
-"Duty cycle var:"
+"デューティ比:"
 
 "Frequency (Hz):"
-"Frequency (Hz):"
+"周波数 (Hz):"
 
 "Set PWM Duty Cycle"
-"Set PWM Duty Cycle"
+"PWMデューティ比設定"
 
 "Source:"
-"Source:"
+"元:"
 
 "Receive from UART"
-"Receive from UART"
+"UART受信"
 
 "Send to UART"
-"Send to UART"
+"UART送信"
 
 "Add"
-"Add"
+"加算"
 
 "Subtract"
-"Subtract"
+"減算"
 
 "Multiply"
-"Multiply"
+"乗算"
 
 "Divide"
-"Divide"
+"除算"
 
 "Destination:"
-"Destination:"
+"先:"
 
 "is set := :"
-"is set := :"
+"変数:"
 
 "Name:"
-"Name:"
+"名:"
 
 "Stages:"
-"Stages:"
+"ステージ数:"
 
 "Shift Register"
-"Shift Register"
+"シフトレジスタ"
 
 "Not a reasonable size for a shift register."
-"Not a reasonable size for a shift register."
+"シフトレジスタのサイズが不適切です。"
 
 "String:"
-"String:"
+"文字列:"
 
 "Formatted String Over UART"
-"Formatted String Over UART"
+"UART書式出力"
 
 "Variable:"
-"Variable:"
+"変数:"
 
 "Make Persistent"
-"Make Persistent"
+"永続変数"
 
 "TOF: variable cannot be used elsewhere"
-"TOF: variable cannot be used elsewhere"
+"TOF (オフタイマ): 他の所で変数を使うことはできません"
 
 "TON: variable cannot be used elsewhere"
-"TON: variable cannot be used elsewhere"
+"TON (オンタイマ): 他の所で変数を使うことはできません"
 
 "RTO: variable can only be used for RES elsewhere"
-"RTO: variable can only be used for RES elsewhere"
+"RTO (積算タイマ): RESET 以外の他の場所で使うことはできません"
 
 "Variable '%s' not assigned to, e.g. with a MOV statement, an ADD statement, etc.\r\n\r\nThis is probably a programming error; now it will always be zero."
-"Variable '%s' not assigned to, e.g. with a MOV statement, an ADD statement, etc.\r\n\r\nThis is probably a programming error; now it will always be zero."
+"変数 '%s' にMOVやADDなどの代入がありません。\r\n\r\nおそらくこれはプログラムミスです。ゼロで固定します。"
 
 "Variable for '%s' incorrectly assigned: %s."
-"Variable for '%s' incorrectly assigned: %s."
+"'%s' に変数 '%s' が不適切に割り当てられています。"
 
 "Division by zero; halting simulation"
-"Division by zero; halting simulation"
+"ゼロ除算エラー。シミュレータを停止します"
