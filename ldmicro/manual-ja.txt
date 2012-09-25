@@ -5,7 +5,7 @@
 LDmicroはラダー図からPIC16やAtmel AVRのネイティブコードを生成するツールです。
 マイコンの制御ソフトウェアは通常アセンブラやC、BASICなどのプログラミング言語で書かれます。これは命令文を並べることで動作を定義します。これは機械語命令を順番に実行するというマイクロプロセッサ内部の仕組みをそのまま反映したものといえます。
 
-一方、PLC(プログラマブルロジックコントローラ)はラダー・ロジックというものを使ってプログラムされます。例えば、単純なプログラムは次のようなものです。
+一方、プログラマブルロジックコントローラ (PLC)はラダーロジックというものを使ってプログラムされます。例えば、単純なプログラムは次のようなものです。
 
    ||                                                                    ||
    ||    Xbutton1           Tdon           Rchatter           Yred       ||
@@ -25,45 +25,53 @@ LDmicroはラダー図からPIC16やAtmel AVRのネイティブコードを生成するツールです。
    ||                                                                    ||
    ||                                                                    ||
 
-TON は Turn-ON delay (遅延立ち上がり)、TOF は Turn-OFf delay (遅延立ち下がり)を意味します。
---] [-- は入力を表し、回路の接点(スイッチ)のように働きます。
---( )-- は出力を表し、回路のコイルのように働きます。
-ラダーロジックの詳しい説明は他のWeb上のページなどにゆずります。
+--[TON]-- はオンタイマーを表します。一定時間1を入力すると1を出力します。
+--[TOF]-- はオフタイマーを表します。一定時間0を入力すると1を出力します。
+--] [-- は入力を表し、回路の接点(スイッチ)のように働きます。マイコンの入力ピンに対応します。
+--( )-- は出力を表し、回路のコイルのように働きます。マイコンの出力ピンに対応します。
+
+左右に渡る回路の線の一本一本をラングと呼びます。図にはラングが2本あります。
+信号が各ラングを左から右に進み、命令を通ってゆきます。
+各命令は左から入力信号を受け取り、右に出力信号を出します。命令は並列や直列に並べることができます。
+図の左端からは常に論理値で1の信号が入力されます。1の信号は通電、0の信号は絶縁にたとえられます。多くの命令は1の信号を受け取ると動作し、0の信号の入力を受け取ると停止します。
+動作の時、信号を右の端子に出力するほかに、ピンに出力を行ったり、変数を設定するなどの副次的な動作を行う命令もあります。
+
 命令の詳細はこのマニュアルで後述します。
+ラダーロジックの詳しい説明は他のWeb上のページなどにゆずります。
 
 見た目に明らかな違いは次のようなものです。
 
-    * プログラムはテキストではなく箱を線でつないだような図として表します。
-      多くの人はこちらの方が理解しやすいと感じます。
+    *\tプログラムはテキストではなく箱を線でつないだような図として表します。
+\t多くの人はこちらの方が理解しやすいと感じます。
 
-    * プログラムがスイッチ(入力)とコイル(出力)だけの単純なものなら
-      そのまま回路図のように読めます。
-      デジタル回路の知識がある方は直感的に感じるでしょう。
+    *\tプログラムがスイッチ(入力)とコイル(出力)だけの単純なものなら
+\tそのまま回路図のように読めます。
+\tデジタル回路の知識がある方は直感的に感じるでしょう。
 
-    * いつ、どこを計算するかはラダー図のコンパイラが判断します。
-      変数を再計算するタイミングに頭を悩ませる必要はありませんし、
-      計算の順番で悩むこともありません。PLCを処理するツールが
-      考えてくれます。
+    *\tいつ、どこを計算するかはラダー図のコンパイラが判断します。
+\t変数を再計算するタイミングに頭を悩ませる必要はありませんし、
+\t計算の順番で悩むこともありません。PLCを処理するツールが
+\t考えてくれます。
 
 LDmicroはPIC16やAtmel AVRのプログラムを生成することができます。
 現在以下のプロセッサに対応しています。
 
-    * PIC16F877
-    * PIC16F628
-    * PIC16F876 (untested)
-    * PIC16F88 (untested)
-    * PIC16F819 (untested)
-    * PIC16F887 (untested)
-    * PIC16F886 (untested)
-    * ATmega128
-    * ATmega64
-    * ATmega162 (untested)
-    * ATmega32 (untested)
-    * ATmega16 (untested)
-    * ATmega8 (untested)
+\t・ PIC16F877
+\t・ PIC16F628
+\t・ PIC16F876 (未テスト)
+\t・ PIC16F88 (未テスト)
+\t・ PIC16F819 (未テスト)
+\t・ PIC16F887 (未テスト)
+\t・ PIC16F886 (未テスト)
+\t・ ATmega128
+\t・ ATmega64
+\t・ ATmega162 (未テスト)
+\t・ ATmega32 (未テスト)
+\t・ ATmega16 (未テスト)
+\t・ ATmega8 (未テスト)
 
 対応プロセッサを増やすのは簡単ですが、私にはテストする環境がありません。
-特に対応してほしいものがあればご相談ください。
+特に対応してほしいものがあればご連絡ください。
 
 LDmicroではラダー図でプログラムを書くことができます。また、ロジックをPC上でシミュレートして試すことができます。それでうまく動くことが確認できたら、入出力ピンを割り当ててマイコン用にコンパイルします。出力のHEXファイルはそのままマイコンに書き込むことができます。
 
@@ -82,7 +90,7 @@ LDmicroは一般的なPLCプログラミング環境になるべく似せてあります。いくつか例外はあ
 
 ldmicro.exe は通常オプションなしで起動されます。つまり、通常は単にショートカットなどからダブルクリックで起動して、GUIで操作します。
 
-ファイル名を指定して起動した場合 ("ldmicro.exe asd.ld" など) は、LDmicroはそのファイルを読み込んで立ち上がります。ファイルが読み込めない場合はエラーを表示します。.ld拡張子をLDmicroに関連付けするとラダー図のファイルをダブルクリックするだけで開けるので便利です。
+"ldmicro.exe asd.ld" のようにファイル名を指定して起動した場合は、LDmicroはそのファイルを読み込んで立ち上がります。ファイルが読み込めない場合はエラーを表示します。.ld拡張子をLDmicroに関連付けするとラダー図のファイルをダブルクリックするだけで開けるので便利です。
 
 "ldmicro.exe /c src.ld dest.hex" のように引数を与えて起動すると、src.ld をコンパイルして dest.hex に結果を書き出します。成功したかどうかにかかわらず、LDmicroはコンパイル後そのまま終了します。メッセージはコンソールに出力されます。このモードはコマンドラインから実行することを想定しています。
 
@@ -95,19 +103,19 @@ LDmicroのプログラムの保存形式(.LD)は独自のもので、他の形式からインポートする機能
 
 初期状態は、空のラングがひとつあるだけのプログラムです。ここに命令を追加することができます。例えば、メニューの[命令]->[挿入: 接点]を選ぶと Xnew という名前の接点が追加されます。命令の挿入する位置はカーソルで指定します。左右に挿入すると直列に、上下に挿入すると並列になります。
 XnewのXというのは、その接点がマイコンの入力ピンに割り当てられるという意味です。入出力接点は実際のピンに割り当てる前にマイコンの種類を選んで名前をつける必要があります。ピンを割り当てるには、画面下部の変数一覧表からダブルクリックします。
-Xの他にも色々な頭文字があり種類を表しています。例えば：
+Xの他にも色々な頭文字があり、変数の種類を表しています。例えば：
 
-    * Xname -- マイコンの入力ピン
-    * Yname -- マイコンの出力ピン
-    * Rname -- 内部リレー。1ビットの内部メモリ
-    * Tname -- タイマー。遅延立ち上がり、遅延立ち下がり、保持遅延の3種
-    * Cname -- カウンター。上昇、下降、循環の3種
-    * Aname -- AD変換器から読みだした数値
-    * name  -- 汎用のメモリ上の数値変数
+\t・X -- マイコンの入力ピン
+\t・Y -- マイコンの出力ピン
+\t・R -- 内部リレー。1ビットの内部メモリ
+\t・T -- タイマー。オン、オフ、積算の3種
+\t・C -- カウンター。上昇、下降、循環の3種
+\t・A -- AD変換器から読みだした数値
+\t・頭文字なし -- 汎用のメモリ上の数値変数
 
 追加した時には "name" の部分は "new" になっています。何のための変数なのかわかりやすいように名前をつけてください。リレーの命令をダブルクリックするか、カーソルを合わせてリターンを押すと編集できます。
-プログラム中で同じ名前の変数は常に同じものを指します。例えば、TON (遅延立ち上がりタイマ) に Tdelay という名前をつけたら、他の所にある TOF (遅延立ち下がりタイマ) に Tdelay という名前をつけることはできません。
-一方、RTO (保持遅延タイマ)に Tdelay と名前をつけてから RES (タイマリセット) 命令で Tdelay を指定しても問題ありません。この場合は対象のタイマは同じものだからです。
+プログラム中で同じ名前の変数は常に同じものを指します。例えば、オンタイマ(TON)で Tdelay という変数を使ったら、他の所にあるオフタイマ(TOF)に Tdelay という変数を使うことはできません。
+一方、積算タイマ(RTO)に Tdelay と名前をつけてからRESET命令で Tdelay を指定しても問題ありません。この場合は対象のタイマは同じものだからです。
 
 変数名はアルファベット、数字、下線 (_) を使うことができます。頭文字に数字を使うことはできません。また、大文字と小文字は区別されます。XDogとXdOgは別の変数です。
 
@@ -139,542 +147,619 @@ Xの他にも色々な頭文字があり種類を表しています。例えば：
 ネイティブコードへのコンパイル
 ========================
 
-どのようなプログラムでも、結局は.hexファイルにしてマイコンに書き込むためにあります。コンパイルするには、まず対象のマイコンを選びます。これはメニューの[設定]→[ターゲットマイコン]から行います。その後、全ての接点 (頭文字Xの変数)、コイル (頭文字Yの変数)、アナログ変換 (頭文字Aの変数)にマイコンの入出力ポートを割り当てる必要があります。これは画面下部の変数一覧からダブルクリックして行います。変数を選ぶとピンの一覧が表示されるので、その中から選択します。
+どのようなプログラムも究極的には.hexファイルにしてマイコンに書き込むためにあります。コンパイルするには、まず対象のマイコンを選びます。これはメニューの[設定]→[ターゲットマイコン]から行います。その後、全ての接点 (頭文字Xの変数)、コイル (頭文字Yの変数)、アナログ変換 (頭文字Aの変数)にマイコンの入出力ポートを割り当てる必要があります。これは画面下部の変数一覧からダブルクリックして行います。変数を選ぶとピンの一覧が表示されるので、その中から選択します。
 
-他の設定では、サイクル時間(周期)を
+他の設定としては、サイクル時間(周期)とマイコンの動作周波数があります。これらはメニューの[設定]→[マイコン設定]で調整します。ほとんどの場合サイクル時間を10msから変更する必要はありません。動作周波数の欄にはマイコンとともに使う発振子(水晶やセラミック)の周波数を記入して下さい。
 
-Then you must choose the cycle time that you will run with, and you must
-tell the compiler what clock speed the micro will be running at. These
-are set under the Settings -> MCU Parameters... menu. In general you
-should not need to change the cycle time; 10 ms is a good value for most
-applications. Type in the frequency of the crystal that you will use
-with the microcontroller (or the ceramic resonator, etc.) and click okay.
+これらの設定が終わればコンパイルできます。メニューで[コンパイル]→[コンパイル]を選びます。[名前をつけてコンパイル]を選ぶとコンパイル結果の出力先を変更できます。コンパイルエラーがなければIntel IHEX形式で機械語を書き出します。できあがったHEXファイルをお使いのライターでチップに書き込んで下さい。
 
-Now you can generate code from your program. Choose Compile -> Compile,
-or Compile -> Compile As... if you have previously compiled this program
-and you want to specify a different output file name. If there are no
-errors then LDmicro will generate an Intel IHEX file ready for
-programming into your chip.
+動作させる際は、チップの動作設定(ヒューズとも呼ばれます)に注意して下さい。
+PIC16では設定ワードとしてHEXファイルに含めてあるので、ライターが認識して設定します。
+AVRではHEXファイルには含まず、ツールを使って設定します。
 
-Use whatever programming software and hardware you have to load the hex
-file into the microcontroller. Remember to set the configuration bits
-(fuses)! For PIC16 processors, the configuration bits are included in the
-hex file, and most programming software will look there automatically.
-For AVR processors you must set the configuration bits by hand.
-
-
-INSTRUCTIONS REFERENCE
+命令リファレンス
 ======================
 
 > CONTACT, NORMALLY OPEN        Xname           Rname          Yname
                              ----] [----     ----] [----    ----] [----
+  接点 (通常), 常開接点, a接点, メイク接点
 
-    If the signal going into the instruction is false, then the output
-    signal is false. If the signal going into the instruction is true,
-    then the output signal is true if and only if the given input pin,
-    output pin, or internal relay is true, else it is false. This
-    instruction can examine the state of an input pin, an output pin,
-    or an internal relay.
+    この命令を使って入出力ピンや内部リレーの値を調べることができます。
+    通常閉じていて、押すと回路が開くスイッチに例えられます。
 
+    この命令に0を入力すると、0を出力します。
+    この命令に1を入力すると、関連付けられた入出力ピンや内部リレーが1のとき、1を出力します。
+    この命令に1を入力すると、関連付けられた入出力ピンや内部リレーが0のとき、0を出力します。
+    つまり、関連付けられた入出力ピンや内部リレーと同じ信号を出力します。
+
+    この命令は頭文字が R か X か Y の変数に関連付けられます。
+    Rの場合は内部リレー、Xの場合はピン入力、Yの場合はピン出力です。
+    いずれの場合も値は0か1の論理値です。
 
 > CONTACT, NORMALLY CLOSED      Xname           Rname          Yname
                              ----]/[----     ----]/[----    ----]/[----
+  接点 (反転), 常閉接点, b接点, ブレイク接点
 
-    If the signal going into the instruction is false, then the output
-    signal is false. If the signal going into the instruction is true,
-    then the output signal is true if and only if the given input pin,
-    output pin, or internal relay is false, else it is false. This
-    instruction can examine the state of an input pin, an output pin,
-    or an internal relay. This is the opposite of a normally open contact.
+    この命令を使って入出力ピンや内部リレーの値を調べることができます。
+    通常閉じていて、押すと回路が開くスイッチに例えられます。
 
+    この命令に0を入力すると、1を出力します。
+    この命令に1を入力すると、関連付けられた入出力ピンや内部リレーが1のとき、0を出力します。
+    この命令に1を入力すると、関連付けられた入出力ピンや内部リレーが0のとき、1を出力します。
+    つまり、関連付けられた入出力ピンや内部リレーと逆の信号を出力します。
+    これは開接点と逆の動作です。
+
+    この命令は頭文字が R か X か Y の変数に関連付けられます。
+    Rの場合は内部リレー、Xの場合はピン入力、Yの場合はピン出力です。
+    いずれの場合も値は0か1の論理値です。
 
 > COIL, NORMAL                  Rname           Yname
                              ----( )----     ----( )----
+  コイル (通常), 通常コイル
 
-    If the signal going into the instruction is false, then the given
-    internal relay or output pin is cleared false. If the signal going
-    into this instruction is true, then the given internal relay or output
-    pin is set true. It is not meaningful to assign an input variable to a
-    coil. This instruction must be the rightmost instruction in its rung.
+    この命令は出力ピンや内部リレーの値の設定に使います。
 
+    この命令に0を入力すると、関連付けられた出力ピンや内部リレーを0にセットします。
+    この命令に1を入力すると、関連付けられた出力ピンや内部リレーを1にリセットします。
+    つまり、関連付けられた出力ピンや内部リレーに信号と同じ値を設定します。
+
+    この命令は頭文字が R か Y の変数に関連付けられます。
+    Rの場合は内部リレー、Yの場合はマイコンのピン出力です。
+    いずれの場合も値は0か1の論理値です。
+
+    この命令はラングの右端にしか配置できません。
 
 > COIL, NEGATED                 Rname           Yname
                              ----(/)----     ----(/)----
+  コイル (反転), 反転コイル
 
-    If the signal going into the instruction is true, then the given
-    internal relay or output pin is cleared false. If the signal going
-    into this instruction is false, then the given internal relay or
-    output pin is set true. It is not meaningful to assign an input
-    variable to a coil.  This is the opposite of a normal coil. This
-    instruction must be the rightmost instruction in its rung.
+    この命令は出力ピンや内部リレーの値の設定に使います。
 
+    この命令に0を入力すると、関連付けられた出力ピンや内部リレーを1にセットします。
+    この命令に1を入力すると、関連付けられた出力ピンや内部リレーを0にリセットします。
+    つまり、関連付けられた出力ピンや内部リレーに信号と逆の値を設定します。
+
+    この命令は頭文字が R か Y の変数に関連付けられます。
+    Rの場合は内部リレー、Yの場合はマイコンのピンです。
+
+    この命令はラングの右端にしか配置できません。
 
 > COIL, SET-ONLY                Rname           Yname
                              ----(S)----     ----(S)----
+  コイル (セットのみ), セットコイル
 
-    If the signal going into the instruction is true, then the given
-    internal relay or output pin is set true. Otherwise the internal
-    relay or output pin state is not changed. This instruction can only
-    change the state of a coil from false to true, so it is typically
-    used in combination with a reset-only coil. This instruction must
-    be the rightmost instruction in its rung.
+    この命令は出力ピンや内部リレーの値の設定に使います。
 
+    この命令に0を入力すると、なにもしません。
+    この命令に1を入力すると、関連付けられた出力ピンや内部リレーを1にセットします。
+
+    このコイルによって状態が0にリセットされることはありません。
+    多くの場合、リセットコイルとペアで使われます。
+
+    この命令は頭文字が R か Y の変数に関連付けられます。
+    Rの場合は内部リレー、Yの場合はマイコンのピン出力です。
+
+    この命令はラングの右端にしか配置できません。
 
 > COIL, RESET-ONLY              Rname           Yname
                              ----(R)----     ----(R)----
+  コイル (セットのみ), リセットコイル
 
-    If the signal going into the instruction is true, then the given
-    internal relay or output pin is cleared false. Otherwise the
-    internal relay or output pin state is not changed. This instruction
-    instruction can only change the state of a coil from true to false,
-    so it is typically used in combination with a set-only coil. This
-    instruction must be the rightmost instruction in its rung.
+    この命令は出力ピンや内部リレーの値の設定に使います。
 
+    この命令に0を入力すると、なにもしません。
+    この命令に1を入力すると、関連付けられた出力ピンや内部リレーを0にリセットします。
 
-> TURN-ON DELAY                 Tdon 
+    このコイルによって状態が1にセットされることはありません。
+    多くの場合、セットコイルとペアで使われます。
+
+    この命令は頭文字が R か Y の変数に関連付けられます。
+    Rの場合は内部リレー、Yの場合はマイコンのピン出力です。
+
+    この命令はラングの右端にしか配置できません。
+
+> TURN-ON DELAY                 Tdon
                            -[TON 1.000 s]-
+  オンタイマー, オンディレイタイマー, 遅延立上, 限時動作即時復帰メイク接点
 
-    When the signal going into the instruction goes from false to true,
-    the output signal stays false for 1.000 s before going true. When the
-    signal going into the instruction goes from true to false, the output
-    signal goes false immediately. The timer is reset every time the input
-    goes false; the input must stay true for 1000 consecutive milliseconds
-    before the output will go true. The delay is configurable.
+    この命令はカウント値が設定された秒数以上になると0を出力します。
+    反応する秒数はダイアログで調節できます。
 
-    The `Tname' variable counts up from zero in units of scan times. The
-    TON instruction outputs true when the counter variable is greater
-    than or equal to the given delay. It is possible to manipulate the
-    counter variable elsewhere, for example with a MOV instruction.
+    この命令は状態を持ち、出力を保持します。
+    この命令に1を1秒間入力し続けると、1を出力しはじめます。
+    この命令に0を入力すると、すぐに0を出力しはじめます。
+    初期状態では0を出力します。
 
+    カウント値は1が入力される限り0にリセットされ続けます。
+    0.8秒1を入力して、0.2秒0を入力して、0.3秒1を入力しても
+    この命令が反応することはありません。
+
+    この命令は頭文字が T の変数に関連付けられます。
+    値はタイマーのカウント値です。
+    1が入力された秒数をサイクル時間を単位として数えます。
+
+    変数の値はMOV命令などで他のところから変更することができます。
 
 > TURN-OFF DELAY                Tdoff 
                            -[TOF 1.000 s]-
+  オフタイマー, オフディレイタイマー, 遅延立下, 限時動作即時復帰ブレイク接点
 
-    When the signal going into the instruction goes from true to false,
-    the output signal stays true for 1.000 s before going false. When
-    the signal going into the instruction goes from false to true,
-    the output signal goes true immediately. The timer is reset every
-    time the input goes false; the input must stay false for 1000
-    consecutive milliseconds before the output will go false. The delay
-    is configurable.
+    この命令はカウント値が設定された秒数以上になると0を出力します。
+    反応する秒数はダイアログで調節できます。
 
-    The `Tname' variable counts up from zero in units of scan times. The
-    TON instruction outputs true when the counter variable is greater
-    than or equal to the given delay. It is possible to manipulate the
-    counter variable elsewhere, for example with a MOV instruction.
+    この命令は状態を持ち、出力を保持します。
+    この命令に0を1秒間入力し続けると、0を出力しはじめます。
+    この命令に1を入力すると、すぐに1を出力しはじめます。
+    初期状態では0を出力します。
 
+    カウント値は1が入力される限り0にリセットされ続けます。
+    0.8秒0を入力して、0.2秒1を入力して、0.3秒0を入力しても
+    この命令が反応することはありません。
+
+    この命令は頭文字が T の変数に関連付けられます。
+    値はタイマーのカウント値です。
+    0が入力された秒数をサイクル時間を単位として数えます。
+
+    変数の値はMOV命令などで他のところから変更することができます。
 
 > RETENTIVE TIMER               Trto  
                            -[RTO 1.000 s]-
+  積算タイマー, 積算オンタイマー
 
-    This instruction keeps track of how long its input has been true. If
-    its input has been true for at least 1.000 s, then the output is
-    true. Otherwise the output is false. The input need not have been
-    true for 1000 consecutive milliseconds; if the input goes true
-    for 0.6 s, then false for 2.0 s, and then true for 0.4 s, then the
-    output will go true. After the output goes true it will stay true
-    even after the input goes false, as long as the input has been true
-    for longer than 1.000 s. This timer must therefore be reset manually,
-    using the reset instruction.
+    この命令は1を入力された秒数を数えます。
+    それまでに通算で1秒間以上1が入力されていれば1を出力します。
 
-    The `Tname' variable counts up from zero in units of scan times. The
-    TON instruction outputs true when the counter variable is greater
-    than or equal to the given delay. It is possible to manipulate the
-    counter variable elsewhere, for example with a MOV instruction.
+    この命令は状態を持ち、出力を保持します。
+    この命令に1を通算で1秒間入力すると、1を出力しはじめます。
+    この命令に0を入力すると、すぐに0を出力しはじめます。
+    初期状態では0を出力します。
 
+    入力する1秒間は連続している必要はありません。
+    例えば、0.6秒1を入力して、2.0秒0を入力して、0.4秒1を入力すると
+    この命令は1を出力しはじめます。
+
+    一度1を出力し始めると、この命令は入力が0になっても1を出力し続けます。
+    カウントをリセットするには、RESET命令を使います。
+
+    この命令は頭文字が T の変数に関連付けられます。
+    値はタイマーのカウント値です。
+    1が入力された積算の秒数をサイクル時間を単位として数えます。
+    この命令はカウント値が設定された秒数以上になると1を出力します。
+
+    変数の値はMOV命令やRESET命令などで他のところから変更することができます。
 
 > RESET                        Trto             Citems
                            ----{RES}----     ----{RES}----
+  リセット, カウンタリセット, タイマーリセット
 
-    This instruction resets a timer or a counter. TON and TOF timers are
-    automatically reset when their input goes false or true, so RES is
-    not required for these timers. RTO timers and CTU/CTD counters are
-    not reset automatically, so they must be reset by hand using a RES
-    instruction. When the input is true, the counter or timer is reset;
-    when the input is false, no action is taken. This instruction must
-    be the rightmost instruction in its rung.
+    タイマやカウンタをリセットする命令です。
 
+    この命令に0を入力すると、なにもしません。
+    この命令に1を入力すると、関連付けられたタイマやカウンタのカウント値を0にリセットします。
+
+    TONとTOFは入力によってリセットするため、この命令は必要ありません。
+    RTOやCTU/CTDは単独ではリセットされないので、この命令と組み合わせる必要があります。
+
+    この命令はラングの右端にしか配置できません。
 
 > ONE-SHOT RISING                  _
                            --[OSR_/ ]--
+  立ち上がり微分, 上昇時パルス, DIFU, PLS, ワンショット立ち上がり
 
-    This instruction normally outputs false. If the instruction's input
-    is true during this scan and it was false during the previous scan
-    then the output is true. It therefore generates a pulse one scan
-    wide on each rising edge of its input signal. This instruction is
-    useful if you want to trigger events off the rising edge of a signal.
+    入力の立ち上がりを検知してパルス信号を出力します。
+    イベントの通知や処理を行うきっかけなどに有用です。
 
+    直前のサイクルでの入力が0で、現在のサイクルでの入力が1のときに限り、1を出力します。
+    それ以外の場合は0を出力します。
 
 > ONE-SHOT FALLING               _
                            --[OSF \\_]--
+  立ち下がり微分, 下降時パルス, DIFD, PLF, ワンショット立ち下がり
 
-    This instruction normally outputs false. If the instruction's input
-    is false during this scan and it was true during the previous scan
-    then the output is true. It therefore generates a pulse one scan
-    wide on each falling edge of its input signal. This instruction is
-    useful if you want to trigger events off the falling edge of a signal.
+    入力の立ち下がりを検知してパルス信号を出力します。
+    イベントの通知や処理を行うきっかけなどに有用です。
 
+    直前のサイクルでの入力が1で、現在のサイクルでの入力が0のときに限り、1を出力します。
+    それ以外の場合は0を出力します。
 
 > SHORT CIRCUIT, OPEN CIRCUIT
                            ----+----+----      ----+     +----
+  閉回路/開回路, 短絡/開放, ショート/オープン
 
-    The output condition of a short-circuit is always equal to its
-    input condition. The output condition of an open-circuit is always
-    false. These are mostly useful for debugging.
-
+    閉回路の出力は常に入力と同じになります。
+    開回路の出力は入力に関わらず常に0です。
+    デバッグやラングをグループにまとめる際に有用です。
 
 > MASTER CONTROL RELAY
                            -{MASTER RLY}-
+  マスターコントロールリレー, マスター制御リレー
 
-    By default, the rung-in condition of every rung is true. If a master
-    control relay instruction is executed with a rung-in condition of
-    false, then the rung-in condition for all following rungs becomes
-    false. This will continue until the next master control relay
-    instruction is reached (regardless of the rung-in condition of that
-    instruction). These instructions must therefore be used in pairs:
-    one to (maybe conditionally) start the possibly-disabled section,
-    and one to end it.
+    全ラングへの入力信号を表します。
+    プログラムの動作中は通常、全てのラングの入力は常に1です。
+    この命令に0が入力されると、全てのラングの入力が0になります。
+    その状態は再度この命令に1が入力されるまで続きます。
 
+    多くの場合、この命令はペアで使われます。
+    全体をオフにするものと、それから復帰するためのものです。
 
 > MOVE                      {destvar :=  }      {Tret :=     }
                            -{ 123     MOV}-    -{ srcvar  MOV}-
+  代入, 転送, ムーブ
 
-    When the input to this instruction is true, it sets the given
-    destination variable equal to the given source variable or
-    constant. When the input to this instruction is false nothing
-    happens. You can assign to any variable with the move instruction;
-    this includes timer and counter state variables, which can be
-    distinguished by the leading `T' or `C'. For example, an instruction
-    moving 0 into `Tretentive' is equivalent to a reset (RES) instruction
-    for that timer. This instruction must be the rightmost instruction
-    in its rung.
+    変数に値を設定する命令です。
 
+    この命令に0を入力すると、なにもしません。
+    この命令に1を入力すると、代入先の変数に代入元の変数の値を設定します。
+
+    代入先にはすべての種類の変数が指定できます。
+    これにはタイマー変数 (頭文字T)とカウンター変数 (頭文字C)も含みます。
+    例えば0を代入するようにすれば、RESET命令と同様の動作になります。
+
+    この命令はラングの右端にしか配置できません。
 
 > ARITHMETIC OPERATION       {ADD  kay  :=}       {SUB  Ccnt :=}
                             -{ 'a' + 10   }-     -{ Ccnt - 10  }-
 
 >                            {MUL  dest :=}       {DIV  dv :=  }
                             -{ var * -990 }-     -{ dv / -10000}-
+  四則演算 (加減乗除)
 
-    When the input to this instruction is true, it sets the given
-    destination variable equal to the given expression. The operands
-    can be either variables (including timer and counter variables)
-    or constants. These instructions use 16 bit signed math. Remember
-    that the result is evaluated every cycle when the input condition
-    true. If you are incrementing or decrementing a variable (i.e. if
-    the destination variable is also one of the operands) then you
-    probably don't want that; typically you would use a one-shot so that
-    it is evaluated only on the rising or falling edge of the input
-    condition. Divide truncates; 8 / 3 = 2. This instruction must be
-    the rightmost instruction in its rung.
+    これらの命令は加減乗除の計算を行い、結果を変数に設定します。
 
+    これらの命令に0を入力すると、なにもしません。
+    これらの命令に1を入力すると、代入先の変数に計算結果を代入します。
+    1を入力し続ける限り、計算と代入を毎サイクル繰り返し行います。
+
+    右辺の項には変数か数値を指定します。
+    数値は10進数 (0, 1234, -56) で指定できるほか、ASCIIコード ('A', 'z') を指定することもできます。
+    その場合はシングルクォート (') で文字を括って下さい。    
+
+    計算は16ビット符号付き整数で行われます。
+    値の範囲は -32768 から 32767 です。
+
+    繰り返しに注意して下さい。例えば、a = a + 100という命令を
+    ラングに置いたとすると、変数aの値は毎サイクル100ずつ上がっていきます。
+    計算のステップとして1を単に足したいだけの場合は、OSR/OSFなど
+    条件を組み合わせて、計算と代入が1度しか実行されないようにしてください。
+
+    割り算は端数を切り落とします。8 / 3 = 2になります。
+
+    この命令はラングの右端にしか配置できません。
 
 > COMPARE               [var ==]        [var >]        [1 >=]
                        -[ var2 ]-      -[ 1   ]-      -[ Ton]-
 
 >                       [var /=]       [-4 <   ]       [1 <=]
                        -[ var2 ]-     -[ vartwo]-     -[ Cup]-
+  比較 (等値, 非等値, 超過, 未満, 以上, 以下)
 
-    If the input to this instruction is false then the output is false. If
-    the input is true then the output is true if and only if the given
-    condition is true. This instruction can be used to compare (equals,
-    is greater than, is greater than or equal to, does not equal,
-    is less than, is less than or equal to) a variable to a variable,
-    or to compare a variable to a 16-bit signed constant.
+    これらの命令は数値や変数の比較に使います。
 
+    この命令に0を入力すると、なにもしません。
+    この命令に1を入力すると、設定された不等式が真である時1を、偽であるとき0を出力します。
+
+    計算は16ビット符号付き整数で行われます。
+    値の範囲は -32768 から 32767 です。
+
+    数値は10進数 (0, 1234, -56) で指定できるほか、ASCIIコード ('A', 'z') を指定することもできます。
+    その場合はシングルクォート (') で文字を括って下さい。    
 
 > COUNTER                      Cname          Cname
                            --[CTU >=5]--  --[CTD >=5]--
+  カウンタ (アップカウンタ, ダウンカウンタ)
 
-    A counter increments (CTU, count up) or decrements (CTD, count
-    down) the associated count on every rising edge of the rung input
-    condition (i.e. what the rung input condition goes from false to
-    true). The output condition from the counter is true if the counter
-    variable is greater than or equal to 5, and false otherwise. The
-    rung output condition may be true even if the input condition is
-    false; it only depends on the counter variable. You can have CTU
-    and CTD instructions with the same name, in order to increment and
-    decrement the same counter. The RES instruction can reset a counter,
-    or you can perform general variable operations on the count variable.
+    信号の立ち上がりを検知して数値を1ずつ上げ下げする命令です。
 
+    直前のサイクルでの入力が0で、
+    現在のサイクルでの入力が1のときに限り、カウントを変化させます。
+    それ以外の場合、なにもしません。
+
+    アップカウンタはカウント値をインクリメント(1足す)します。
+    ダウンカウンタはカウント値をデクリメント(1引く)します。
+    カウント値が5以上なら1、そうでなければ0を出力します。
+    比較する数値はダイアログで調整できます。
+
+    これらの命令は頭文字が C の変数に関連付けられます。
+    値はカウント値です。
+    変数の値はRESET命令やMOV命令などで他のところから変更することができます。
+    また、同じ変数に対してCTUとCTDの両方を配置することができます。
+    これによって、変数を上げ下げすることができます。
 
 > CIRCULAR COUNTER             Cname
                            --{CTC 0:7}--
+  循環カウンタ
 
-    A circular counter works like a normal CTU counter, except that
-    after reaching its upper limit, it resets its counter variable
-    back to 0. For example, the counter shown above would count 0, 1,
-    2, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 2,.... This is useful in
-    combination with conditional statements on the variable `Cname';
-    you can use this like a sequencer. CTC counters clock on the rising
-    edge of the rung input condition condition. This instruction must
-    be the rightmost instruction in its rung.
+    信号の立ち上がりを検知して数値を1ずつ上げてゆく命令です。
+    数値が上限値を超えると0に戻ります。
 
+    直前のサイクルでの入力が0で、現在のサイクルでの入力が1のときに限り、カウントを変化させます。
+    それ以外の場合、なにもしません。
+
+    通常はカウント値をインクリメントします。
+    ただしカウンタ値が7の場合は、インクリメントする代わりに0にリセットします。
+    それ以外の場合、なにもしません。
+
+    たとえば最大値が7の場合、パルスを送るたびカウンタの値は
+      0, 1, 2, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 2,....
+    のようになります。
+
+    最大値はダイアログで調整できます。
+    順繰りに数値が繰り返すので、シーケンサのように使うことができます。
+
+    この命令は頭文字が C の変数に関連付けられます。
+    値はカウント値です。
+    変数の値はRESET命令やMOV命令などで他のところから変更することができます。
+
+    この命令はラングの右端にしか配置できません。
 
 > SHIFT REGISTER            {SHIFT REG   }
                            -{ reg0..3    }-
+  シフトレジスタ, SFT, SFL
 
-    A shift register is associated with a set of variables. For example,
-    this shift register is associated with the variables `reg0', `reg1',
-    `reg2', and `reg3'. The input to the shift register is `reg0'. On
-    every rising edge of the rung-in condition, the shift register will
-    shift right. That means that it assigns `reg3 := reg2', `reg2 :=
-    reg1'. and `reg1 := reg0'. `reg0' is left unchanged. A large shift
-    register can easily consume a lot of memory. This instruction must
-    be the rightmost instruction in its rung.
+    この命令は通し番号をつけた変数を一度に用意するものです。
+    図の例では、reg0, reg1, reg2, reg3の4つの変数があります。
+    変数をステージと呼ぶことがあります。
 
+    直前のサイクルでの入力が0で、現在のサイクルでの入力が1のときに限り、各変数の値をシフトします。
+    それ以外の場合、なにもしません。
+
+    変数のシフトとは、以下のように変数の値を1つずつずらす動作です。
+      reg3 := reg2
+      reg2 := reg1
+      reg1 := reg0
+    reg0の値はそのまま残ります。
+
+    巨大なシフトレジスタはメモリを圧迫することがあるので注意して下さい。
+
+    この命令は通し番号のついた複数の汎用変数に関連付けられます。
+    この命令はラングの右端にしか配置できません。
 
 > LOOK-UP TABLE             {dest :=     }
                            -{ LUT[i]     }-
+  ルックアップテーブル
 
-    A look-up table is an ordered set of n values. When the rung-in
-    condition is true, the integer variable `dest' is set equal to the
-    entry in the lookup table corresponding to the integer variable
-    `i'. The index starts from zero, so `i' must be between 0 and
-    (n-1). The behaviour of this instruction is not defined if the
-    index is outside this range. This instruction must be the rightmost
-    instruction in its rung.
+    この命令は数値列を記憶しておき、通し番号で参照するものです。
+    記憶するデータはダイアログで設定できます。
 
+    この命令に0を入力すると、なにもしません。
+    この命令に1を入力すると、i番目のデータを参照して変数destに代入します。
+    変数iのことを添字と呼びます。
+
+    添字の範囲は0から要素数-1です。
+    添字が範囲外の場合の動作は未定義です。
+
+    この命令は汎用変数に関連付けられます。
+    この命令はラングの右端にしか配置できません。
 
 > PIECEWISE LINEAR TABLE    {yvar :=     }
                            -{ PWL[xvar]  }-
+  線形連想配列
 
-    This is a good way to approximate a complicated function or
-    curve. It might, for example, be useful if you are trying to apply
-    a calibration curve to convert a raw output voltage from a sensor
-    into more convenient units.
+    この命令は数字と数字の対応 (XY値)を記憶しておき、参照するものです。
+    記憶するデータはダイアログで設定できます。
 
-    Assume that you are trying to approximate a function that converts
-    an integer input variable, x, to an integer output variable, y. You
-    know the function at several points; for example, you might know that
+    この命令に0を入力すると、なにもしません。
+    この命令に1を入力すると、xvarに対応するデータを計算して変数yvarに代入します。
+    変数はダイアログで設定できます。
+
+    この命令は計算が複雑な関数を予め計算しておくのに有用です。
+    例えば、センサーの出力電圧をより扱いやすい単位にキャリブレーションするために使えます。
+
+    数値に対応するデータがない場合、出力は前後の数値から線形補間されます。
+    例えば、関数 f が次のような値をとるとします。
 
         f(0)   = 2
         f(5)   = 10
         f(10)  = 50
         f(100) = 100
 
-    This means that the points
+    これは、グラフで点を打つと次のような4つの点があるということです。
 
         (x0, y0)   = (  0,   2)
         (x1, y1)   = (  5,  10)
         (x2, y2)   = ( 10,  50)
         (x3, y3)   = (100, 100)
 
-    lie on that curve. You can enter those 4 points into a table
-    associated with the piecewise linear instruction. The piecewise linear
-    instruction will look at the value of xvar, and set the value of
-    yvar. It will set yvar in such a way that the piecewise linear curve
-    will pass through all of the points that you give it; for example,
-    if you set xvar = 10, then the instruction will set yvar = 50.
+    これをPLTに記憶しておいて、例えば55を参照するとします。
+    X=55の点は(10, 50)と(100, 100)の中点(55, 75)なので、75という数値が得られます。
 
-    If you give the instruction a value of xvar that lies between two
-    of the values of x for which you have given it points, then the
-    instruction will set yvar so that (xvar, yvar) lies on the straight
-    line connecting those two points in the table.  For example, xvar =
-    55 gives an output of yvar = 75. (The two points in the table are
-    (10, 50) and (100, 100). 55 is half-way between 10 and 100, and 75
-    is half-way between 50 and 100, so (55, 75) lies on the line that
-    connects those two points.)
+    X側の数値は単調増加になるよう入力する必要があります。
 
-    The points must be specified in ascending order by x coordinate. It
-    may not be possible to perform mathematical operations required for
-    certain look-up tables using 16-bit integer math; if this is the
-    case, then LDmicro will warn you. For example, this look up table
-    will produce an error:
+    補完の計算は符号付き16ビット整数で行うため、補完の計算で誤差が生じることがあります。
+    例えば、次のようなエントリはコンパイル時にエラーになります。
 
         (x0, y0)    = (  0,   0)
         (x1, y1)    = (300, 300)
 
-    You can fix these errors by making the distance between points in
-    the table smaller. For example, this table is equivalent to the one
-    given above, and it does not produce an error:
+    この場合、点と点の距離を縮めるようにすれば解消できます。
 
         (x0, y0)    = (  0,   0)
         (x1, y1)    = (150, 150)
         (x2, y2)    = (300, 300)
 
-    It should hardly ever be necessary to use more than five or six
-    points. Adding more points makes your code larger and slower to
-    execute. The behaviour if you pass a value of `xvar' greater than
-    the greatest x coordinate in the table or less than the smallest x
-    coordinate in the table is undefined. This instruction must be the
-    rightmost instruction in its rung.
+    5、6の点があれば通常の用途には充分です。それ以上のエントリ数は計算の負荷になる恐れがあります。
 
+    xvarの値がエントリの範囲外(最小のX値より下か、最大のX値より上)の場合の動作は未定義です。
+
+    この命令は汎用変数に関連付けられます。
+    この命令はラングの右端にしか配置できません。
 
 > A/D CONVERTER READ           Aname
                            --{READ ADC}--
+  アナログ入力読み込み, AD変換読み込み
 
-    LDmicro can generate code to use the A/D converters built in to
-    certain microcontrollers. If the input condition to this instruction
-    is true, then a single sample from the A/D converter is acquired and
-    stored in the variable `Aname'. This variable can subsequently be
-    manipulated with general variable operations (less than, greater than,
-    arithmetic, and so on). Assign a pin to the `Axxx' variable in the
-    same way that you would assign a pin to a digital input or output,
-    by double-clicking it in the list at the bottom of the screen. If
-    the input condition to this rung is false then the variable `Aname'
-    is left unchanged.
+    LDmicroはマイコンのAD変換機能を利用することができます。
 
-    For all currently-supported devices, 0 volts input corresponds to
-    an ADC reading of 0, and an input equal to Vdd (the supply voltage)
-    corresponds to an ADC reading of 1023. If you are using an AVR, then
-    connect AREF to Vdd. You can use arithmetic operations to scale the
-    reading to more convenient units afterwards, but remember that you
-    are using integer math. In general not all pins will be available
-    for use with the A/D converter. The software will not allow you to
-    assign non-A/D pins to an analog input. This instruction must be
-    the rightmost instruction in its rung.
+    この命令に0を入力すると、なにもしません。
+    この命令に1を入力すると、ピンの入力電圧にAD変換を行い対応する変数 (頭文字A) に代入します。
+    この変数は他の計算(比較、四則演算)に使うことができます。
 
+    入力ピンの設定は画面下部の変数一覧からダブルクリックすることで行います。
+    多くのマイコンでは、アナログ入力に対応するピンには制限があります。
+    マイコンにAVRをお使いの場合は、AREFピンをVddと接続して下さい。
+
+    この命令は頭文字 A の変数に関連付けられます。
+    値はアナログ入力ピンの電圧を表す値です。
+    0Vは0という値に、参照電極と同じ電圧の入力は1023という値に対応します。
+    計算命令を使うことで値の範囲は望むように加工できますが、
+    演算が全て16ビット整数であることに留意してください。
+
+    この命令はラングの右端にしか配置できません。
 
 > SET PWM DUTY CYCLE          duty_cycle
                            -{PWM 32.8 kHz}-
+  PWMデューティ比設定
 
-    LDmicro can generate code to use the PWM peripheral built in to
-    certain microcontrollers. If the input condition to this instruction
-    is true, then the duty cycle of the PWM peripheral is set to the
-    value of the variable duty_cycle. The duty cycle must be a number
-    between 0 and 100; 0 corresponds to always low, and 100 corresponds to
-    always high. (If you are familiar with how the PWM peripheral works,
-    then notice that that means that LDmicro automatically scales the
-    duty cycle variable from percent to PWM clock periods.)
+    LDmicroはマイコンのPWM機能を利用することができます。
+    この命令はPWMのデューティ比を変数に合わせて設定します。
 
-    You can specify the target PWM frequency, in Hz. The frequency that
-    you specify might not be exactly achievable, depending on how it
-    divides into the microcontroller's clock frequency. LDmicro will
-    choose the closest achievable frequency; if the error is large then
-    it will warn you. Faster speeds may sacrifice resolution.
+    この命令に0を入力すると、なにもしません。
+    この命令に1を入力すると、PWMのデューティ比を変数duty_cycleの値に設定します。
 
-    This instruction must be the rightmost instruction in its rung.
-    The ladder logic runtime consumes one timer to measure the cycle
-    time. That means that PWM is only available on microcontrollers
-    with at least two suitable timers. PWM uses pin CCP2 (not CCP1)
-    on PIC16 chips and OC2 (not OC1A) on AVRs.
+    デューティ比の値の範囲は0から100です。
+    0を設定すると常にロー、100を設定すると常にハイになります。
+    (クロック数などの変換の計算はLDmicroが行います)
 
+    ダイアログでPWM周波数をHzで設定できます。
+    動作周波数や分周との兼ね合いで実際に望みの周波数になるとは限りませんが、
+    LDmicroはもっとも近い値になるよう設定を調整します。
+    誤差があまりに大きい場合はコンパイル時に警告が出ます。
+    速度を余りに早くすると解像度が落ちる恐れがあります。
+
+    マイコンのPWM機能はタイマー機能に関連付けられています。
+    LDmicroはサイクルの管理のためタイマーをもう一つ専有します。
+    そのため、マイコンには最低2つのタイマーが必要になります。
+
+    出力ピンはPIC16ではCCP1ではなくCCP2側、AVRではOC1AではなくOC2A側を使います。
+
+    この命令は汎用変数に関連付けられます。
+    この命令はラングの右端にしか配置できません。
 
 > MAKE PERSISTENT            saved_var
                            --{PERSIST}--
+  永続変数, 永続化, EEPROM保存
 
-    When the rung-in condition of this instruction is true, it causes the
-    specified integer variable to be automatically saved to EEPROM. That
-    means that its value will persist, even when the micro loses
-    power. There is no need to explicitly save the variable to EEPROM;
-    that will happen automatically, whenever the variable changes. The
-    variable is automatically loaded from EEPROM after power-on reset. If
-    a variable that changes frequently is made persistent, then the
-    EEPROM in your micro may wear out very quickly, because it is only
-    good for a limited (~100 000) number of writes. When the rung-in
-    condition is false, nothing happens. This instruction must be the
-    rightmost instruction in its rung.
+    この命令は変数をEEPROMに保存します。
 
+    この命令に0を入力すると、なにもしません。
+    この命令に1を入力すると、指定した変数の値をEEPROMに保存します。
+    これによって、マイコンの電源が切れた後でも値が保存されます。
+
+    値の保存や復元は自動的に行われます。
+    変数の値が変化した時に書き込み、電源オンの割り込み時に読み出されます。
+
+    多くのEEPROMは書き込み保証回数が少ない(100000回程度)ので、
+    頻繁に変化する変数を指定するのは避けたほうがよいでしょう。
+
+    この命令は汎用変数に関連付けられます。
+
+    この命令はラングの右端にしか配置できません。
 
 > UART (SERIAL) RECEIVE          var
                            --{UART RECV}--
+  UART受信
 
-    LDmicro can generate code to use the UART built in to certain
-    microcontrollers. On AVRs with multiple UARTs only UART1 (not
-    UART0) is supported. Configure the baud rate using Settings -> MCU
-    Parameters. Certain baud rates may not be achievable with certain
-    crystal frequencies; LDmicro will warn you if this is the case.
+    LDmicroはマイコンのUART機能を利用することができます。
+    この命令はUARTで1文字を受信して変数に設定します。
 
-    If the input condition to this instruction is false, then nothing
-    happens. If the input condition is true then this instruction tries
-    to receive a single character from the UART. If no character is read
-    then the output condition is false. If a character is read then its
-    ASCII value is stored in `var', and the output condition is true
-    for a single PLC cycle.
+    この命令に0を入力すると、なにもしません。
+    この命令に1を入力すると、UARTで1文字を受信しようとします。
+    文字を受信したサイクルだけ1を出力します。
+    受信した文字は関連付けられた変数に保存されます。
+    それ以外の場合は0を出力します。
 
+    AVRの複数のUARTが使える機種では、UART0ではなくUART1側のみに対応しています。
+    通信のボーレートはメニューの[設定]→[マイコン設定]から設定できます。
+    動作周波数によってはボーレートが実現できない場合もあります。
+    その場合はLDmicroは警告を表示します。
+
+    複数のUART命令が一度に起動された場合の動作は未定義です。
+
+    この命令は汎用変数に関連付けられます。
+    値は受信した文字です。
 
 > UART (SERIAL) SEND             var
                            --{UART SEND}--
+  UART送信
 
-    LDmicro can generate code to use the UARTs built in to certain
-    microcontrollers. On AVRS with multiple UARTs only UART1 (not
-    UART0) is supported. Configure the baud rate using Settings -> MCU
-    Parameters. Certain baud rates may not be achievable with certain
-    crystal frequencies; LDmicro will warn you if this is the case.
+    LDmicroはマイコンのUART機能を利用することができます。
+    この命令は変数の値からUARTで1文字を送信します。
 
-    If the input condition to this instruction is false, then nothing
-    happens. If the input condition is true then this instruction writes
-    a single character to the UART. The ASCII value of the character to
-    send must previously have been stored in `var'. The output condition
-    of the rung is true if the UART is busy (currently transmitting a
-    character), and false otherwise.
+    この命令に0を入力すると、なにもしません。
+    この命令に1を入力すると、UARTで1文字を送信しようとします。
+    文字を送信中のとき1を出力します。
+    それ以外の場合は0を出力します。
 
-    Remember that characters take some time to transmit. Check the output
-    condition of this instruction to ensure that the first character has
-    been transmitted before trying to send a second character, or use
-    a timer to insert a delay between characters. You must only bring
-    the input condition true (try to send a character) when the output
-    condition is false (UART is not busy).
+    AVRの複数のUARTが使える機種では、UART0ではなくUART1側のみに対応しています。
+    通信のボーレートはメニューの[設定]→[マイコン設定]から設定できます。
+    動作周波数によってはボーレートが実現できない場合もあります。
+    その場合はLDmicroは警告を表示します。
 
-    Investigate the formatted string instruction (next) before using this
-    instruction. The formatted string instruction is much easier to use,
-    and it is almost certainly capable of doing what you want.
+    複数のUART命令が一度に起動された場合の動作は未定義です。
 
+    この命令は汎用変数に関連付けられます。
+    値は送信するための文字です。
+    他のMOV命令やLUT命令などから設定することができます。
+
+    転送には複数サイクルにわたって時間がかかることに注意して下さい。
+    複数の文字を送るには、出力の立ち下がりを監視するか、
+    タイマーを使って間隔をあけます。
+    1を入力していい(送信)のはこの命令から0が出力されている(通信中でない)ときだけです。
+
+    多くの場合は次のFORMAT命令を使うほうが容易です。
 
 > FORMATTED STRING OVER UART                var
                                    -{"Pressure: \\3\\r\\n"}-
+  UART書式送信
 
-    LDmicro can generate code to use the UARTs built in to certain
-    microcontrollers. On AVRS with multiple UARTs only UART1 (not
-    UART0) is supported. Configure the baud rate using Settings -> MCU
-    Parameters. Certain baud rates may not be achievable with certain
-    crystal frequencies; LDmicro will warn you if this is the case.
+    LDmicroはマイコンのUART機能を利用することができます。
+    この命令は変数の値からUARTで文字列を送信します。
 
-    When the rung-in condition for this instruction goes from false to
-    true, it starts to send an entire string over the serial port. If
-    the string contains the special sequence `\\3', then that sequence
-    will be replaced with the value of `var', which is automatically
-    converted into a string. The variable will be formatted to take
-    exactly 3 characters; for example, if `var' is equal to 35, then
-    the exact string printed will be `Pressure:  35\\r\\n' (note the extra
-    space). If instead `var' were equal to 1432, then the behaviour would
-    be undefined, because 1432 has more than three digits. In that case
-    it would be necessary to use `\\4' instead.
+    この命令に0を入力すると、なにもしません。
+    この命令に1を入力すると、直前サイクルの入力が0の時に限り、
+    UARTで文字列の送信を開始します。
+    文字を送信中のとき1を出力します。
+    それ以外の場合は0を出力します。
 
-    If the variable might be negative, then use `\\-3d' (or `\\-4d'
-    etc.) instead. That will cause LDmicro to print a leading space for
-    positive numbers, and a leading minus sign for negative numbers.
+    AVRの複数のUARTが使える機種では、UART0ではなくUART1側のみに対応しています。
+    通信のボーレートはメニューの[設定]→[マイコン設定]から設定できます。
+    動作周波数によってはボーレートが実現できない場合もあります。
+    その場合はLDmicroは警告を表示します。
 
-    If multiple formatted string instructions are energized at once
-    (or if one is energized before another completes), or if these
-    instructions are intermixed with the UART TX instructions, then the
-    behaviour is undefined.
+    複数のUART命令が一度に起動された場合の動作は未定義です。
 
-    It is also possible to use this instruction to output a fixed string,
-    without interpolating an integer variable's value into the text that
-    is sent over serial. In that case simply do not include the special
-    escape sequence.
+    設定した書式文字列が '\\3' というエスケープシーケンスを含む場合、
+    その部分に変数varの値が文字列として置き換えられます。
+    この場合必ず3文字分に置き換えられます。
+    例えばvarの値が35の場合、"Pressure: \\3\\r\\n" という書式は
+    "Pressure:  35\\r\\n" のようになります。
+    varに1432といった4桁の値がある場合、動作は未定義です。
+    その可能性がある場合は '\\3' の代わりに '\\4' を使うほうがよいでしょう。
 
-    Use `\\\\' for a literal backslash. In addition to the escape sequence
-    for interpolating an integer variable, the following control
-    characters are available:
-        * \\r   -- carriage return
-        * \\n   -- newline
-        * \\f   -- formfeed
-        * \\b   -- backspace
-        * \\xAB -- character with ASCII value 0xAB (hex)
+    また、値が負の可能性がある場合、`\\-3d' (あるいは `\\-4d') のように
+    指定して下さい。符号をつけるための空白を確保します。
 
-    The rung-out condition of this instruction is true while it is
-    transmitting data, else false. This instruction consumes a very
-    large amount of program memory, so it should be used sparingly. The
-    present implementation is not efficient, but a better one will
-    require modifications to all the back-ends.
+    変数を埋め込まず、単に固定文字列を送信することもできます。
+    その場合はエスケープシーケンスを使う必要はありません。
 
+    '\\数字' の他に、次のようなコントロールキャラクタを使うことができます。
 
-A NOTE ON USING MATH
+\t・ \\\\  -- バックスラッシュ
+\t・ \\r   -- キャリッジリターン
+\t・ \\n   -- ラインフィード
+\t・ \\f   -- フォームフィード
+\t・ \\b   -- バックスペース
+\t・ \\xAB -- 16進数の 0xAB
+
+    メモリの点でこの命令はあまり効率的ではありません。最適化にはLDmicro全体にわたる改造が必要そうです。
+
+算術命令の詳細
 ====================
 
-Remember that LDmicro performs only 16-bit integer math. That means
-that the final result of any calculation that you perform must be an
-integer between -32768 and 32767. It also mean that the intermediate
-results of your calculation must all be within that range.
-
-For example, let us say that you wanted to calculate y = (1/x)*1200,
-where x is between 1 and 20. Then y goes between 1200 and 60, which
-fits into a 16-bit integer, so it is at least in theory possible to
-perform the calculation. There are two ways that you might code this:
-you can perform the reciprocal, and then multiply:
+LDmicroの計算は16ビット符号付き整数で行われます。値の範囲は -32768 から 32767 です。
+これは、正しい計算結果を得るためには、計算途中の値もこの範囲に収める必要があることを意味します。
+例えば、y = (1/x)*1200 という式を計算するとします。xの範囲を[1, 20]とすると、yは[60, 1200]という範囲になります。
+この計算には二通りの実装がありえます。一つはxの逆数を取ってから1200をかける方法です。
 
    ||         {DIV  temp  :=}          ||
    ||---------{ 1 / x       }----------||
@@ -683,27 +768,19 @@ you can perform the reciprocal, and then multiply:
    ||----------{ temp * 1200}----------||
    ||                                  ||
 
-Or you could just do the division directly, in a single step:
+もしくは、xを直接1200で割ります。
 
    ||           {DIV  y  :=}           ||
    ||-----------{ 1200 / x }-----------||
 
-Mathematically, these two are equivalent; but if you try them, then you
-will find that the first one gives an incorrect result of y = 0. That
-is because the variable `temp' underflows. For example, when x = 3,
-(1 / x) = 0.333, but that is not an integer; the division operation
-approximates this as temp = 0. Then y = temp * 1200 = 0. In the second
-case there is no intermediate result to underflow, so everything works.
+数学的にはこの二つは同じ意味です。しかしこの二つを試すと、前者の結果はy=0になってしまいます。なぜなら、計算途中のtempでアンダーフローが起こるからです。例えばx = 3の逆数は0.333で、整数ではなくなります。除算は切り捨てなので、結果は0になります。それに1200を掛けても0のままです。後者の場合はアンダーフローは起こりません。
 
-If you are seeing problems with your math, then check intermediate
-results for underflow (or overflow, which `wraps around'; for example,
-32767 + 1 = -32768). When possible, choose units that put values in
-a range of -100 to 100.
+他にオーバーフローの問題があります。符号付き整数の仕組み上、32767 + 1 = -32768のように循環します。
 
-When you need to scale a variable by some factor, do it using a multiply
-and a divide. For example, to scale y = 1.8*x, calculate y = (9/5)*x
-(which is the same, since 1.8 = 9/5), and code this as y = (9*x)/5,
-performing the multiplication first:
+これらの問題を防ぐには、例えば変数の範囲を-100から100の間にとどめるなどのルールを決めておくとよいでしょう。
+
+数の単位を変換する場合、掛け算の次に割り算を行うとよいでしょう。
+y = 1.8*x のような変換は、y = (9/5)*xのように書き換えて、y = (9*x)/5として実装します。
 
    ||         {MUL  temp  :=}          ||
    ||---------{ x * 9       }----------||
@@ -711,15 +788,12 @@ performing the multiplication first:
    ||           {DIV  y  :=}           ||
    ||-----------{ temp / 5 }-----------||
 
-This works for all x < (32767 / 9), or x < 3640. For larger values of x,
-the variable `temp' would overflow. There is a similar lower limit on x.
+この実装は |x| < (32767 / 9) = 3640 の範囲で働きますが、範囲外の場合はtempがオーバーフローします。
 
-
-CODING STYLE
+コーディングスタイル
 ============
 
-I allow multiple coils in parallel in a single rung. This means that
-you can do things like this:
+私は以下のように、一つのラングに複数コイルを使うことがあります。
 
    ||       Xa               Ya        ||
  1 ||-------] [--------------( )-------||
@@ -731,7 +805,7 @@ you can do things like this:
    ||                +-------( )-------||
    ||                                  ||
 
-Instead of this:
+並列のコイルを使わずに書くと、次のようになります。
 
    ||       Xa               Ya        ||
  1 ||-------] [--------------( )-------||
@@ -749,21 +823,13 @@ Instead of this:
  3 ||-------] [--------------( )-------||
    ||                                  ||
 
-This means that in theory you could write any program as one giant rung,
-and there is no need to use multiple rungs at all. In practice that
-would be a bad idea, because as rungs become more complex they become
-more difficult to edit without deleting and redrawing a lot of logic.
+理論的には、複数のラングを使う必要は全くありません。命令を全て並列に配置することで、巨大なラングが一つあるだけのプログラムを作ることができます。しかし、プログラムが複雑になるにつれてロジックの変更が難しくなってゆくでしょう。新たな機能を追加するために大幅に書き換えが必要になるかもしれません。
 
-Still, it is often a good idea to group related logic together as a single
-rung. This generates nearly identical code to if you made separate rungs,
-but it shows that they are related when you look at them on the ladder
-diagram.
+適度であれば、ラングをグループ分けするのはよいことです。閉回路やコイルを左端に入れて命令を並列に配置することでラングを束ねることができます。なるべく関係の深いものをまとめ、論理的な単位ごとにラングを分けて設計しましょう。動作としてはラングを束ねず設計する場合と変わりありませんが、ラダー図を見渡すとき、論理的なまとまりを視覚的に把握しやすくなります。
 
                   *                 *                  *
 
-In general, it is considered poor form to write code in such a way that
-its output depends on the order of the rungs. For example, this code
-isn't very good if both Xa and Xb might ever be true:
+ラングの優先順序に依存するロジックは、多くの場合混乱を引き起こします。例えば、次のような設計はXaとXbが共に閉じた場合にはYcは1になりますが、直感的ではありません。
 
    ||       Xa         {v  :=       }  ||
  1 ||-------] [--------{ 12      MOV}--||
@@ -778,9 +844,8 @@ isn't very good if both Xa and Xb might ever be true:
  2 ||------[ 15]-------------( )-------||
    ||                                  ||
 
-I will break this rule if in doing so I can make a piece of code
-significantly more compact, though. For example, here is how I would
-convert a 4-bit binary quantity on Xb3:0 into an integer:
+しかし、ラングの優先順序をうまく使うとロジックを短く記述できる場合があります。
+Xb3～Xb0という4つのビットを2進数に変換する処理を私が書くとしたら、このようにします。
 
    ||                                   {v  :=       }  ||
  3 ||-----------------------------------{ 0       MOV}--||
@@ -798,33 +863,21 @@ convert a 4-bit binary quantity on Xb3:0 into an integer:
    ||-------] [------------------{ v + 8    }-----------||
    ||                                                   ||
 
-If the MOV statement were moved to the bottom of the rung instead of the
-top, then the value of v when it is read elsewhere in the program would
-be 0. The output of this code therefore depends on the order in which
-the instructions are evaluated. Considering how cumbersome it would be
-to code this any other way, I accept that.
+この実装でMOV命令を最初以外に配置すると、結果は大きく変わります。
+順序をきちんと制御した場合に必要な命令の数を考えると、私はこの方法も悪くないと思います。
 
-
-BUGS
+バグ
 ====
 
-LDmicro does not generate very efficient code; it is slow to execute, and
-wasteful of flash and RAM. In spite of this, a mid-sized PIC or AVR can
-do everything that a small PLC can, so this does not bother me very much.
+LDmicroはコードをそれほど最適化しません。実行は遅く、容量を食います。中型のPICやAVRは充分な性能があるので、小型のPLC程度の用を足すにはこれでよいと私は考えています。
 
-The maximum length of variable names is highly limited. This is so that
-they fit nicely onto the ladder diagram, so I don't see a good solution
-to that.
+変数名の長さにはきつい制限があります。これはラダー図中の表示に収めるためですが。よい解決方法は今のところ見つかりません。
 
-If your program is too big for the time, program memory, or data memory
-constraints of the device that you have chosen then you probably won't
-get an error. It will just screw up somewhere.
+パフォーマンスやプログラムメモリ、データメモリなどの点で問題があっても、コンパイル時に全て検出することはできません。どこかで実際動かした時にわかります。
 
-Careless programming in the file load/save routines probably makes it
-possible to crash or execute arbitrary code given a corrupt or malicious
-.ld file.
+ファイルの入出力の実装が適当なので、クラッシュしたりファイルが壊れたりすることがあります。
 
-Please report additional bugs or feature requests to the author.
+バグや機能の要望があれば作者にご連絡ください。
 
 Thanks to:
     * Marcelo Solano, for reporting a UI bug under Win98
@@ -838,7 +891,6 @@ Thanks to:
       on the PIC16F628
     * David Rothwell, for reporting several user interface bugs and a
       problem with the "Export as Text" function
-
 
 COPYING, AND DISCLAIMER
 =======================
@@ -861,7 +913,6 @@ for more details.
 You should have received a copy of the GNU General Public License along
 with this program. If not, see <http://www.gnu.org/licenses/>.
 
-
 Jonathan Westhues
 
 Rijswijk      -- Dec 2004
@@ -872,5 +923,3 @@ Cambridge MA  -- Sep, Dec 2005
 Seattle WA    -- Feb 2009
 
 Email: user jwesthues, at host cq.cx
-
-
