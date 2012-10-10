@@ -1,11 +1,12 @@
 #!/usr/bin/perl
 
-$t = '';
+use strict;
 
-for $file (sort <lang-*.txt>) {
-    open(IN, $file);
+my $t;
 
-    $name = $file;
+for my $file (sort <lang-*.txt>) {
+
+    my $name = $file;
     $name =~ s#lang-##;
     $name =~ s#(.)#uc($1)#e;
     $name =~ s#\.txt##;
@@ -14,20 +15,20 @@ for $file (sort <lang-*.txt>) {
     print "#ifdef LDLANG_$nameUc\n";
     print "static LangTable Lang${name}Table[] = {\n";
 
-    $engl = 1;
-    $. = 0;
-    while(<IN>) {
+    my $engl = 1;
+    local $. = 0;
+    open(my $in, '<', $file) or die "couldn't open $file";
+    while(<$in>) {
         chomp;
 
-        if(/^\s*$/) {
-            if($engl) {
+        if (/^\s*$/) {
+            if ($engl) {
                 next;
-            } else {
-                die "blank line mid-translation at $file, $.\n";
             }
+            die "blank line mid-translation at $file, $.\n";
         }
 
-        if($engl) {
+        if ($engl) {
             $toTranslate = $_;
             $engl = 0;
         } else {
