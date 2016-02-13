@@ -772,6 +772,15 @@ void IoListProc(NMHDR *h)
     switch(h->code) {
         case LVN_GETDISPINFO: {
             NMLVDISPINFO *i = (NMLVDISPINFO *)h;
+            if(!((i->item.mask & LVIF_TEXT) &&
+                 (i->item.pszText) &&
+                 (i->item.cchTextMax > 200)))
+            {
+                // This test didn't used to be present, and Windows 10 now
+                // sends an LVN_GETDISPINFO that fails it, which would
+                // otherwise cause us to write to a null pointer.
+                break;
+            }
             int item = i->item.iItem;
             switch(i->item.iSubItem) {
                 case LV_IO_PIN:
