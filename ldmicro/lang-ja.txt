@@ -44,7 +44,7 @@
 "ADC入力のピンを全て設定する必要があります (名前: '%s')."
 
 "Internal limit exceeded (number of vars)"
-"変数内部容量オーバー"
+"変数の数が最大値を越しました"
 
 "Internal relay '%s' never assigned; add its coil somewhere."
 "内部リレー '%s' に対応するコイルがありません。どこかに配置する必要があります。"
@@ -209,10 +209,10 @@
 "(ピンなし)"
 
 "<UART needs!>"
-"<UART needs!>"
+"<UARTが予約済み!>"
 
 "<PWM needs!>"
-"<PWM needs!>"
+"<PWMが予約済み!>"
 
 "<not an I/O!>"
 "<IOではありません!>"
@@ -251,7 +251,7 @@
 "マイコン '%s' には対応していません。\r\n\r\n未選択の状態にリセットします。"
 
 "File format error; perhaps this program is for a newer version of LDmicro?"
-"ファイル形式エラー。新しいLDmicroのファイルかもしれません。"
+"ファイル形式エラー。新しいバージョンのLDmicroプログラムかもしれません。"
 
 "Index:"
 "添字:"
@@ -284,10 +284,10 @@
 "ポート名"
 
 "LDmicro - Simulation (Running)"
-"LDmicro - シミュレータ (実行中)"
+"LDmicro - シミュレータ (リアルタイム)"
 
 "LDmicro - Simulation (Stopped)"
-"LDmicro - シミュレータ (停止中)"
+"LDmicro - シミュレータ (待機中)"
 
 "LDmicro - Program Editor"
 "LDmicro - エディタ"
@@ -320,10 +320,10 @@
 "やり直し(&R)\tCtrl+Y"
 
 "Insert Rung &Before\tShift+6"
-"前にラングを挿入(&B)\tShift+6"
+"上にラングを挿入(&B)\tShift+6"
 
 "Insert Rung &After\tShift+V"
-"後にラングを挿入(&A)\tShift+V"
+"下にラングを挿入(&A)\tShift+V"
 
 "Move Selected Rung &Up\tShift+Up"
 "上にラングを移動(&U)\tShift+Up"
@@ -368,22 +368,22 @@
 "--{CT&C 0:0}-- 循環カウンタ\tJ"
 
 "Insert EQU (Compare for Equals)\t="
-"--[ == ]-- EQU 等値比較＝\t="
+"--[ == ]-- E&QU 等値比較 ＝\t="
 
 "Insert NEQ (Compare for Not Equals)"
-"--[ /= ]-- NEQ 非等値比較！＝"
+"--[ /= ]-- NEQ 非等値比較 ≠"
 
 "Insert GRT (Compare for Greater Than)\t>"
-"--[  > ]-- GRT 超過比較＞\t>"
+"--[  > ]-- GRT 超過比較 ＞\t>"
 
 "Insert GEQ (Compare for Greater Than or Equal)\t."
-"--[ => ]-- GEQ 以上比較≧\t."
+"--[ => ]-- GEQ 以上比較 ≧\t."
 
 "Insert LES (Compare for Less Than)\t<"
-"--[ <  ]-- LES 未満比較＜\t<"
+"--[ <  ]-- LES 未満比較 ＜\t<"
 
 "Insert LEQ (Compare for Less Than or Equal)\t,"
-"--[ <= ]-- LEQ 以下比較≦\t,"
+"--[ <= ]-- LEQ 以下比較 ≦\t,"
 
 "Insert Open-Circuit"
 "--+     +-- 開放, 開回路"
@@ -620,13 +620,13 @@
 "引用符が不正: <%s>"
 
 "Turn-On Delay"
-"Turn-On Delay"
+"オンタイマ"
 
 "Turn-Off Delay"
-"Turn-Off Delay"
+"オフタイマ"
 
 "Retentive Turn-On Delay"
-"Retentive Turn-On Delay"
+"積算タイマ"
 
 "Delay (ms):"
 "遅延 (ms):"
@@ -656,7 +656,7 @@
 "値＝"
 
 "If Not Equals"
-"値！＝"
+"値≠"
 
 "If Greater Than"
 "値＞"
