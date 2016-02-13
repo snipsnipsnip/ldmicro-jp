@@ -1,4 +1,10 @@
 
+== Release 2.3
+
+    * Fix buffer overrun or write to null pointer if Windows sends an
+      LVN_GETDISPINFO without a valid item.pszText, which happens now
+      under Win10.
+
 == Release 2.2
 
     * Fix a problem with the ANSI C target when the program had bit and
